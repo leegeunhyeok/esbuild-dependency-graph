@@ -38,7 +38,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.spec.ts'],
+      files: ['*.spec.ts', 'demo/**/*.ts'],
       rules: {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-shadow': 'off',

@@ -7,7 +7,7 @@
   "author": "leegeunhyeok <dev.ghlee@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node -r @swc-node/register src/index.ts",
+    "demo": "node -r @swc-node/register demo/index.ts",
     "test": "jest",
     "build": "tsc src/index.ts --outdir dist"
   },
