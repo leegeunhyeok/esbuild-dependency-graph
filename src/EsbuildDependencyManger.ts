@@ -1,4 +1,3 @@
-import invariant from 'invariant';
 import type { Metafile } from 'esbuild';
 import type {
   Module,
@@ -60,7 +59,7 @@ export class EsbuildDependencyManager {
   private traverseModules(): void {
     for (const modulePath in this.metafile.inputs) {
       const currentModule = this.getModule(modulePath);
-      invariant(currentModule, 'module');
+      if (!currentModule) throw new Error(`'${modulePath}' cannot be empty`);
 
       const [currentModuleId, currentModuleVertex] =
         this.registerDependency(currentModule);
