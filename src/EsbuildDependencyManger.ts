@@ -23,7 +23,7 @@ export class EsbuildDependencyManager {
   }
 
   /**
-   * Generate unique id for modules.
+   * Generate unique id for module.
    *
    * If already has id for path return cached id
    * else generate new one.
@@ -80,7 +80,7 @@ export class EsbuildDependencyManager {
   /**
    * Traverse modules for get invert dependencies.
    */
-  private traverseModulesInverse(
+  private traverseInverseModules(
     moduleId: ModuleId,
     inverseModuleIds = [moduleId],
   ): ModuleId[] {
@@ -97,7 +97,7 @@ export class EsbuildDependencyManager {
         continue;
       }
 
-      inverseModuleIds = this.traverseModulesInverse(inverseModuleId, [
+      inverseModuleIds = this.traverseInverseModules(inverseModuleId, [
         ...inverseModuleIds,
         inverseModuleId,
       ]);
@@ -153,6 +153,6 @@ export class EsbuildDependencyManager {
    * Get inverse dependencies based on specified module id.
    */
   getInverseDependencies(moduleId: ModuleId): ModuleId[] {
-    return this.traverseModulesInverse(moduleId);
+    return this.traverseInverseModules(moduleId);
   }
 }
