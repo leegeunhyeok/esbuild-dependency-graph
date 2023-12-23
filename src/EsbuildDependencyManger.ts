@@ -132,7 +132,7 @@ export class EsbuildDependencyManager {
    * Get module by module id.
    */
   getModuleById(moduleId: ModuleId): Module | undefined {
-    return this.moduleMap[moduleId];
+    return this.moduleMap[moduleId] ?? null;
   }
 
   /**
