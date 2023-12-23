@@ -1,0 +1,9 @@
+{
+  "name": "esbuild-dependency-graph",
+  "version": "0.1.0",
+  "description": "Dependency graph helper based on esbuild's metafile",
+  "main": "index.js",
+  "repository": "git@github.com:leegeunhyeok/esbuild-dependency-graph.git",
+  "author": "leegeunhyeok <dev.ghlee@gmail.com>",
+  "license": "MIT"
+}
