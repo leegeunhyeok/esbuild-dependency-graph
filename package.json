@@ -2,8 +2,24 @@
   "name": "esbuild-dependency-graph",
   "version": "0.1.0",
   "description": "Dependency graph helper based on esbuild's metafile",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "git@github.com:leegeunhyeok/esbuild-dependency-graph.git",
   "author": "leegeunhyeok <dev.ghlee@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r @swc-node/register src/index.ts",
+    "build": "tsc src/index.ts --outdir dist"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.6.8",
+    "@swc/core": "^1.3.101",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.5",
+    "@vercel/style-guide": "^5.1.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-prettier": "^5.1.1",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "prettier": "@vercel/style-guide/prettier"
 }
