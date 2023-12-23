@@ -45,5 +45,17 @@
     "release-it": "^17.0.1",
     "typescript": "^5.3.3"
   },
-  "prettier": "@vercel/style-guide/prettier"
+  "prettier": "@vercel/style-guide/prettier",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore(release): ${version}"
+    },
+    "github": {
+      "release": true
+    }
+  }
 }
