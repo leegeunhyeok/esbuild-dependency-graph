@@ -1,2 +1,2 @@
-// eslint-disable-next-line no-console -- init
-console.log('hello, world');
+export { EsbuildDependencyManager } from './EsbuildDependencyManger';
+export type * from './types';
