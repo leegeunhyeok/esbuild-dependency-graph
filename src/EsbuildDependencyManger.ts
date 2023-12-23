@@ -136,17 +136,17 @@ export class EsbuildDependencyManager {
   }
 
   /**
-   * Get dependency graph.
-   */
-  getDependencyGraph(): ModuleDependencyGraph {
-    return this.dependencyGraph;
-  }
-
-  /**
    * Get module map.
    */
   getModuleMap(): ModuleMap {
     return this.moduleMap;
+  }
+
+  /**
+   * Get dependency graph.
+   */
+  getDependencyGraph(): ModuleDependencyGraph {
+    return this.dependencyGraph;
   }
 
   /**

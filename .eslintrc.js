@@ -37,5 +37,12 @@ module.exports = {
         '@typescript-eslint/no-unnecessary-condition': 'off',
       },
     },
+    {
+      files: ['*.spec.ts'],
+      rules: {
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-shadow': 'off',
+      },
+    },
   ],
 };

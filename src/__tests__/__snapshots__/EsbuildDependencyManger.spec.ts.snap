@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EsbuildDependencyManager getDependencyGraph when access by module id to \`ModuleDependencyGraph\` should match snapshot 1`] = `
+{
+  "dependencies": Set {
+    510,
+    74,
+    449,
+    519,
+    1043,
+    1122,
+    1357,
+  },
+  "inverseDependencies": Set {
+    1361,
+  },
+}
+`;
+
+exports[`EsbuildDependencyManager getInverseDependencies should match snapshot 1`] = `
+[
+  1358,
+  1361,
+  1362,
+  1363,
+  1367,
+  0,
+]
+`;
