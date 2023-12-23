@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "rm -rf ./dist && yarn build",
     "test": "jest",
     "demo": "node -r @swc-node/register demo/index.ts",
     "build": "node -r @swc-node/register build/index.ts && tsc",
