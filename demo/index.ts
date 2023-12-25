@@ -1,14 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Metafile } from 'esbuild';
-import { EsbuildDependencyManager } from '../src/EsbuildDependencyManger';
+import { DependencyGraph } from '../src/DependencyGraph';
 
 const ENTRY_POINT = 'index.js';
 const TEST_MODULE = 'src/screens/MainScreen.tsx';
 
 function dependencyPathMapper(
   dependencies: number[],
-  manager: EsbuildDependencyManager,
+  manager: DependencyGraph,
 ): { id: number; path: string }[] {
   return dependencies.map((moduleId) => ({
     id: moduleId,
@@ -23,7 +23,7 @@ async function main(): Promise<void> {
   );
   const metafile = JSON.parse(rawMetafile) as Metafile;
 
-  const dependencyManager = new EsbuildDependencyManager(metafile, ENTRY_POINT);
+  const dependencyManager = new DependencyGraph(metafile, ENTRY_POINT);
   const dependencyGraph = dependencyManager.getDependencyGraph();
   const testModuleId = dependencyManager.getModuleId(TEST_MODULE)!;
 

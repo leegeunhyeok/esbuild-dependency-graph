@@ -1,2 +1,2 @@
-export { EsbuildDependencyManager } from './EsbuildDependencyManger';
+export { DependencyGraph } from './DependencyGraph';
 export type * from './types';

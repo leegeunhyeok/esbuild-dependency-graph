@@ -7,7 +7,7 @@ import type {
   ModuleMap,
 } from './types';
 
-export class EsbuildDependencyManager {
+export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private moduleMap: ModuleMap = {};
   private INTERNAL__moduleIds: Record<string, number> = {};

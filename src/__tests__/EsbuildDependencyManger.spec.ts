@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { describe } from '@jest/globals';
 import type { Metafile } from 'esbuild';
 import { faker } from '@faker-js/faker';
-import { EsbuildDependencyManager } from '../EsbuildDependencyManger';
+import { EsbuildDependencyManager } from '../DependencyGraph';
 import type { ModuleId, ModuleMap, ModuleDependencyGraph } from '../types';
 
 const ENTRY_POINT = 'index.js';
