@@ -13,6 +13,9 @@ module.exports = {
     require.resolve('@vercel/style-guide/eslint/node'),
     require.resolve('@vercel/style-guide/eslint/typescript'),
   ],
+  parserOptions: {
+    project,
+  },
   settings: {
     'import/resolver': {
       typescript: {
@@ -32,6 +35,7 @@ module.exports = {
         'no-console': 'off',
         'no-param-reassign': 'off',
         '@typescript-eslint/no-unnecessary-condition': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
       },
     },
     {
