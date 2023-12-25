@@ -4,12 +4,12 @@ import type {
   ModuleNode,
   ModuleDependencyGraph,
   ModuleId,
-  ModuleMap,
+  ModuleIdMap,
 } from './types';
 
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
-  private moduleMap: ModuleMap = {};
+  private moduleIdMap: ModuleIdMap = {};
   private INTERNAL__moduleIds: Record<string, number> = {};
   private INTERNAL__moduleId = 1; // entry point: 0, others: 1~
 
@@ -46,7 +46,7 @@ export class DependencyGraph {
         dependencies: new Set(),
         inverseDependencies: new Set(),
       };
-      this.moduleMap[moduleId] = module;
+      this.moduleIdMap[moduleId] = module;
       this.dependencyGraph[moduleId] = node;
     }
 
@@ -132,14 +132,14 @@ export class DependencyGraph {
    * Get module by module id.
    */
   getModuleById(moduleId: ModuleId): Module | undefined {
-    return this.moduleMap[moduleId] ?? null;
+    return this.moduleIdMap[moduleId] ?? null;
   }
 
   /**
    * Get module map.
    */
-  getModuleMap(): ModuleMap {
-    return this.moduleMap;
+  getModuleMap(): ModuleIdMap {
+    return this.moduleIdMap;
   }
 
   /**

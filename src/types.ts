@@ -1,7 +1,7 @@
 import type { Metafile } from 'esbuild';
 
 export type ModuleId = number;
-export type ModuleMap = Record<ModuleId, Module>;
+export type ModuleIdMap = Record<ModuleId, Module>;
 export type Module = Metafile['inputs'][string] & {
   path: string;
 };
