@@ -53,7 +53,7 @@ type ModuleId = number;
 type Module = InternalModule | ExternalModule;
 ```
 
-## Where is module path?
+## Where is the module path?
 
 ```ts
 /**
