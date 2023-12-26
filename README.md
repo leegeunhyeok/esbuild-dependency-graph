@@ -1,6 +1,6 @@
 # esbuild-dependency-graph
 
-> Dependency graph helper based on esbuild's metafile
+> Dependency graph helper based on esbuild's [metafile](https://esbuild.github.io/api/#metafile)
 
 ## Installation
 
@@ -13,9 +13,9 @@ yarn add esbuild-dependency-graph
 ## Usage
 
 ```ts
-import { EsbuildDependencyManager } from 'esbuild-dependency-graph';
+import { DependencyGraph } from 'esbuild-dependency-graph';
 
-const dependencyManager = new EsbuildDependencyManager(metafile, 'entry.ts');
+const dependencyManager = new DependencyGraph(metafile, 'entry.ts');
 
 // Get module id
 dependencyManager.getModuleId('path/to/code.ts'); // ModuleId

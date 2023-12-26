@@ -6,19 +6,19 @@ exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
   74,
   449,
   519,
-  1043,
-  1122,
-  1357,
+  1044,
+  1124,
+  1359,
 ]
 `;
 
 exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
 [
-  1358,
-  1361,
-  1362,
+  1360,
   1363,
-  1367,
+  1364,
+  1365,
+  1369,
   0,
 ]
 `;

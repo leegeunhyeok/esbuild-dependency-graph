@@ -1,2 +1,2 @@
 export { DependencyGraph } from './DependencyGraph';
-export type * from './types';
+export type { Module, ModuleId } from './types';

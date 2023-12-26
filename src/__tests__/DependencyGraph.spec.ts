@@ -4,15 +4,11 @@ import { describe } from '@jest/globals';
 import type { Metafile } from 'esbuild';
 import { faker } from '@faker-js/faker';
 import { DependencyGraph } from '../DependencyGraph';
-import type { ModuleId, ModuleIdMap } from '../types';
+import type { ModuleId } from '../types';
 
 const ENTRY_POINT = 'index.js';
 const TEST_MODULE = 'src/screens/MainScreen.tsx';
-
-beforeAll(() => {
-  // noop
-  console.warn = () => undefined;
-});
+const EXTERNAL_MODULE = '<runtime>';
 
 describe('DependencyGraph', () => {
   let metafile: Metafile;
@@ -27,8 +23,8 @@ describe('DependencyGraph', () => {
 
   describe('getModuleId', () => {
     describe('when trying to get a module id that does not exist', () => {
-      it('should returns `null`', () => {
-        expect(graph.getModuleId('-')).toBeNull();
+      it('should throw error', () => {
+        expect(() => graph.getModuleId('asdasdasdasd-')).toThrow();
       });
     });
 
@@ -48,30 +44,8 @@ describe('DependencyGraph', () => {
 
       describe('when trying to get module by `moduleId`', () => {
         it('should returns expected module', () => {
-          expect(graph.getModuleById(moduleId)?.path).toEqual(modulePath);
+          expect(graph.getModule(moduleId).path).toEqual(modulePath);
         });
-      });
-    });
-  });
-
-  describe('getModuleIdMap', () => {
-    let modulePath: string;
-    let moduleId: ModuleId;
-    let moduleMap: ModuleIdMap;
-
-    beforeEach(() => {
-      modulePath = faker.helpers.arrayElement(Object.keys(metafile.inputs));
-      moduleId = graph.getModuleId(modulePath)!;
-      moduleMap = graph.getModuleIdMap();
-    });
-
-    it('should returns `ModuleMap` object', () => {
-      expect(typeof moduleMap === 'object').toEqual(true);
-    });
-
-    describe('when access by module id to `ModuleMap`', () => {
-      it('should be same as the expected module', () => {
-        expect(moduleMap[moduleId].path).toEqual(modulePath);
       });
     });
   });
@@ -79,7 +53,7 @@ describe('DependencyGraph', () => {
   describe('dependenciesOf', () => {
     let moduleId: ModuleId;
 
-    beforeEach(() => {
+    beforeAll(() => {
       moduleId = graph.getModuleId(TEST_MODULE)!;
     });
 
@@ -91,12 +65,30 @@ describe('DependencyGraph', () => {
   describe('inverseDependenciesOf', () => {
     let moduleId: ModuleId;
 
-    beforeEach(() => {
+    beforeAll(() => {
       moduleId = graph.getModuleId(TEST_MODULE)!;
     });
 
     it('should match snapshot', () => {
       expect(graph.inverseDependenciesOf(moduleId)).toMatchSnapshot();
+    });
+  });
+
+  describe('isExternal', () => {
+    let moduleId: ModuleId;
+    let externalModuleId: ModuleId;
+
+    beforeAll(() => {
+      moduleId = graph.getModuleId(TEST_MODULE)!;
+      externalModuleId = graph.getModuleId(EXTERNAL_MODULE)!;
+    });
+
+    it('should returns `false` if the module is not external', () => {
+      expect(graph.isExternal(graph.getModule(moduleId))).toEqual(false);
+    });
+
+    it('should returns `true` if the module is external', () => {
+      expect(graph.isExternal(graph.getModule(externalModuleId))).toEqual(true);
     });
   });
 });

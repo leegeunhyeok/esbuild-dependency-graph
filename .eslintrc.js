@@ -34,6 +34,7 @@ module.exports = {
         'unicorn/filename-case': 'off',
         'no-console': 'off',
         'no-param-reassign': 'off',
+        'no-nested-ternary': 'off',
         '@typescript-eslint/no-unnecessary-condition': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
       },

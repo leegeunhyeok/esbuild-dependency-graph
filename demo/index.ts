@@ -4,7 +4,7 @@ import type { Metafile } from 'esbuild';
 import { DependencyGraph } from '../src/DependencyGraph';
 
 const ENTRY_POINT = 'index.js';
-const TEST_MODULE = 'src/screens/MainScreen.tsx';
+const TEST_MODULE = 'src/components/Section.tsx';
 
 function dependencyPathMapper(
   dependencies: number[],
@@ -12,7 +12,7 @@ function dependencyPathMapper(
 ): { id: number; path: string }[] {
   return dependencies.map((moduleId) => ({
     id: moduleId,
-    path: graph.getModuleById(moduleId)!.path,
+    path: graph.getModule(moduleId)!.path,
   }));
 }
 
@@ -28,7 +28,7 @@ async function main(): Promise<void> {
 
   console.log({
     id: testModuleId,
-    path: graph.getModuleById(testModuleId)?.path,
+    path: graph.getModule(testModuleId)?.path,
     dependencies: dependencyPathMapper(
       graph.dependenciesOf(testModuleId),
       graph,
