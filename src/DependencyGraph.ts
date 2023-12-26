@@ -48,7 +48,7 @@ export class DependencyGraph {
   /**
    * Add target module to dependency graph if not exist.
    */
-  private registerDependency(module: Module): [ModuleId, ModuleNode] {
+  private addNode(module: Module): [ModuleId, ModuleNode] {
     const moduleId = this.generateUniqueModuleId(module);
 
     if (!(moduleId in this.dependencyGraph)) {
@@ -73,15 +73,12 @@ export class DependencyGraph {
         throw new Error(`unable to get module: '${modulePath}'`);
       }
 
-      const [currentModuleId, currentNode] =
-        this.registerDependency(currentModule);
+      const [currentModuleId, currentNode] = this.addNode(currentModule);
 
       for (const importModule of currentModule.imports) {
         const importedModule = this.getModule(importModule.path);
         if (importedModule) {
-          const [importedModuleId, importedNode] =
-            this.registerDependency(importedModule);
-
+          const [importedModuleId, importedNode] = this.addNode(importedModule);
           importedNode.inverseDependencies.add(currentModuleId);
           currentNode.dependencies.add(importedModuleId);
         }
@@ -92,28 +89,21 @@ export class DependencyGraph {
   /**
    * Traverse modules for get invert dependencies.
    */
-  private traverseInverseModules(
-    moduleId: ModuleId,
-    inverseModuleIds = [moduleId],
-  ): ModuleId[] {
-    const targetModule = this.dependencyGraph[moduleId];
-    if (!targetModule) throw new Error(`'${moduleId}'`);
+  private traverseInverseModules(moduleId: ModuleId): ModuleId[] {
+    const stack: ModuleId[] = [moduleId];
+    const visited: Record<ModuleId, boolean> = { [moduleId]: true };
+    const inverseModuleIds: ModuleId[] = [];
 
-    // Reached to entry.
-    if (targetModule.inverseDependencies.size === 0) {
-      return inverseModuleIds;
-    }
+    while (stack.length) {
+      const currentModuleId = stack.pop()!;
+      const node = this.dependencyGraph[currentModuleId];
+      inverseModuleIds.push(currentModuleId);
 
-    for (const inverseModuleId of targetModule.inverseDependencies) {
-      // To avoid circular references.
-      if (inverseModuleIds.includes(inverseModuleId)) {
-        continue;
-      }
-
-      inverseModuleIds = this.traverseInverseModules(inverseModuleId, [
-        ...inverseModuleIds,
-        inverseModuleId,
-      ]);
+      node?.inverseDependencies.forEach((inverseModuleId) => {
+        if (visited[inverseModuleId]) return;
+        visited[inverseModuleId] = true;
+        stack.push(inverseModuleId);
+      });
     }
 
     return inverseModuleIds;
