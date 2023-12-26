@@ -12,7 +12,7 @@
     "dist/*.js",
     "dist/*.cjs",
     "dist/*.mjs",
-    "dist/src/*.d.ts",
+    "dist/src/**/*.d.ts",
     "README.md"
   ],
   "exports": {
