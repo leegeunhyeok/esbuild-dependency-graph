@@ -35,7 +35,7 @@ describe('DependencyGraph', () => {
 
       beforeEach(() => {
         modulePath = faker.helpers.arrayElement(Object.keys(metafile.inputs));
-        moduleId = graph.getModuleId(modulePath)!;
+        moduleId = graph.getModuleId(modulePath);
       });
 
       it('should returns expected module', () => {
@@ -55,7 +55,7 @@ describe('DependencyGraph', () => {
     let moduleId: ModuleId;
 
     beforeAll(() => {
-      moduleId = graph.getModuleId(TEST_MODULE)!;
+      moduleId = graph.getModuleId(TEST_MODULE);
     });
 
     it('should match snapshot', () => {
@@ -67,7 +67,7 @@ describe('DependencyGraph', () => {
     let moduleId: ModuleId;
 
     beforeAll(() => {
-      moduleId = graph.getModuleId(TEST_MODULE)!;
+      moduleId = graph.getModuleId(TEST_MODULE);
     });
 
     it('should match snapshot', () => {
@@ -81,8 +81,8 @@ describe('DependencyGraph', () => {
       let externalModuleId: ModuleId;
 
       beforeAll(() => {
-        moduleId = graph.getModuleId(TEST_MODULE)!;
-        externalModuleId = graph.getModuleId(EXTERNAL_MODULE)!;
+        moduleId = graph.getModuleId(TEST_MODULE);
+        externalModuleId = graph.getModuleId(EXTERNAL_MODULE);
       });
 
       it('should returns `false` if the module is not external', () => {
