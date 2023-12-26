@@ -42,7 +42,6 @@ export class DependencyGraph {
         value: modulePath,
       }) as Module;
     }
-    console.warn(`unable to get '${modulePath}'`);
     return null;
   }
 
@@ -70,19 +69,21 @@ export class DependencyGraph {
   private traverseModules(): void {
     for (const modulePath in this.metafile.inputs) {
       const currentModule = this.getModule(modulePath);
-      if (!currentModule) throw new Error(`'${modulePath}' cannot be empty`);
+      if (!currentModule) {
+        throw new Error(`unable to get module: '${modulePath}'`);
+      }
 
-      const [currentModuleId, currentModuleVertex] =
+      const [currentModuleId, currentNode] =
         this.registerDependency(currentModule);
 
       for (const importModule of currentModule.imports) {
         const importedModule = this.getModule(importModule.path);
         if (importedModule) {
-          const [importedModuleId, importedModuleVertex] =
+          const [importedModuleId, importedNode] =
             this.registerDependency(importedModule);
 
-          importedModuleVertex.inverseDependencies.add(currentModuleId);
-          currentModuleVertex.dependencies.add(importedModuleId);
+          importedNode.inverseDependencies.add(currentModuleId);
+          currentNode.dependencies.add(importedModuleId);
         }
       }
     }
