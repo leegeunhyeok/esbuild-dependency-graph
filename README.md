@@ -13,37 +13,44 @@ yarn add esbuild-dependency-graph
 ## Usage
 
 ```ts
-import { DependencyGraph } from 'esbuild-dependency-graph';
+import { DependencyGraph, isExternal } from 'esbuild-dependency-graph';
 
-const dependencyManager = new DependencyGraph(metafile, 'entry.ts');
+const graph = new DependencyGraph(metafile, 'entry.ts');
 
-// Get module id
-dependencyManager.getModuleId('path/to/code.ts'); // ModuleId
+// Get module id.
+graph.getModuleId('path/to/code.ts'); // `ModuleId`
 
-// Get module
-dependencyManager.getModule('path/to/code.ts'); // Module | null
+// Get module.
+graph.getModule(moduleId); // `Module`
 
-// Get module by id
-dependencyManager.getModuleById(moduleId); // Module | null
+// Get dependencies of the specified module.
+graph.dependenciesOf(moduleId); // `ModuleId[]`
 
-// Get `ModuleMap`
-dependencyManager.getModuleMap(); // ModuleMap
+// Get inverse dependencies of the specified module.
+graph.inverseDependenciesOf(moduleId); // `ModuleId[]`
 
-// Get `ModuleDependencyGraph`
-dependencyManager.getDependencyGraph(); // ModuleDependencyGraph
-
-// Get inverse dependencies
-dependencyManager.getInverseDependencies(); // ModuleId[]
+// Check if the module is external.
+isExternal(someModule); // `boolean`
 ```
 
 ```ts
-type ModuleId = number;
-type ModuleMap = Record<ModuleId, Module>;
-type Module = Metafile['inputs'][string] & {
+type EsbuildModule = Metafile['inputs'][string];
+
+type InternalModule = EsbuildModule & {
+  id: ModuleId;
   path: string;
+  dependencies: Set<ModuleId>;
+  inverseDependencies: Set<ModuleId>;
 };
 
-type ModuleDependencyGraph = Record<ModuleId, ModuleNode>;
+interface ExternalModule {
+  id: ModuleId;
+  path: string;
+  __external: true;
+}
+
+type ModuleId = number;
+type Module = InternalModule | ExternalModule;
 ```
 
 ## Demo
@@ -52,26 +59,22 @@ Demo code [here](./demo/index.ts).
 
 ```json
 {
-  "id": 1358,
-  "path": "src/screens/MainScreen.tsx",
+  "id": 1123,
+  "path": "src/components/Section.tsx",
   "dependencies": [
     { "id": 510, "path": "node_modules/react/jsx-runtime.js" },
     { "id": 74, "path": "node_modules/react/index.js" },
-    { "id": 449, "path": "node_modules/react-native/index.js" },
-    {
-      "id": 519,
-      "path": "node_modules/react-native-safe-area-context/src/index.tsx"
-    },
-    { "id": 1043, "path": "node_modules/dripsy/src/index.ts" },
-    { "id": 1122, "path": "src/components/index.ts" },
-    { "id": 1357, "path": "src/assets/logo.svg" }
+    { "id": 1044, "path": "node_modules/dripsy/src/index.ts" }
   ],
   "inverseDependencies": [
-    { "id": 1358, "path": "src/screens/MainScreen.tsx" },
-    { "id": 1361, "path": "src/screens/index.ts" },
-    { "id": 1362, "path": "src/navigators/RootStack.tsx" },
-    { "id": 1363, "path": "src/navigators/index.ts" },
-    { "id": 1367, "path": "src/App.tsx" },
+    { "id": 1123, "path": "src/components/Section.tsx" },
+    { "id": 1124, "path": "src/components/index.ts" },
+    { "id": 1360, "path": "src/screens/MainScreen.tsx" },
+    { "id": 1362, "path": "src/screens/IntroScreen.tsx" },
+    { "id": 1363, "path": "src/screens/index.ts" },
+    { "id": 1364, "path": "src/navigators/RootStack.tsx" },
+    { "id": 1365, "path": "src/navigators/index.ts" },
+    { "id": 1369, "path": "src/App.tsx" },
     { "id": 0, "path": "index.js" }
   ]
 }

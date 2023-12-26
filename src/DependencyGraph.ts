@@ -1,4 +1,5 @@
 import type { Metafile } from 'esbuild';
+import { isExternal } from './helpers';
 import type {
   EsbuildModule,
   ExternalModule,
@@ -72,7 +73,7 @@ export class DependencyGraph {
   /**
    * Get module by actual path in metafile.
    */
-  private addNode(modulePath: string, isExternal = false): Module {
+  private addNode(modulePath: string, external = false): Module {
     let id: ModuleId | undefined;
 
     if (
@@ -82,7 +83,7 @@ export class DependencyGraph {
       return this.dependencyGraph[id]!;
     }
 
-    if (isExternal) {
+    if (external) {
       id = this.generateUniqueModuleId(modulePath);
       return (this.dependencyGraph[id] = this.getExternalModule(
         id,
@@ -107,7 +108,7 @@ export class DependencyGraph {
     for (const modulePath in this.metafile.inputs) {
       const currentModule = this.addNode(modulePath);
 
-      if (this.isExternal(currentModule)) {
+      if (isExternal(currentModule)) {
         continue;
       }
 
@@ -119,7 +120,7 @@ export class DependencyGraph {
 
         currentModule.dependencies.add(importedModule.id);
 
-        if (!this.isExternal(importedModule)) {
+        if (!isExternal(importedModule)) {
           importedModule.inverseDependencies.add(currentModule.id);
         }
       }
@@ -139,7 +140,7 @@ export class DependencyGraph {
       const module = this.dependencyGraph[currentModuleId];
       inverseModuleIds.push(currentModuleId);
 
-      if (module && this.isExternal(module)) continue;
+      if (module && isExternal(module)) continue;
 
       module?.inverseDependencies.forEach((inverseModuleId) => {
         if (visited[inverseModuleId]) return;
@@ -174,10 +175,7 @@ export class DependencyGraph {
    */
   dependenciesOf(moduleId: ModuleId): ModuleId[] {
     const module = this.getModule(moduleId);
-
-    if (this.isExternal(module)) return [];
-
-    return Array.from(module.dependencies);
+    return isExternal(module) ? [] : Array.from(module.dependencies);
   }
 
   /**
@@ -185,12 +183,5 @@ export class DependencyGraph {
    */
   inverseDependenciesOf(moduleId: ModuleId): ModuleId[] {
     return this.traverseInverseModules(moduleId);
-  }
-
-  /**
-   * Check if the module is external.
-   */
-  isExternal(module: Module): module is ExternalModule {
-    return '__external' in module && module.__external;
   }
 }

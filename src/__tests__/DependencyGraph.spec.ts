@@ -4,6 +4,7 @@ import { describe } from '@jest/globals';
 import type { Metafile } from 'esbuild';
 import { faker } from '@faker-js/faker';
 import { DependencyGraph } from '../DependencyGraph';
+import * as helpers from '../helpers';
 import type { ModuleId } from '../types';
 
 const ENTRY_POINT = 'index.js';
@@ -74,21 +75,25 @@ describe('DependencyGraph', () => {
     });
   });
 
-  describe('isExternal', () => {
-    let moduleId: ModuleId;
-    let externalModuleId: ModuleId;
+  describe('helpers', () => {
+    describe('isExternal', () => {
+      let moduleId: ModuleId;
+      let externalModuleId: ModuleId;
 
-    beforeAll(() => {
-      moduleId = graph.getModuleId(TEST_MODULE)!;
-      externalModuleId = graph.getModuleId(EXTERNAL_MODULE)!;
-    });
+      beforeAll(() => {
+        moduleId = graph.getModuleId(TEST_MODULE)!;
+        externalModuleId = graph.getModuleId(EXTERNAL_MODULE)!;
+      });
 
-    it('should returns `false` if the module is not external', () => {
-      expect(graph.isExternal(graph.getModule(moduleId))).toEqual(false);
-    });
+      it('should returns `false` if the module is not external', () => {
+        expect(helpers.isExternal(graph.getModule(moduleId))).toEqual(false);
+      });
 
-    it('should returns `true` if the module is external', () => {
-      expect(graph.isExternal(graph.getModule(externalModuleId))).toEqual(true);
+      it('should returns `true` if the module is external', () => {
+        expect(helpers.isExternal(graph.getModule(externalModuleId))).toEqual(
+          true,
+        );
+      });
     });
   });
 });
