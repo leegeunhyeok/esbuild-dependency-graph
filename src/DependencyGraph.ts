@@ -130,12 +130,12 @@ export class DependencyGraph {
    * Traverse modules for get invert dependencies.
    */
   private traverseInverseModules(moduleId: ModuleId): ModuleId[] {
-    const stack: ModuleId[] = [moduleId];
+    const queue: ModuleId[] = [moduleId];
     const visited: Record<ModuleId, boolean> = { [moduleId]: true };
     const inverseModuleIds: ModuleId[] = [];
 
-    while (stack.length) {
-      const currentModuleId = stack.pop()!;
+    while (queue.length) {
+      const currentModuleId = queue.shift()!;
       const module = this.dependencyGraph[currentModuleId];
       inverseModuleIds.push(currentModuleId);
 
@@ -144,7 +144,7 @@ export class DependencyGraph {
       module?.inverseDependencies.forEach((inverseModuleId) => {
         if (visited[inverseModuleId]) return;
         visited[inverseModuleId] = true;
-        stack.push(inverseModuleId);
+        queue.push(inverseModuleId);
       });
     }
 
