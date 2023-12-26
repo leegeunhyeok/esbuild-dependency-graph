@@ -17,7 +17,7 @@ import { DependencyGraph, isExternal } from 'esbuild-dependency-graph';
 
 const graph = new DependencyGraph(metafile, 'entry.ts');
 
-// Get module id.
+// Get module id by actual module path.
 graph.getModuleId('path/to/code.ts'); // `ModuleId`
 
 // Get module.
@@ -51,6 +51,28 @@ interface ExternalModule {
 
 type ModuleId = number;
 type Module = InternalModule | ExternalModule;
+```
+
+## Where is module path?
+
+```ts
+/**
+ * @type {import('esbuild').Metafile}
+ */
+interface Metafile {
+  inputs: {
+    [path: string]: { // Can be used as module path!
+      imports: {
+        path: string // Can be used as module path!
+        ...
+      }[]
+      ...
+    }
+  },
+  outputs: {
+    ...
+  }
+}
 ```
 
 ## Demo

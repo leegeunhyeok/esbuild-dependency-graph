@@ -153,7 +153,25 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module id by actual path.
+   * Get module id by actual module path.
+   *
+   * ```ts
+   * // `Metafile` type in esbuild
+   * interface Metafile {
+   *   inputs: {
+   *     [path: string]: { // Can be used as `modulePath`
+   *       imports: {
+   *         path: string // Can be used as `modulePath`
+   *         ...
+   *       }[]
+   *       ...
+   *     }
+   *   },
+   *   outputs: {
+   *    ...
+   *   }
+   * }
+   * ```
    */
   getModuleId(modulePath: string): number {
     const id = this.INTERNAL__moduleIds[modulePath];
