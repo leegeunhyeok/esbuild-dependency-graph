@@ -8,11 +8,11 @@ const TEST_MODULE = 'src/screens/MainScreen.tsx';
 
 function dependencyPathMapper(
   dependencies: number[],
-  manager: DependencyGraph,
+  graph: DependencyGraph,
 ): { id: number; path: string }[] {
   return dependencies.map((moduleId) => ({
     id: moduleId,
-    path: manager.getModuleById(moduleId)!.path,
+    path: graph.getModuleById(moduleId)!.path,
   }));
 }
 
@@ -23,20 +23,19 @@ async function main(): Promise<void> {
   );
   const metafile = JSON.parse(rawMetafile) as Metafile;
 
-  const dependencyManager = new DependencyGraph(metafile, ENTRY_POINT);
-  const dependencyGraph = dependencyManager.getDependencyGraph();
-  const testModuleId = dependencyManager.getModuleId(TEST_MODULE)!;
+  const graph = new DependencyGraph(metafile, ENTRY_POINT);
+  const testModuleId = graph.getModuleId(TEST_MODULE)!;
 
   console.log({
     id: testModuleId,
-    path: dependencyManager.getModuleById(testModuleId)?.path,
+    path: graph.getModuleById(testModuleId)?.path,
     dependencies: dependencyPathMapper(
-      Array.from(dependencyGraph[testModuleId].dependencies),
-      dependencyManager,
+      graph.dependenciesOf(testModuleId),
+      graph,
     ),
     inverseDependencies: dependencyPathMapper(
-      dependencyManager.getInverseDependencies(testModuleId),
-      dependencyManager,
+      graph.inverseDependenciesOf(testModuleId),
+      graph,
     ),
   });
 }

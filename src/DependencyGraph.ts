@@ -1,11 +1,7 @@
 import type { Metafile } from 'esbuild';
-import type {
-  Module,
-  ModuleNode,
-  ModuleDependencyGraph,
-  ModuleId,
-  ModuleIdMap,
-} from './types';
+import type { Module, ModuleNode, ModuleId, ModuleIdMap } from './types';
+
+type ModuleDependencyGraph = Record<ModuleId, ModuleNode | undefined>;
 
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
@@ -36,6 +32,21 @@ export class DependencyGraph {
   }
 
   /**
+   * Get module by actual path in metafile.
+   */
+  private getModule(modulePath: string): Module | null {
+    const targetInput = this.metafile.inputs[modulePath];
+    if (targetInput) {
+      return Object.defineProperty(this.metafile.inputs[modulePath], 'path', {
+        enumerable: true,
+        value: modulePath,
+      }) as Module;
+    }
+    console.warn(`unable to get '${modulePath}'`);
+    return null;
+  }
+
+  /**
    * Add target module to dependency graph if not exist.
    */
   private registerDependency(module: Module): [ModuleId, ModuleNode] {
@@ -50,7 +61,7 @@ export class DependencyGraph {
       this.dependencyGraph[moduleId] = node;
     }
 
-    return [moduleId, this.dependencyGraph[moduleId]];
+    return [moduleId, this.dependencyGraph[moduleId]!];
   }
 
   /**
@@ -84,14 +95,15 @@ export class DependencyGraph {
     moduleId: ModuleId,
     inverseModuleIds = [moduleId],
   ): ModuleId[] {
-    const { inverseDependencies } = this.dependencyGraph[moduleId];
+    const targetModule = this.dependencyGraph[moduleId];
+    if (!targetModule) throw new Error(`'${moduleId}'`);
 
     // Reached to entry.
-    if (inverseDependencies.size === 0) {
+    if (targetModule.inverseDependencies.size === 0) {
       return inverseModuleIds;
     }
 
-    for (const inverseModuleId of inverseDependencies) {
+    for (const inverseModuleId of targetModule.inverseDependencies) {
       // To avoid circular references.
       if (inverseModuleIds.includes(inverseModuleId)) {
         continue;
@@ -114,21 +126,6 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module by actual path in metafile.
-   */
-  getModule(modulePath: string): Module | null {
-    const targetInput = this.metafile.inputs[modulePath];
-    if (targetInput) {
-      return Object.defineProperty(this.metafile.inputs[modulePath], 'path', {
-        enumerable: true,
-        value: modulePath,
-      }) as Module;
-    }
-    console.warn(`unable to get '${modulePath}'`);
-    return null;
-  }
-
-  /**
    * Get module by module id.
    */
   getModuleById(moduleId: ModuleId): Module | undefined {
@@ -138,21 +135,21 @@ export class DependencyGraph {
   /**
    * Get module map.
    */
-  getModuleMap(): ModuleIdMap {
+  getModuleIdMap(): ModuleIdMap {
     return this.moduleIdMap;
   }
 
   /**
-   * Get dependency graph.
+   * Get dependencies of specified module.
    */
-  getDependencyGraph(): ModuleDependencyGraph {
-    return this.dependencyGraph;
+  dependenciesOf(moduleId: ModuleId): ModuleId[] {
+    return Array.from(this.dependencyGraph[moduleId]?.dependencies ?? []);
   }
 
   /**
-   * Get inverse dependencies based on specified module id.
+   * Get inverse dependencies of specified module.
    */
-  getInverseDependencies(moduleId: ModuleId): ModuleId[] {
+  inverseDependenciesOf(moduleId: ModuleId): ModuleId[] {
     return this.traverseInverseModules(moduleId);
   }
 }

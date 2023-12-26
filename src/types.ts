@@ -6,8 +6,6 @@ export type Module = Metafile['inputs'][string] & {
   path: string;
 };
 
-export type ModuleDependencyGraph = Record<ModuleId, ModuleNode>;
-
 export interface ModuleNode {
   dependencies: Set<ModuleId>;
   inverseDependencies: Set<ModuleId>;
