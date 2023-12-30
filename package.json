@@ -1,6 +1,6 @@
 {
   "name": "esbuild-dependency-graph",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Dependency graph helper based on esbuild's metafile",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
