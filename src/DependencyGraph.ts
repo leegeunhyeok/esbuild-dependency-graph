@@ -13,14 +13,19 @@ type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<string, number> = {};
-  private INTERNAL__moduleId = 1; // entry point: 0, others: 1~
+  private INTERNAL__moduleId = 0;
 
   constructor(
     private metafile: Metafile,
     entryPoint: string,
+    baseIds?: Record<string, number>,
   ) {
     // Entry point module id is always `0`.
-    this.INTERNAL__moduleIds[entryPoint] = 0;
+    this.INTERNAL__moduleIds[entryPoint] = this.INTERNAL__moduleId++;
+    if (baseIds) {
+      this.INTERNAL__moduleIds = baseIds;
+      this.INTERNAL__moduleId = Math.max(...Object.values(baseIds)) + 1;
+    }
     this.generateDependencyGraph();
   }
 
