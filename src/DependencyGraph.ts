@@ -18,13 +18,14 @@ export class DependencyGraph {
   constructor(
     private metafile: Metafile,
     entryPoint: string,
-    baseIds?: Record<string, number>,
+    initialModuleIdMap?: Record<string, number>,
   ) {
     // Entry point module id is always `0`.
     this.INTERNAL__moduleIds[entryPoint] = this.INTERNAL__moduleId++;
-    if (baseIds) {
-      this.INTERNAL__moduleIds = baseIds;
-      this.INTERNAL__moduleId = Math.max(...Object.values(baseIds)) + 1;
+    if (initialModuleIdMap) {
+      this.INTERNAL__moduleIds = initialModuleIdMap;
+      this.INTERNAL__moduleId =
+        Math.max(...Object.values(initialModuleIdMap)) + 1;
     }
     this.generateDependencyGraph();
   }
