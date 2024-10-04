@@ -14,7 +14,6 @@ exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
 
 exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
 [
-  "src/screens/MainScreen.tsx",
   "src/screens/index.ts",
   "src/navigators/RootStack.tsx",
   "src/navigators/index.ts",

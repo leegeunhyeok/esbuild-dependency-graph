@@ -142,7 +142,10 @@ export class DependencyGraph {
     while (queue.length) {
       const currentModuleId = queue.shift()!;
       const module = this.dependencyGraph[currentModuleId];
-      inverseModuleIds.push(currentModuleId);
+
+      if (currentModuleId !== moduleId) {
+        inverseModuleIds.push(currentModuleId);
+      }
 
       if (module && isExternal(module)) {
         continue;

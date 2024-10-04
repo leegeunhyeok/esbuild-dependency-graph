@@ -109,7 +109,6 @@ Demo code [here](./demo/index.ts).
 
 // Inverse dependencies
 [
-  'src/components/Section.tsx',
   'src/components/index.ts',
   'src/screens/MainScreen.tsx',
   'src/screens/IntroScreen.tsx',
