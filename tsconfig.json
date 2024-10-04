@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
+    "strictBindCallApply": true,
     "types": ["node", "jest"]
   },
   "exclude": ["node_modules", "dist"]
