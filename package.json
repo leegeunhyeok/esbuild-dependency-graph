@@ -17,10 +17,10 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/*.js",
-    "dist/*.cjs",
-    "dist/*.mjs",
-    "dist/src/**/*.d.ts",
+    "dist/**/*.js",
+    "dist/**/*.cjs",
+    "dist/**/*.mjs",
+    "dist/**/*.d.ts",
     "README.md"
   ],
   "scripts": {
