@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Metafile } from 'esbuild';
 import { DependencyGraph } from '../src/DependencyGraph';
 
 const TEST_MODULE = 'src/components/Section.tsx';
@@ -10,9 +9,8 @@ async function main(): Promise<void> {
     join(__dirname, '../src/__tests__/fixtures/metafile.json'),
     'utf-8',
   );
-  const metafile = JSON.parse(rawMetafile) as Metafile;
 
-  const graph = new DependencyGraph(metafile);
+  const graph = new DependencyGraph(rawMetafile);
   const module = graph.getModule(TEST_MODULE);
 
   console.log(`Module: ${TEST_MODULE}`, module);

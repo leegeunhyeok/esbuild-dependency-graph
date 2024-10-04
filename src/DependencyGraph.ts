@@ -17,8 +17,14 @@ export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<ModulePath, number> = {};
   private INTERNAL__moduleId = 0;
+  private metafile: Metafile;
 
-  constructor(private metafile: Metafile) {
+  constructor(metafile: string | Metafile) {
+    this.metafile =
+      typeof metafile === 'string'
+        ? (JSON.parse(metafile) as Metafile)
+        : metafile;
+
     this.generateDependencyGraph();
   }
 
