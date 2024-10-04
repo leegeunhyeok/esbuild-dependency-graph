@@ -42,7 +42,7 @@ async function main(): Promise<void> {
   const testModuleId = graph.getModuleId(TEST_MODULE)!;
   const module = graph.getModule(testModuleId) as InternalModule;
 
-  console.log(JSON.stringify({
+  console.log({
     id: testModuleId,
     path: module.path,
     format: module.format,
@@ -55,7 +55,7 @@ async function main(): Promise<void> {
       graph.inverseDependenciesOf(testModuleId),
       graph,
     ),
-  }, null, 2));
+  });
 }
 
 main().catch(console.error);
