@@ -14,7 +14,11 @@ yarn add esbuild-dependency-graph
 
 ```ts
 import * as esbuild from 'esbuild';
-import { DependencyGraph, isExternal } from 'esbuild-dependency-graph';
+import {
+  DependencyGraph,
+  isInternal,
+  isExternal,
+} from 'esbuild-dependency-graph';
 
 const result = await esbuild.build({
   /* build options */
@@ -31,7 +35,8 @@ graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`
 // Get inverse dependencies of the specified module.
 graph.inverseDependenciesOf('path/to/code.ts'); // `ModulePath[]`
 
-// Check if this module is external.
+// Check if this module is internal or external.
+isInternal('path/to/code.ts'); // `boolean`
 isExternal('path/to/code.ts'); // `boolean`
 ```
 
@@ -58,17 +63,18 @@ type Module = InternalModule | ExternalModule;
  */
 interface Metafile {
   inputs: {
-    [path: string]: { // Can be used as module path!
+    [path: string]: {
+      // Can be used as module path!
       imports: {
-        path: string // Can be used as module path!
+        path: string; // Can be used as module path!
         /* ... */
-      }[]
+      }[];
       /* ... */
-    }
-  }
+    };
+  };
   outputs: {
     /* ... */
-  }
+  };
 }
 ```
 

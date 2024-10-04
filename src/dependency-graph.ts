@@ -1,5 +1,5 @@
 import type { Metafile } from 'esbuild';
-import { isExternal } from './helpers/is-external';
+import { isExternal, isInternal } from './helpers';
 import {
   ID,
   EXTERNAL,
@@ -124,7 +124,7 @@ export class DependencyGraph {
 
         currentModule.dependencies.add(importedModule[ID]);
 
-        if (!isExternal(importedModule)) {
+        if (isInternal(importedModule)) {
           importedModule.inverseDependencies.add(currentModule[ID]);
         }
       }
