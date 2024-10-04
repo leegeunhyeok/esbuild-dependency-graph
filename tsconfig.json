@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "strictBindCallApply": true,
+    "stripInternal": true,
     "types": ["node", "jest"]
   },
   "exclude": ["node_modules", "dist"]

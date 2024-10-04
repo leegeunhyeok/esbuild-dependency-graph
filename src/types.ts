@@ -6,6 +6,7 @@ export const EXTERNAL = Symbol('external');
 export type EsbuildModule = Metafile['inputs'][string];
 
 interface ModuleBase {
+  /** @internal */
   readonly [ID]: ModuleId;
   path: string;
 }
@@ -16,6 +17,7 @@ export interface InternalModule extends ModuleBase, EsbuildModule {
 }
 
 export interface ExternalModule extends ModuleBase {
+  /** @internal */
   readonly [EXTERNAL]: true;
 }
 
