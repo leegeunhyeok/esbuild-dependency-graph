@@ -54,13 +54,5 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore(release): ${version}"
-    },
-    "github": {
-      "release": true
-    }
   }
 }
