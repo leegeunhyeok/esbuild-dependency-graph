@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { DependencyGraph } from '../src/DependencyGraph';
+import { DependencyGraph } from '../src/dependency-graph';
 
 const TEST_MODULE = 'src/components/Section.tsx';
 

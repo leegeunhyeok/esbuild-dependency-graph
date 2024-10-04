@@ -1,5 +1,5 @@
 import type { Metafile } from 'esbuild';
-import { isExternal } from './helpers';
+import { isExternal } from './helpers/is-external';
 import {
   ID,
   EXTERNAL,
