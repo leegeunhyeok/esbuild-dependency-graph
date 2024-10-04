@@ -4,16 +4,12 @@
     "target": "es2020",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "declarationDir": "dist",
     "removeComments": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "types": ["node", "jest"],
-    "outDir": "./dist",
-    "declaration": true,
-    "emitDeclarationOnly": true
+    "types": ["node", "jest"]
   },
   "exclude": ["node_modules", "dist"]
 }

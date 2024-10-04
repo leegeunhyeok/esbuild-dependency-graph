@@ -2,12 +2,20 @@
   "name": "esbuild-dependency-graph",
   "version": "0.3.0",
   "description": "Dependency graph helper based on esbuild's metafile",
+  "repository": "git@github.com:leegeunhyeok/esbuild-dependency-graph.git",
+  "license": "MIT",
+  "author": "leegeunhyeok <dev.ghlee@gmail.com>",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.js"
+    }
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "dist/src/index.d.ts",
-  "repository": "git@github.com:leegeunhyeok/esbuild-dependency-graph.git",
-  "author": "leegeunhyeok <dev.ghlee@gmail.com>",
-  "license": "MIT",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/*.js",
     "dist/*.cjs",
@@ -15,19 +23,14 @@
     "dist/src/**/*.d.ts",
     "README.md"
   ],
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
-    }
-  },
   "scripts": {
-    "prepublishOnly": "rm -rf ./dist && yarn build",
-    "test": "jest",
+    "build": "node -r @swc-node/register build/index.ts && tsc -p tsconfig.build.json",
     "demo": "node -r @swc-node/register demo/index.ts",
-    "build": "node -r @swc-node/register build/index.ts && tsc",
-    "release": "release-it"
+    "prepublishOnly": "rm -rf ./dist && yarn build",
+    "release": "release-it",
+    "test": "jest"
   },
+  "prettier": "@vercel/style-guide/prettier",
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@jest/globals": "^29.7.0",
@@ -45,7 +48,6 @@
     "release-it": "^17.0.1",
     "typescript": "^5.3.3"
   },
-  "prettier": "@vercel/style-guide/prettier",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
