@@ -18,6 +18,8 @@ export function createExternalModule(
       [ID]: { value: id },
       [EXTERNAL]: { value: true },
       path: { value: path, enumerable: true },
+      dependencies: { value: new Set(), enumerable: true },
+      dependents: { value: new Set(), enumerable: true },
     },
   ) as ExternalModule;
 }

@@ -171,10 +171,6 @@ export class DependencyGraph {
         inverseModuleIds.push(currentModuleId);
       }
 
-      if (module && isExternal(module)) {
-        continue;
-      }
-
       module?.dependents.forEach((inverseModuleId) => {
         if (visited[inverseModuleId]) {
           return;
@@ -299,11 +295,9 @@ export class DependencyGraph {
     );
     const module = this.getModuleById(moduleId);
 
-    return isExternal(module)
-      ? []
-      : Array.from(module.dependencies).map(
-          (id) => this.getModuleById(id).path,
-        );
+    return Array.from(module.dependencies).map(
+      (id) => this.getModuleById(id).path,
+    );
   }
 
   /**
@@ -316,9 +310,9 @@ export class DependencyGraph {
     );
     const module = this.getModuleById(moduleId);
 
-    return isExternal(module)
-      ? []
-      : Array.from(module.dependents).map((id) => this.getModuleById(id).path);
+    return Array.from(module.dependents).map(
+      (id) => this.getModuleById(id).path,
+    );
   }
 
   /**

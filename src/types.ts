@@ -9,12 +9,12 @@ interface ModuleBase {
   /** @internal */
   readonly [ID]: ModuleId;
   path: string;
+  dependencies: Set<ModuleId>;
+  dependents: Set<ModuleId>;
 }
 
 export interface InternalModule extends ModuleBase {
   esbuild: EsbuildMeta | null;
-  dependencies: Set<ModuleId>;
-  dependents: Set<ModuleId>;
 }
 
 export interface ExternalModule extends ModuleBase {
