@@ -113,4 +113,14 @@ describe('DependencyGraph', () => {
       });
     });
   });
+
+  describe('removeModule', () => {
+    it('should match snapshot', () => {
+      graph.removeModule('src/screens/index.ts');
+      const inverseDependencies = graph.inverseDependenciesOf(
+        'src/screens/MainScreen.tsx',
+      );
+      expect(inverseDependencies).toMatchSnapshot();
+    });
+  });
 });

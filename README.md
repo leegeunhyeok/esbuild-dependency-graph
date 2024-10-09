@@ -30,12 +30,15 @@ const graph = new DependencyGraph(result.metafile);
 // Get module.
 graph.getModule('path/to/code.ts'); // `Module`
 
-// Add new module to the graph.
+// Register new module to the graph. (it also can be override registered modules)
 graph.addModule(
   'path/to/code.ts',
   ['path/to/dependency-a', 'path/to/dependency-b'],
   ['path/to/dependent'],
 ); // `void`
+
+// Remove module from graph.
+graph.removeModule('path/to/code.ts'); // `void`
 
 // Get dependencies of the specified module.
 graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`

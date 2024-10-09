@@ -19,7 +19,7 @@ type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
-  private INTERNAL__moduleIds: Record<ModulePath, number> = {};
+  private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
   private INTERNAL__moduleId = 0;
   private metafile: Metafile;
 
@@ -120,6 +120,34 @@ export class DependencyGraph {
   }
 
   /**
+   * Remove the module and unlink the dependency relationship.
+   */
+  unlinkModule(sourceModule: ExternalModule | InternalModule): void {
+    const moduleId = sourceModule[ID];
+
+    if (isInternal(sourceModule)) {
+      sourceModule.dependencies.forEach((dependencyId) => {
+        const dependencyModule = this.getModuleById(dependencyId);
+
+        if (isInternal(dependencyModule)) {
+          dependencyModule.dependents.delete(moduleId);
+        }
+      });
+
+      sourceModule.dependents.forEach((dependentId) => {
+        const dependentModule = this.getModuleById(dependentId);
+
+        if (isInternal(dependentModule)) {
+          dependentModule.dependencies.delete(moduleId);
+        }
+      });
+    }
+
+    this.dependencyGraph[moduleId] = undefined;
+    this.INTERNAL__moduleIds[sourceModule.path] = undefined;
+  }
+
+  /**
    * Traverse modules for get invert dependencies.
    */
   private traverseInverseModules(moduleId: ModuleId): ModuleId[] {
@@ -176,6 +204,8 @@ export class DependencyGraph {
 
   /**
    * Register new module to dependency graph.
+   *
+   * If a module already exists at the specified path, it will be overwritten.
    */
   addModule(
     path: ModulePath,
@@ -191,6 +221,10 @@ export class DependencyGraph {
     );
     const newModule = this.createModule(path) as InternalModule;
 
+    // Clear exist dependencies / dependents.
+    newModule.dependencies.clear();
+    newModule.dependents.clear();
+
     dependencyModules.forEach((module) => {
       newModule.dependencies.add(module[ID]);
       this.linkModules(newModule, module);
@@ -200,6 +234,19 @@ export class DependencyGraph {
       newModule.dependents.add(module[ID]);
       this.linkModules(module, newModule);
     });
+  }
+
+  /**
+   * Remove module from graph.
+   */
+  removeModule(modulePath: ModulePath): void {
+    const moduleId = assertValue(
+      this.getModuleId(modulePath),
+      `module not found: '${modulePath}'`,
+    );
+    const module = this.getModuleById(moduleId);
+
+    this.unlinkModule(module);
   }
 
   /**

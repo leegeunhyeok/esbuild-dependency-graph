@@ -39,3 +39,11 @@ exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
   "index.js",
 ]
 `;
+
+exports[`DependencyGraph removeModule should match snapshot 1`] = `
+[
+  "root/screens.ts",
+  "root/entry.ts",
+  "index.js",
+]
+`;
