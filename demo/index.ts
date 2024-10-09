@@ -15,6 +15,7 @@ async function main(): Promise<void> {
 
   console.log(`Module: ${TEST_MODULE}`, module);
   console.log('Dependencies', graph.dependenciesOf(TEST_MODULE));
+  console.log('Dependents', graph.dependentsOf(TEST_MODULE));
   console.log('Inverse dependencies', graph.inverseDependenciesOf(TEST_MODULE));
 }
 

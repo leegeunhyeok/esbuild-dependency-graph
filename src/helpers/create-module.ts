@@ -34,7 +34,7 @@ export function createInternalModule(
       path: { value: path, enumerable: true },
       esbuild: { value: esbuildMeta, enumerable: true },
       dependencies: { value: new Set(), enumerable: true },
-      inverseDependencies: { value: new Set(), enumerable: true },
+      dependents: { value: new Set(), enumerable: true },
     },
   ) as InternalModule;
 }

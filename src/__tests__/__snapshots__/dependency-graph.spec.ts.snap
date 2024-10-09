@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DependencyGraph addModule when add new modules should match snapshots 1`] = `
+[
+  "src/screens/index.ts",
+  "root/screens.ts",
+  "src/navigators/RootStack.tsx",
+  "root/entry.ts",
+  "src/navigators/index.ts",
+  "index.js",
+  "src/App.tsx",
+]
+`;
+
 exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
 [
   "node_modules/react/jsx-runtime.js",
@@ -9,6 +21,12 @@ exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
   "node_modules/dripsy/src/index.ts",
   "src/components/index.ts",
   "src/assets/logo.svg",
+]
+`;
+
+exports[`DependencyGraph dependentsOf should match snapshot 1`] = `
+[
+  "src/screens/index.ts",
 ]
 `;
 

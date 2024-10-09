@@ -1,10 +1,19 @@
 import type { Metafile } from 'esbuild';
-import { isExternal, isInternal } from './helpers';
-import { ID, type Module, type ModuleId, type ModulePath } from './types';
 import {
   createExternalModule,
   createInternalModule,
-} from './helpers/create-module';
+  isExternal,
+  isInternal,
+} from './helpers';
+import {
+  ID,
+  type ExternalModule,
+  type InternalModule,
+  type Module,
+  type ModuleId,
+  type ModulePath,
+} from './types';
+import { assertValue } from './utils';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
@@ -24,6 +33,27 @@ export class DependencyGraph {
   }
 
   /**
+   * Generate a dependency graph based on the meta file.
+   */
+  private generateDependencyGraph(): void {
+    for (const modulePath in this.metafile.inputs) {
+      const currentModule = this.createModule(modulePath);
+
+      if (isExternal(currentModule)) {
+        continue;
+      }
+
+      for (const importMeta of currentModule.esbuild?.imports ?? []) {
+        const dependencyModule = this.createModule(
+          importMeta.path,
+          importMeta.external,
+        );
+        this.linkModules(currentModule, dependencyModule);
+      }
+    }
+  }
+
+  /**
    * Generate unique id for module.
    *
    * If already has id for path return cached id
@@ -40,53 +70,52 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module by actual path in metafile.
+   * Get module id
    */
-  private createNode(modulePath: ModulePath, external = false): Module {
+  private getModuleId(modulePath: ModulePath): ModuleId | null {
     let id: ModuleId | undefined;
 
-    if (
-      typeof (id = this.INTERNAL__moduleIds[modulePath]) === 'number' &&
+    return typeof (id = this.INTERNAL__moduleIds[modulePath]) === 'number' &&
       id in this.dependencyGraph
-    ) {
-      return this.dependencyGraph[id]!;
-    }
-
-    const internalModule = this.metafile.inputs[modulePath];
-
-    if (internalModule || external) {
-      const newModuleId = this.generateUniqueModuleId(modulePath);
-      return (this.dependencyGraph[newModuleId] = external
-        ? createExternalModule(newModuleId, modulePath)
-        : createInternalModule(newModuleId, modulePath, internalModule));
-    }
-
-    throw new Error(`unable get module: '${modulePath}'`);
+      ? id
+      : null;
   }
 
   /**
-   * Traverse modules for get dependencies.
+   * Get module by actual path in metafile.
    */
-  private generateDependencyGraph(): void {
-    for (const modulePath in this.metafile.inputs) {
-      const currentModule = this.createNode(modulePath);
+  private createModule(modulePath: ModulePath, external = false): Module {
+    const id = this.getModuleId(modulePath);
 
-      if (isExternal(currentModule)) {
-        continue;
-      }
+    if (typeof id === 'number') {
+      return this.dependencyGraph[id]!;
+    }
 
-      for (const importModule of currentModule.esbuild?.imports ?? []) {
-        const importedModule = this.createNode(
-          importModule.path,
-          importModule.external,
+    const newModuleId = this.generateUniqueModuleId(modulePath);
+    const newModule = external
+      ? createExternalModule(newModuleId, modulePath)
+      : createInternalModule(
+          newModuleId,
+          modulePath,
+          this.metafile.inputs[modulePath],
         );
 
-        currentModule.dependencies.add(importedModule[ID]);
+    return (this.dependencyGraph[newModule[ID]] = newModule);
+  }
 
-        if (isInternal(importedModule)) {
-          importedModule.inverseDependencies.add(currentModule[ID]);
-        }
-      }
+  /**
+   * Link the dependency relationship between the two modules.
+   */
+  private linkModules(
+    sourceModule: ExternalModule | InternalModule,
+    targetModule: ExternalModule | InternalModule,
+  ): void {
+    if (isInternal(sourceModule)) {
+      sourceModule.dependencies.add(targetModule[ID]);
+    }
+
+    if (isInternal(targetModule)) {
+      targetModule.dependents.add(sourceModule[ID]);
     }
   }
 
@@ -110,7 +139,7 @@ export class DependencyGraph {
         continue;
       }
 
-      module?.inverseDependencies.forEach((inverseModuleId) => {
+      module?.dependents.forEach((inverseModuleId) => {
         if (visited[inverseModuleId]) {
           return;
         }
@@ -124,82 +153,98 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module id by actual module path.
-   *
-   * ```ts
-   * // `Metafile` type in esbuild
-   * interface Metafile {
-   *   inputs: {
-   *     [path: string]: { // Can be used as `modulePath`
-   *       imports: {
-   *         path: string // Can be used as `modulePath`
-   *         ...
-   *       }[]
-   *       ...
-   *     }
-   *   },
-   *   outputs: {
-   *    ...
-   *   }
-   * }
-   * ```
-   */
-  private getModuleId(modulePath: ModulePath): number {
-    const id = this.INTERNAL__moduleIds[modulePath];
-
-    if (typeof id === 'number') {
-      return id;
-    }
-
-    throw new Error(`module not found: '${modulePath}'`);
-  }
-
-  /**
    * Get module by id.
    */
   private getModuleById(moduleId: ModuleId): Module {
-    const module = this.dependencyGraph[moduleId];
-
-    if (module) {
-      return module;
-    }
-
-    throw new Error(`unable get module by internal id: '${moduleId}'`);
-  }
-
-  private toModulePath(moduleId: ModuleId): ModulePath {
-    return this.getModuleById(moduleId).path;
+    return assertValue(
+      this.dependencyGraph[moduleId],
+      `module not found (id: ${moduleId})`,
+    );
   }
 
   /**
    * Get module information by module path
    */
   getModule(modulePath: ModulePath): Module {
-    const moduleId = this.getModuleId(modulePath);
+    const moduleId = assertValue(
+      this.getModuleId(modulePath),
+      `module not found: '${modulePath}'`,
+    );
 
     return this.getModuleById(moduleId);
+  }
+
+  /**
+   * Register new module to dependency graph.
+   */
+  addModule(
+    path: ModulePath,
+    dependencies: ModulePath[] = [],
+    dependents: ModulePath[] = [],
+  ): void {
+    // Validate that the IDs of modules are registered.
+    const dependencyModules = dependencies.map((dependencyPath) =>
+      this.getModule(dependencyPath),
+    );
+    const dependentModules = dependents.map((dependentPath) =>
+      this.getModule(dependentPath),
+    );
+    const newModule = this.createModule(path) as InternalModule;
+
+    dependencyModules.forEach((module) => {
+      newModule.dependencies.add(module[ID]);
+      this.linkModules(newModule, module);
+    });
+
+    dependentModules.forEach((module) => {
+      newModule.dependents.add(module[ID]);
+      this.linkModules(module, newModule);
+    });
   }
 
   /**
    * Get dependencies of specified module.
    */
   dependenciesOf(modulePath: ModulePath): ModulePath[] {
-    const moduleId = this.getModuleId(modulePath);
+    const moduleId = assertValue(
+      this.getModuleId(modulePath),
+      `module not found: '${modulePath}'`,
+    );
     const module = this.getModuleById(moduleId);
 
     return isExternal(module)
       ? []
-      : Array.from(module.dependencies).map(this.toModulePath.bind(this));
+      : Array.from(module.dependencies).map(
+          (id) => this.getModuleById(id).path,
+        );
+  }
+
+  /**
+   * Get dependents of specified module.
+   */
+  dependentsOf(modulePath: ModulePath): ModulePath[] {
+    const moduleId = assertValue(
+      this.getModuleId(modulePath),
+      `module not found: '${modulePath}'`,
+    );
+    const module = this.getModuleById(moduleId);
+
+    return isExternal(module)
+      ? []
+      : Array.from(module.dependents).map((id) => this.getModuleById(id).path);
   }
 
   /**
    * Get inverse dependencies of specified module.
    */
   inverseDependenciesOf(modulePath: ModulePath): ModulePath[] {
-    const moduleId = this.getModuleId(modulePath);
+    const moduleId = assertValue(
+      this.getModuleId(modulePath),
+      `module not found: '${modulePath}'`,
+    );
 
     return this.traverseInverseModules(moduleId).map(
-      this.toModulePath.bind(this),
+      (id) => this.getModuleById(id).path,
     );
   }
 }

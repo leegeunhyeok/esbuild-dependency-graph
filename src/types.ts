@@ -14,7 +14,7 @@ interface ModuleBase {
 export interface InternalModule extends ModuleBase {
   esbuild: EsbuildMeta | null;
   dependencies: Set<ModuleId>;
-  inverseDependencies: Set<ModuleId>;
+  dependents: Set<ModuleId>;
 }
 
 export interface ExternalModule extends ModuleBase {

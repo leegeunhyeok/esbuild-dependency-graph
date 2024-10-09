@@ -21,7 +21,8 @@ import {
 } from 'esbuild-dependency-graph';
 
 const result = await esbuild.build({
-  /* build options */
+  metafile: true,
+  /* other build options */
 });
 
 const graph = new DependencyGraph(result.metafile);
@@ -29,8 +30,18 @@ const graph = new DependencyGraph(result.metafile);
 // Get module.
 graph.getModule('path/to/code.ts'); // `Module`
 
+// Add new module to the graph.
+graph.addModule(
+  'path/to/code.ts',
+  ['path/to/dependency-a', 'path/to/dependency-b'],
+  ['path/to/dependent'],
+); // `void`
+
 // Get dependencies of the specified module.
 graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`
+
+// Get dependents of the specified module.
+graph.dependentsOf('path/to/code.ts'); // `ModulePath[]`
 
 // Get inverse dependencies of the specified module.
 graph.inverseDependenciesOf('path/to/code.ts'); // `ModulePath[]`
@@ -101,6 +112,9 @@ Demo code [here](./demo/index.ts).
   'node_modules/react/index.js',
   'node_modules/dripsy/src/index.ts'
 ]
+
+// Dependents
+[ 'src/components/index.ts' ]
 
 // Inverse dependencies
 [
