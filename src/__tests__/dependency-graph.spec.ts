@@ -114,6 +114,25 @@ describe('DependencyGraph', () => {
     });
   });
 
+  describe('updateModule', () => {
+    it('should match snapshots', () => {
+      graph.addModule('global.ts');
+      graph.addModule('re-export.ts');
+
+      graph.updateModule(
+        'src/screens/MainScreen.tsx',
+        [...graph.dependenciesOf('src/screens/MainScreen.tsx'), 'global.ts'],
+        [...graph.dependentsOf('src/screens/MainScreen.tsx'), 're-export.ts'],
+      );
+
+      expect(graph.dependenciesOf('re-export.ts')).toMatchSnapshot();
+      expect(graph.dependentsOf('global.ts')).toMatchSnapshot();
+      expect(
+        graph.inverseDependenciesOf('src/screens/MainScreen.tsx'),
+      ).toMatchSnapshot();
+    });
+  });
+
   describe('removeModule', () => {
     it('should match snapshot', () => {
       graph.removeModule('src/screens/index.ts');

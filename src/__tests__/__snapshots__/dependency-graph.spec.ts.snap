@@ -43,7 +43,33 @@ exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
 exports[`DependencyGraph removeModule should match snapshot 1`] = `
 [
   "root/screens.ts",
+  "re-export.ts",
   "root/entry.ts",
   "index.js",
+]
+`;
+
+exports[`DependencyGraph updateModule should match snapshots 1`] = `
+[
+  "src/screens/MainScreen.tsx",
+]
+`;
+
+exports[`DependencyGraph updateModule should match snapshots 2`] = `
+[
+  "src/screens/MainScreen.tsx",
+]
+`;
+
+exports[`DependencyGraph updateModule should match snapshots 3`] = `
+[
+  "src/screens/index.ts",
+  "root/screens.ts",
+  "re-export.ts",
+  "src/navigators/RootStack.tsx",
+  "root/entry.ts",
+  "src/navigators/index.ts",
+  "index.js",
+  "src/App.tsx",
 ]
 `;

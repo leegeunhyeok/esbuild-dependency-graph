@@ -122,7 +122,10 @@ export class DependencyGraph {
   /**
    * Remove the module and unlink the dependency relationship.
    */
-  unlinkModule(sourceModule: ExternalModule | InternalModule): void {
+  unlinkModule(
+    sourceModule: ExternalModule | InternalModule,
+    unlinkOnly = false,
+  ): void {
     const moduleId = sourceModule[ID];
 
     if (isInternal(sourceModule)) {
@@ -141,10 +144,15 @@ export class DependencyGraph {
           dependentModule.dependencies.delete(moduleId);
         }
       });
+
+      sourceModule.dependencies.clear();
+      sourceModule.dependents.clear();
     }
 
-    this.dependencyGraph[moduleId] = undefined;
-    this.INTERNAL__moduleIds[sourceModule.path] = undefined;
+    if (!unlinkOnly) {
+      this.dependencyGraph[moduleId] = undefined;
+      this.INTERNAL__moduleIds[sourceModule.path] = undefined;
+    }
   }
 
   /**
@@ -204,14 +212,16 @@ export class DependencyGraph {
 
   /**
    * Register new module to dependency graph.
-   *
-   * If a module already exists at the specified path, it will be overwritten.
    */
   addModule(
-    path: ModulePath,
+    modulePath: ModulePath,
     dependencies: ModulePath[] = [],
     dependents: ModulePath[] = [],
   ): void {
+    if (typeof this.getModuleId(modulePath) === 'number') {
+      throw new Error(`already registered: '${modulePath}'`);
+    }
+
     // Validate that the IDs of modules are registered.
     const dependencyModules = dependencies.map((dependencyPath) =>
       this.getModule(dependencyPath),
@@ -219,11 +229,8 @@ export class DependencyGraph {
     const dependentModules = dependents.map((dependentPath) =>
       this.getModule(dependentPath),
     );
-    const newModule = this.createModule(path) as InternalModule;
 
-    // Clear exist dependencies / dependents.
-    newModule.dependencies.clear();
-    newModule.dependents.clear();
+    const newModule = this.createModule(modulePath) as InternalModule;
 
     dependencyModules.forEach((module) => {
       newModule.dependencies.add(module[ID]);
@@ -234,6 +241,39 @@ export class DependencyGraph {
       newModule.dependents.add(module[ID]);
       this.linkModules(module, newModule);
     });
+  }
+
+  /**
+   * Update registered module.
+   */
+  updateModule(
+    modulePath: ModulePath,
+    dependencies: ModulePath[] = [],
+    dependents: ModulePath[] = [],
+  ): void {
+    const targetModule = this.getModule(modulePath);
+
+    // Validate that the IDs of modules are registered.
+    const dependencyModules = dependencies.map((dependencyPath) =>
+      this.getModule(dependencyPath),
+    );
+    const dependentModules = dependents.map((dependentPath) =>
+      this.getModule(dependentPath),
+    );
+
+    if (isInternal(targetModule)) {
+      this.unlinkModule(targetModule, true);
+
+      dependencyModules.forEach((module) => {
+        targetModule.dependencies.add(module[ID]);
+        this.linkModules(targetModule, module);
+      });
+
+      dependentModules.forEach((module) => {
+        targetModule.dependents.add(module[ID]);
+        this.linkModules(module, targetModule);
+      });
+    }
   }
 
   /**
