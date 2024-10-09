@@ -3,7 +3,7 @@ import type { Metafile } from 'esbuild';
 export const ID = Symbol('id');
 export const EXTERNAL = Symbol('external');
 
-export type EsbuildModule = Metafile['inputs'][string];
+export type EsbuildMeta = Metafile['inputs'][string];
 
 interface ModuleBase {
   /** @internal */
@@ -11,7 +11,8 @@ interface ModuleBase {
   path: string;
 }
 
-export interface InternalModule extends ModuleBase, EsbuildModule {
+export interface InternalModule extends ModuleBase {
+  esbuild: EsbuildMeta | null;
   dependencies: Set<ModuleId>;
   inverseDependencies: Set<ModuleId>;
 }

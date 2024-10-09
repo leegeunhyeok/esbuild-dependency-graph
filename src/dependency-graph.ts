@@ -1,15 +1,10 @@
 import type { Metafile } from 'esbuild';
 import { isExternal, isInternal } from './helpers';
+import { ID, type Module, type ModuleId, type ModulePath } from './types';
 import {
-  ID,
-  EXTERNAL,
-  type EsbuildModule,
-  type ExternalModule,
-  type InternalModule,
-  type Module,
-  type ModuleId,
-  type ModulePath,
-} from './types';
+  createExternalModule,
+  createInternalModule,
+} from './helpers/create-module';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
@@ -45,39 +40,9 @@ export class DependencyGraph {
   }
 
   /**
-   * Create `ExternalModule` data.
-   */
-  private getExternalModule(
-    moduleId: ModuleId,
-    path: ModulePath,
-  ): ExternalModule {
-    return Object.defineProperties(Object.create(null), {
-      [ID]: { value: moduleId },
-      [EXTERNAL]: { value: true },
-      path: { value: path },
-    }) as ExternalModule;
-  }
-
-  /**
-   * Enhance esbuild's input module to `InternalModule`.
-   */
-  private toInternalModule(
-    moduleId: ModuleId,
-    path: ModulePath,
-    esbuildModule: EsbuildModule,
-  ): InternalModule {
-    return Object.defineProperties(esbuildModule, {
-      [ID]: { value: moduleId },
-      path: { value: path },
-      dependencies: { value: new Set() },
-      inverseDependencies: { value: new Set() },
-    }) as InternalModule;
-  }
-
-  /**
    * Get module by actual path in metafile.
    */
-  private addNode(modulePath: ModulePath, external = false): Module {
+  private createNode(modulePath: ModulePath, external = false): Module {
     let id: ModuleId | undefined;
 
     if (
@@ -87,19 +52,13 @@ export class DependencyGraph {
       return this.dependencyGraph[id]!;
     }
 
-    if (external) {
-      id = this.generateUniqueModuleId(modulePath);
-      return (this.dependencyGraph[id] = this.getExternalModule(
-        id,
-        modulePath,
-      ));
-    } else if (this.metafile.inputs[modulePath]) {
-      id = this.generateUniqueModuleId(modulePath);
-      return (this.dependencyGraph[id] = this.toInternalModule(
-        id,
-        modulePath,
-        this.metafile.inputs[modulePath],
-      ));
+    const internalModule = this.metafile.inputs[modulePath];
+
+    if (internalModule || external) {
+      const newModuleId = this.generateUniqueModuleId(modulePath);
+      return (this.dependencyGraph[newModuleId] = external
+        ? createExternalModule(newModuleId, modulePath)
+        : createInternalModule(newModuleId, modulePath, internalModule));
     }
 
     throw new Error(`unable get module: '${modulePath}'`);
@@ -110,14 +69,14 @@ export class DependencyGraph {
    */
   private generateDependencyGraph(): void {
     for (const modulePath in this.metafile.inputs) {
-      const currentModule = this.addNode(modulePath);
+      const currentModule = this.createNode(modulePath);
 
       if (isExternal(currentModule)) {
         continue;
       }
 
-      for (const importModule of currentModule.imports) {
-        const importedModule = this.addNode(
+      for (const importModule of currentModule.esbuild?.imports ?? []) {
+        const importedModule = this.createNode(
           importModule.path,
           importModule.external,
         );

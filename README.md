@@ -85,25 +85,14 @@ Demo code [here](./demo/index.ts).
 ```js
 // Module: src/components/Section.tsx
 {
-  bytes: 597,
-  imports: [
-    {
-      path: 'node_modules/react/jsx-runtime.js',
-      kind: 'import-statement',
-      original: 'react/jsx-runtime'
-    },
-    {
-      path: 'node_modules/react/index.js',
-      kind: 'import-statement',
-      original: 'react'
-    },
-    {
-      path: 'node_modules/dripsy/src/index.ts',
-      kind: 'import-statement',
-      original: 'dripsy'
-    }
-  ],
-  format: 'esm'
+  path: 'src/components/Section.tsx',
+  esbuild: {
+    bytes: 597,
+    imports: [ [Object], [Object], [Object] ],
+    format: 'esm'
+  },
+  dependencies: Set(3) { 509, 73, 1043 },
+  inverseDependencies: Set(1) { 1123 }
 }
 
 // Dependencies
