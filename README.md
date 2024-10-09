@@ -14,11 +14,7 @@ yarn add esbuild-dependency-graph
 
 ```ts
 import * as esbuild from 'esbuild';
-import {
-  DependencyGraph,
-  isInternal,
-  isExternal,
-} from 'esbuild-dependency-graph';
+import { DependencyGraph } from 'esbuild-dependency-graph';
 
 const result = await esbuild.build({
   metafile: true,
@@ -26,19 +22,6 @@ const result = await esbuild.build({
 });
 
 const graph = new DependencyGraph(result.metafile);
-
-// Get module.
-graph.getModule('path/to/code.ts'); // `Module`
-
-// Register new module to the graph. (it also can be override registered modules)
-graph.addModule(
-  'path/to/code.ts',
-  ['path/to/dependency-a', 'path/to/dependency-b'],
-  ['path/to/dependent'],
-); // `void`
-
-// Remove module from graph.
-graph.removeModule('path/to/code.ts'); // `void`
 
 // Get dependencies of the specified module.
 graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`
@@ -48,11 +31,49 @@ graph.dependentsOf('path/to/code.ts'); // `ModulePath[]`
 
 // Get inverse dependencies of the specified module.
 graph.inverseDependenciesOf('path/to/code.ts'); // `ModulePath[]`
+```
+
+<details>
+
+  <summary>Advanced</summary>
+
+```ts
+import {
+  DependencyGraph,
+  isExternal,
+  isInternal,
+} from 'esbuild-dependency-graph';
+
+// Get module.
+graph.getModule('path/to/code.ts'); // `Module`
+
+// Register new module to the graph.
+graph.addModule(
+  'path/to/code.ts',
+  ['path/to/dependency-a', 'path/to/dependency-b'],
+  ['path/to/dependent'],
+); // `void`
+
+// Update registered module.
+graph.updateModule(
+  'path/to/code.ts',
+  ['path/to/dependency-a', 'path/to/dependency-b'],
+  ['path/to/dependent'],
+); // `void`
+
+// Remove module from graph.
+graph.removeModule('path/to/code.ts'); // `void`
 
 // Check if this module is internal or external.
-isInternal('path/to/code.ts'); // `boolean`
 isExternal('path/to/code.ts'); // `boolean`
+isInternal('path/to/code.ts'); // `boolean`
 ```
+
+</details>
+
+<details>
+
+  <summary>Types</summary>
 
 ```ts
 type EsbuildModule = Metafile['inputs'][string];
@@ -69,6 +90,8 @@ type ModulePath = string;
 type Module = InternalModule | ExternalModule;
 ```
 
+</details>
+
 ## Where is the module path?
 
 ```ts
@@ -77,8 +100,7 @@ type Module = InternalModule | ExternalModule;
  */
 interface Metafile {
   inputs: {
-    [path: string]: {
-      // Can be used as module path!
+    [path: string]: { // Can be used as module path!
       imports: {
         path: string; // Can be used as module path!
         /* ... */
