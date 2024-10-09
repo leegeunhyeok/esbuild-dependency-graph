@@ -1,7 +1,7 @@
 export function assertValue<T>(value: T, message: string): NonNullable<T> {
-  if (value) {
-    return value;
+  if (value === null || value === undefined) {
+    throw new Error(message);
   }
 
-  throw new Error(message);
+  return value;
 }
