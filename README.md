@@ -21,7 +21,15 @@ const result = await esbuild.build({
   /* other build options */
 });
 
-const graph = new DependencyGraph(result.metafile);
+const graph = new DependencyGraph(result.metafile, {
+  /**
+   * (optional)
+   *
+   * If you want to look up a module by its absolute path,
+   * this value is required.
+   */
+  root: '/path/to/root-dir',
+});
 
 // Get dependencies of the specified module.
 graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`
@@ -64,9 +72,8 @@ graph.updateModule(
 // Remove module from graph.
 graph.removeModule('path/to/code.ts'); // `void`
 
-// Check if this module is internal or external.
+// Check if this module is external.
 isExternal('path/to/code.ts'); // `boolean`
-isInternal('path/to/code.ts'); // `boolean`
 ```
 
 </details>
@@ -100,7 +107,8 @@ type Module = InternalModule | ExternalModule;
  */
 interface Metafile {
   inputs: {
-    [path: string]: { // Can be used as module path!
+    [path: string]: {
+      // Can be used as module path!
       imports: {
         path: string; // Can be used as module path!
         /* ... */
@@ -122,11 +130,6 @@ Demo code [here](./demo/index.ts).
 // Module: src/components/Section.tsx
 {
   path: 'src/components/Section.tsx',
-  esbuild: {
-    bytes: 597,
-    imports: [ [Object], [Object], [Object] ],
-    format: 'esm'
-  },
   dependencies: Set(3) { 509, 73, 1043 },
   inverseDependencies: Set(1) { 1123 }
 }
