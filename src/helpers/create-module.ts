@@ -1,42 +1,24 @@
 import {
   EXTERNAL,
   ID,
-  type EsbuildMeta,
-  type ExternalModule,
-  type InternalModule,
+  type Module,
   type ModulePath,
   type ModuleId,
 } from '../types';
 
-export function createExternalModule(
-  id: ModuleId,
-  path: string,
-): ExternalModule {
-  return Object.defineProperties(
-    {},
-    {
-      [ID]: { value: id },
-      [EXTERNAL]: { value: true },
-      path: { value: path, enumerable: true },
-      dependencies: { value: new Set(), enumerable: true },
-      dependents: { value: new Set(), enumerable: true },
-    },
-  ) as ExternalModule;
-}
-
-export function createInternalModule(
+export function createModule(
   id: ModuleId,
   path: ModulePath,
-  esbuildMeta: EsbuildMeta | null = null,
-): InternalModule {
+  external = false,
+): Module {
   return Object.defineProperties(
     {},
     {
       [ID]: { value: id },
+      [EXTERNAL]: { value: external },
       path: { value: path, enumerable: true },
-      esbuild: { value: esbuildMeta, enumerable: true },
       dependencies: { value: new Set(), enumerable: true },
       dependents: { value: new Set(), enumerable: true },
     },
-  ) as InternalModule;
+  ) as Module;
 }

@@ -1,19 +1,7 @@
 import type { Metafile } from 'esbuild';
-import {
-  createExternalModule,
-  createInternalModule,
-  isExternal,
-  isInternal,
-} from './helpers';
-import {
-  ID,
-  type ExternalModule,
-  type InternalModule,
-  type Module,
-  type ModuleId,
-  type ModulePath,
-} from './types';
+import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
+import { ID, type Module, type ModuleId, type ModulePath } from './types';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
@@ -38,12 +26,13 @@ export class DependencyGraph {
   private generateDependencyGraph(): void {
     for (const modulePath in this.metafile.inputs) {
       const currentModule = this.createModule(modulePath);
+      const imports = this.metafile.inputs[modulePath]?.imports ?? [];
 
       if (isExternal(currentModule)) {
         continue;
       }
 
-      for (const importMeta of currentModule.esbuild?.imports ?? []) {
+      for (const importMeta of imports) {
         const dependencyModule = this.createModule(
           importMeta.path,
           importMeta.external,
@@ -92,13 +81,7 @@ export class DependencyGraph {
     }
 
     const newModuleId = this.generateUniqueModuleId(modulePath);
-    const newModule = external
-      ? createExternalModule(newModuleId, modulePath)
-      : createInternalModule(
-          newModuleId,
-          modulePath,
-          this.metafile.inputs[modulePath],
-        );
+    const newModule = createModule(newModuleId, modulePath, external);
 
     return (this.dependencyGraph[newModule[ID]] = newModule);
   }
@@ -106,48 +89,31 @@ export class DependencyGraph {
   /**
    * Link the dependency relationship between the two modules.
    */
-  private linkModules(
-    sourceModule: ExternalModule | InternalModule,
-    targetModule: ExternalModule | InternalModule,
-  ): void {
-    if (isInternal(sourceModule)) {
-      sourceModule.dependencies.add(targetModule[ID]);
-    }
-
-    if (isInternal(targetModule)) {
-      targetModule.dependents.add(sourceModule[ID]);
-    }
+  private linkModules(sourceModule: Module, targetModule: Module): void {
+    sourceModule.dependencies.add(targetModule[ID]);
+    targetModule.dependents.add(sourceModule[ID]);
   }
 
   /**
    * Remove the module and unlink the dependency relationship.
    */
-  unlinkModule(
-    sourceModule: ExternalModule | InternalModule,
-    unlinkOnly = false,
-  ): void {
+  unlinkModule(sourceModule: Module, unlinkOnly = false): void {
     const moduleId = sourceModule[ID];
 
-    if (isInternal(sourceModule)) {
-      sourceModule.dependencies.forEach((dependencyId) => {
-        const dependencyModule = this.getModuleById(dependencyId);
+    sourceModule.dependencies.forEach((dependencyId) => {
+      const dependencyModule = this.getModuleById(dependencyId);
 
-        if (isInternal(dependencyModule)) {
-          dependencyModule.dependents.delete(moduleId);
-        }
-      });
+      dependencyModule.dependents.delete(moduleId);
+    });
 
-      sourceModule.dependents.forEach((dependentId) => {
-        const dependentModule = this.getModuleById(dependentId);
+    sourceModule.dependents.forEach((dependentId) => {
+      const dependentModule = this.getModuleById(dependentId);
 
-        if (isInternal(dependentModule)) {
-          dependentModule.dependencies.delete(moduleId);
-        }
-      });
+      dependentModule.dependencies.delete(moduleId);
+    });
 
-      sourceModule.dependencies.clear();
-      sourceModule.dependents.clear();
-    }
+    sourceModule.dependencies.clear();
+    sourceModule.dependents.clear();
 
     if (!unlinkOnly) {
       this.dependencyGraph[moduleId] = undefined;
@@ -226,7 +192,7 @@ export class DependencyGraph {
       this.getModule(dependentPath),
     );
 
-    const newModule = this.createModule(modulePath) as InternalModule;
+    const newModule = this.createModule(modulePath);
 
     dependencyModules.forEach((module) => {
       newModule.dependencies.add(module[ID]);
@@ -257,19 +223,17 @@ export class DependencyGraph {
       this.getModule(dependentPath),
     );
 
-    if (isInternal(targetModule)) {
-      this.unlinkModule(targetModule, true);
+    this.unlinkModule(targetModule, true);
 
-      dependencyModules.forEach((module) => {
-        targetModule.dependencies.add(module[ID]);
-        this.linkModules(targetModule, module);
-      });
+    dependencyModules.forEach((module) => {
+      targetModule.dependencies.add(module[ID]);
+      this.linkModules(targetModule, module);
+    });
 
-      dependentModules.forEach((module) => {
-        targetModule.dependents.add(module[ID]);
-        this.linkModules(module, targetModule);
-      });
-    }
+    dependentModules.forEach((module) => {
+      targetModule.dependents.add(module[ID]);
+      this.linkModules(module, targetModule);
+    });
   }
 
   /**
