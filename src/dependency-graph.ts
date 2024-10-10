@@ -9,24 +9,22 @@ export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
   private INTERNAL__moduleId = 0;
-  private metafile: Metafile;
 
   constructor(metafile: string | Metafile) {
-    this.metafile =
+    this.generateDependencyGraph(
       typeof metafile === 'string'
         ? (JSON.parse(metafile) as Metafile)
-        : metafile;
-
-    this.generateDependencyGraph();
+        : metafile,
+    );
   }
 
   /**
    * Generate a dependency graph based on the meta file.
    */
-  private generateDependencyGraph(): void {
-    for (const modulePath in this.metafile.inputs) {
+  private generateDependencyGraph(metafile: Metafile): void {
+    for (const modulePath in metafile.inputs) {
       const currentModule = this.createModule(modulePath);
-      const imports = this.metafile.inputs[modulePath]?.imports ?? [];
+      const imports = metafile.inputs[modulePath]?.imports ?? [];
 
       if (isExternal(currentModule)) {
         continue;
