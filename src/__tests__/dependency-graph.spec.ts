@@ -142,4 +142,26 @@ describe('DependencyGraph', () => {
       expect(inverseDependencies).toMatchSnapshot();
     });
   });
+
+  describe('when `root` path is provided', () => {
+    let graph: DependencyGraph;
+    const ROOT = '/root/workspaces';
+
+    beforeAll(async () => {
+      const rawMetafile = await readFile(
+        join(__dirname, './fixtures/metafile.json'),
+        'utf-8',
+      );
+      graph = new DependencyGraph(rawMetafile, { root: ROOT });
+    });
+
+    it('should able to get the module by its absolute path', () => {
+      expect(() =>
+        graph.getModule('/root/workspaces/src/components/Button.tsx'),
+      ).not.toThrow();
+      expect(() =>
+        graph.getModule('/root/node_modules/@swc/helpers/esm/_instanceof.js'),
+      ).not.toThrow();
+    });
+  });
 });

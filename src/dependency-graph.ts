@@ -2,15 +2,23 @@ import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
 import { ID, type Module, type ModuleId, type ModulePath } from './types';
+import path from 'path';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
+
+interface DependencyGraphOptions {
+  root?: string;
+}
 
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
   private INTERNAL__moduleId = 0;
 
-  constructor(metafile: string | Metafile) {
+  constructor(
+    metafile: string | Metafile,
+    private options: DependencyGraphOptions = {},
+  ) {
     this.generateDependencyGraph(
       typeof metafile === 'string'
         ? (JSON.parse(metafile) as Metafile)
@@ -61,8 +69,11 @@ export class DependencyGraph {
    */
   private getModuleId(modulePath: ModulePath): ModuleId | null {
     let id: ModuleId | undefined;
+    const lookupPath = this.options.root
+      ? path.relative(this.options.root, modulePath)
+      : modulePath;
 
-    return typeof (id = this.INTERNAL__moduleIds[modulePath]) === 'number' &&
+    return typeof (id = this.INTERNAL__moduleIds[lookupPath]) === 'number' &&
       id in this.dependencyGraph
       ? id
       : null;
