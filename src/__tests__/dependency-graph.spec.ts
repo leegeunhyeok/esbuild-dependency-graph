@@ -156,6 +156,13 @@ describe('DependencyGraph', () => {
     });
 
     it('should able to get the module by its absolute path', () => {
+      // Relative
+      expect(() => graph.getModule('src/components/Button.tsx')).not.toThrow();
+      expect(() =>
+        graph.getModule('../node_modules/@swc/helpers/esm/_instanceof.js'),
+      ).not.toThrow();
+
+      // Absolute
       expect(() =>
         graph.getModule('/root/workspaces/src/components/Button.tsx'),
       ).not.toThrow();

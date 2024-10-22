@@ -23,10 +23,9 @@ const result = await esbuild.build({
 
 const graph = new DependencyGraph(result.metafile, {
   /**
-   * (optional)
+   * Root path for lookup modules.
    *
-   * If you want to look up a module by its absolute path,
-   * this value is required.
+   * Defaults to `process.cwd()`.
    */
   root: '/path/to/root-dir',
 });

@@ -1,12 +1,17 @@
+import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
 import { ID, type Module, type ModuleId, type ModulePath } from './types';
-import path from 'path';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
 interface DependencyGraphOptions {
+  /**
+   * Root path for lookup modules.
+   *
+   * Defaults to `process.cwd()`.
+   */
   root?: string;
 }
 
@@ -14,11 +19,10 @@ export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
   private INTERNAL__moduleId = 0;
+  private options: Required<DependencyGraphOptions>;
 
-  constructor(
-    metafile: string | Metafile,
-    private options: DependencyGraphOptions = {},
-  ) {
+  constructor(metafile: string | Metafile, options?: DependencyGraphOptions) {
+    this.options = { root: process.cwd(), ...options };
     this.generateDependencyGraph(
       typeof metafile === 'string'
         ? (JSON.parse(metafile) as Metafile)
@@ -69,9 +73,11 @@ export class DependencyGraph {
    */
   private getModuleId(modulePath: ModulePath): ModuleId | null {
     let id: ModuleId | undefined;
-    const lookupPath = this.options.root
-      ? path.relative(this.options.root, modulePath)
-      : modulePath;
+
+    const lookupPath =
+      typeof this.options.root === 'string' && path.isAbsolute(modulePath)
+        ? path.relative(this.options.root, modulePath)
+        : modulePath;
 
     return typeof (id = this.INTERNAL__moduleIds[lookupPath]) === 'number' &&
       id in this.dependencyGraph
