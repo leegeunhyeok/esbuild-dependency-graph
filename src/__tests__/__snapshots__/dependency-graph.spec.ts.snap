@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`DependencyGraph addModule when add new modules should match snapshots 1`] = `
+exports[`DependencyGraph > addModule > when add new modules > should match snapshots 1`] = `
 [
   "src/screens/index.ts",
   "root/screens.ts",
@@ -12,7 +12,7 @@ exports[`DependencyGraph addModule when add new modules should match snapshots 1
 ]
 `;
 
-exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
+exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
 [
   "node_modules/react/jsx-runtime.js",
   "node_modules/react/index.js",
@@ -24,13 +24,13 @@ exports[`DependencyGraph dependenciesOf should match snapshot 1`] = `
 ]
 `;
 
-exports[`DependencyGraph dependentsOf should match snapshot 1`] = `
+exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
 [
   "src/screens/index.ts",
 ]
 `;
 
-exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
+exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
 [
   "src/screens/index.ts",
   "src/navigators/RootStack.tsx",
@@ -40,7 +40,7 @@ exports[`DependencyGraph inverseDependenciesOf should match snapshot 1`] = `
 ]
 `;
 
-exports[`DependencyGraph removeModule should match snapshot 1`] = `
+exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
 [
   "root/screens.ts",
   "re-export.ts",
@@ -49,19 +49,19 @@ exports[`DependencyGraph removeModule should match snapshot 1`] = `
 ]
 `;
 
-exports[`DependencyGraph updateModule should match snapshots 1`] = `
+exports[`DependencyGraph > updateModule > should match snapshots 1`] = `
 [
   "src/screens/MainScreen.tsx",
 ]
 `;
 
-exports[`DependencyGraph updateModule should match snapshots 2`] = `
+exports[`DependencyGraph > updateModule > should match snapshots 2`] = `
 [
   "src/screens/MainScreen.tsx",
 ]
 `;
 
-exports[`DependencyGraph updateModule should match snapshots 3`] = `
+exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
 [
   "src/screens/index.ts",
   "root/screens.ts",

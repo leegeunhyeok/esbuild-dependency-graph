@@ -11,7 +11,7 @@
     "strictNullChecks": true,
     "strictBindCallApply": true,
     "stripInternal": true,
-    "types": ["node", "jest"]
+    "types": ["node"]
   },
   "exclude": ["node_modules", "dist"]
 }

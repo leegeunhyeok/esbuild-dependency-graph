@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { describe } from '@jest/globals';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { DependencyGraph } from '../dependency-graph';
 
 const TEST_MODULE = 'src/screens/MainScreen.tsx';
