@@ -1,3 +1,3 @@
 export { DependencyGraph } from './dependency-graph';
 export * from './helpers';
-export * from './types';
+export type { EsbuildMeta, Module, ModuleId, ModulePath } from './types';

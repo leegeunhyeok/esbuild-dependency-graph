@@ -1,15 +1,13 @@
 import type { Metafile } from 'esbuild';
 
-export const ID = Symbol('id');
 export const EXTERNAL = Symbol('external');
 
 export type EsbuildMeta = Metafile['inputs'][string];
 
 export interface Module {
   /** @internal */
-  readonly [ID]: ModuleId;
-  /** @internal */
   readonly [EXTERNAL]: true;
+  id: ModuleId;
   path: string;
   dependencies: Set<ModuleId>;
   dependents: Set<ModuleId>;

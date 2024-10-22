@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
-import { ID, type Module, type ModuleId, type ModulePath } from './types';
+import type { Module, ModuleId, ModulePath } from './types';
 
 type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
 
@@ -98,22 +98,22 @@ export class DependencyGraph {
     const newModuleId = this.generateUniqueModuleId(modulePath);
     const newModule = createModule(newModuleId, modulePath, external);
 
-    return (this.dependencyGraph[newModule[ID]] = newModule);
+    return (this.dependencyGraph[newModule.id] = newModule);
   }
 
   /**
    * Link the dependency relationship between the two modules.
    */
   private linkModules(sourceModule: Module, targetModule: Module): void {
-    sourceModule.dependencies.add(targetModule[ID]);
-    targetModule.dependents.add(sourceModule[ID]);
+    sourceModule.dependencies.add(targetModule.id);
+    targetModule.dependents.add(sourceModule.id);
   }
 
   /**
    * Remove the module and unlink the dependency relationship.
    */
   unlinkModule(sourceModule: Module, unlinkOnly = false): void {
-    const moduleId = sourceModule[ID];
+    const moduleId = sourceModule.id;
 
     sourceModule.dependencies.forEach((dependencyId) => {
       const dependencyModule = this.getModuleById(dependencyId);
@@ -166,16 +166,6 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module by id.
-   */
-  private getModuleById(moduleId: ModuleId): Module {
-    return assertValue(
-      this.dependencyGraph[moduleId],
-      `module not found (id: ${moduleId})`,
-    );
-  }
-
-  /**
    * Get module information by module path
    */
   getModule(modulePath: ModulePath): Module {
@@ -185,6 +175,16 @@ export class DependencyGraph {
     );
 
     return this.getModuleById(moduleId);
+  }
+
+  /**
+   * Get module by id.
+   */
+  getModuleById(moduleId: ModuleId): Module {
+    return assertValue(
+      this.dependencyGraph[moduleId],
+      `module not found (id: ${moduleId})`,
+    );
   }
 
   /**
@@ -210,12 +210,12 @@ export class DependencyGraph {
     const newModule = this.createModule(modulePath);
 
     dependencyModules.forEach((module) => {
-      newModule.dependencies.add(module[ID]);
+      newModule.dependencies.add(module.id);
       this.linkModules(newModule, module);
     });
 
     dependentModules.forEach((module) => {
-      newModule.dependents.add(module[ID]);
+      newModule.dependents.add(module.id);
       this.linkModules(module, newModule);
     });
   }
@@ -241,12 +241,12 @@ export class DependencyGraph {
     this.unlinkModule(targetModule, true);
 
     dependencyModules.forEach((module) => {
-      targetModule.dependencies.add(module[ID]);
+      targetModule.dependencies.add(module.id);
       this.linkModules(targetModule, module);
     });
 
     dependentModules.forEach((module) => {
-      targetModule.dependents.add(module[ID]);
+      targetModule.dependents.add(module.id);
       this.linkModules(module, targetModule);
     });
   }

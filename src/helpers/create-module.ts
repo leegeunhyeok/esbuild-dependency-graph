@@ -1,6 +1,5 @@
 import {
   EXTERNAL,
-  ID,
   type Module,
   type ModulePath,
   type ModuleId,
@@ -14,8 +13,8 @@ export function createModule(
   return Object.defineProperties(
     {},
     {
-      [ID]: { value: id },
       [EXTERNAL]: { value: external },
+      id: { value: id, enumerable: true },
       path: { value: path, enumerable: true },
       dependencies: { value: new Set(), enumerable: true },
       dependents: { value: new Set(), enumerable: true },
