@@ -10,7 +10,7 @@ async function main(): Promise<void> {
     'utf-8',
   );
 
-  const graph = new DependencyGraph(rawMetafile);
+  const graph = new DependencyGraph().load(rawMetafile);
   const module = graph.getModule(TEST_MODULE);
 
   console.log(`Module: ${TEST_MODULE}`, module);

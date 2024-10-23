@@ -34,13 +34,18 @@ const graph = new DependencyGraph({
 graph.load(result.metafile);
 
 // Get dependencies of the specified module.
-graph.dependenciesOf('path/to/code.ts'); // `string[]`
+graph.dependenciesOf('path/to/code.ts'); // `Module[]`
 
 // Get dependents of the specified module.
-graph.dependentsOf('path/to/code.ts'); // `string[]`
+graph.dependentsOf('path/to/code.ts'); // `Module[]`
 
 // Get inverse dependencies of the specified module.
-graph.inverseDependenciesOf('path/to/code.ts'); // `string[]`
+graph.inverseDependenciesOf('path/to/code.ts'); // `Module[]`
+
+// You can also provide the module's ID.
+graph.dependenciesOf(1);
+graph.dependentsOf(2);
+graph.inverseDependenciesOf(3);
 
 // Reset dependency graph.
 graph.reset();
@@ -51,11 +56,7 @@ graph.reset();
   <summary>Advanced</summary>
 
 ```ts
-import {
-  DependencyGraph,
-  isExternal,
-  isInternal,
-} from 'esbuild-dependency-graph';
+import { DependencyGraph, isExternal } from 'esbuild-dependency-graph';
 
 // Get module.
 graph.getModule('path/to/code.ts'); // `Module`
@@ -65,20 +66,26 @@ graph.addModule(
   'path/to/code.ts',
   ['path/to/dependency-a', 'path/to/dependency-b'],
   ['path/to/dependent'],
-); // `void`
+); // `Module`
 
 // Update registered module.
 graph.updateModule(
   'path/to/code.ts',
   ['path/to/dependency-a', 'path/to/dependency-b'],
   ['path/to/dependent'],
-); // `void`
+); // `Module`
 
 // Remove module from graph.
 graph.removeModule('path/to/code.ts'); // `void`
 
+// You can also provide the module's ID.
+graph.getModule(0);
+graph.addModule(1, [2, 3], [4]);
+graph.updateModule(5, [6, 7], [8]);
+graph.removeModule(9);
+
 // Check if this module is external.
-isExternal('path/to/code.ts'); // `boolean`
+isExternal(targetModule); // `boolean`
 ```
 
 </details>
@@ -90,16 +97,12 @@ isExternal('path/to/code.ts'); // `boolean`
 ```ts
 type EsbuildModule = Metafile['inputs'][string];
 
-interface InternalModule extends ModuleBase, EsbuildModule {
-  dependencies: Set<ModuleId>;
-  inverseDependencies: Set<ModuleId>;
+interface Module {
+  id: number;
+  path: string;
+  dependencies: Set<number>;
+  dependents: Set<number>;
 }
-
-interface ExternalModule extends ModuleBase {}
-
-type ModuleId = number;
-type ModulePath = string;
-type Module = InternalModule | ExternalModule;
 ```
 
 </details>
@@ -134,31 +137,98 @@ Demo code [here](./demo/index.ts).
 ```js
 // Module: src/components/Section.tsx
 {
+  id: 1122,
   path: 'src/components/Section.tsx',
   dependencies: Set(3) { 509, 73, 1043 },
-  inverseDependencies: Set(1) { 1123 }
+  dependents: Set(1) { 1123 }
 }
 
 // Dependencies
 [
-  'node_modules/react/jsx-runtime.js',
-  'node_modules/react/index.js',
-  'node_modules/dripsy/src/index.ts'
+  {
+    id: 509,
+    path: 'node_modules/react/jsx-runtime.js',
+    dependencies: Set(1) { 508 },
+    dependents: Set(95) {
+      ...
+    }
+  },
+  {
+    id: 73,
+    path: 'node_modules/react/index.js',
+    dependencies: Set(1) { 72 },
+    dependents: Set(290) {
+      ...
+    }
+  },
+  {
+    id: 1043,
+    path: 'node_modules/dripsy/src/index.ts',
+    dependencies: Set(1) { 1042 },
+    dependents: Set(6) { 1120, 1122, 1359, 1361, 1367, 1368 }
+  }
 ]
 
 // Dependents
-[ 'src/components/index.ts' ]
+[
+  {
+    id: 1123,
+    path: 'src/components/index.ts',
+    dependencies: Set(3) { 1120, 1121, 1122 },
+    dependents: Set(2) { 1359, 1361 }
+  }
+]
 
 // Inverse dependencies
 [
-  'src/components/index.ts',
-  'src/screens/MainScreen.tsx',
-  'src/screens/IntroScreen.tsx',
-  'src/screens/index.ts',
-  'src/navigators/RootStack.tsx',
-  'src/navigators/index.ts',
-  'src/App.tsx',
-  'index.js'
+  {
+    id: 1123,
+    path: 'src/components/index.ts',
+    dependencies: Set(3) { 1120, 1121, 1122 },
+    dependents: Set(2) { 1359, 1361 }
+  },
+  {
+    id: 1359,
+    path: 'src/screens/MainScreen.tsx',
+    dependencies: Set(7) { 509, 73, 448, 518, 1043, 1123, 1358 },
+    dependents: Set(1) { 1362 }
+  },
+  {
+    id: 1361,
+    path: 'src/screens/IntroScreen.tsx',
+    dependencies: Set(6) { 509, 73, 448, 1043, 1123, 1360 },
+    dependents: Set(1) { 1362 }
+  },
+  {
+    id: 1362,
+    path: 'src/screens/index.ts',
+    dependencies: Set(2) { 1359, 1361 },
+    dependents: Set(1) { 1363 }
+  },
+  {
+    id: 1363,
+    path: 'src/navigators/RootStack.tsx',
+    dependencies: Set(4) { 509, 73, 1119, 1362 },
+    dependents: Set(1) { 1364 }
+  },
+  {
+    id: 1364,
+    path: 'src/navigators/index.ts',
+    dependencies: Set(1) { 1363 },
+    dependents: Set(1) { 1368 }
+  },
+  {
+    id: 1368,
+    path: 'src/App.tsx',
+    dependencies: Set(9) { 509, 73, 518, 814, 914, 986, 1043, 1364, 1367 },
+    dependents: Set(1) { 1370 }
+  },
+  {
+    id: 1370,
+    path: 'index.js',
+    dependencies: Set(4) { 254, 448, 1368, 1369 },
+    dependents: Set(0) {}
+  }
 ]
 ```
 

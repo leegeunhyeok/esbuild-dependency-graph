@@ -130,13 +130,13 @@ export class DependencyGraph {
     const moduleId = sourceModule.id;
 
     sourceModule.dependencies.forEach((dependencyId) => {
-      const dependencyModule = this.getModuleById(dependencyId);
+      const dependencyModule = this.getModule(dependencyId);
 
       dependencyModule.dependents.delete(moduleId);
     });
 
     sourceModule.dependents.forEach((dependentId) => {
-      const dependentModule = this.getModuleById(dependentId);
+      const dependentModule = this.getModule(dependentId);
 
       dependentModule.dependencies.delete(moduleId);
     });
@@ -179,6 +179,25 @@ export class DependencyGraph {
     return inverseModuleIds;
   }
 
+  private INTERNAL__getModule(request: string | number): Module {
+    let moduleId: number;
+
+    if (typeof request === 'number') {
+      moduleId = request;
+    } else {
+      const relativePath = this.toRelativePath(request);
+      moduleId = assertValue(
+        this.getModuleId(relativePath),
+        `module not found: '${request}'`,
+      );
+    }
+
+    return assertValue(
+      this.dependencyGraph[moduleId],
+      `module not found (id: ${moduleId})`,
+    );
+  }
+
   /**
    * Generate or update the dependency graph using the esbuild metafile.
    */
@@ -204,24 +223,8 @@ export class DependencyGraph {
   /**
    * Get module information by module path
    */
-  getModule(modulePath: string): Module {
-    const relativePath = this.toRelativePath(modulePath);
-    const moduleId = assertValue(
-      this.getModuleId(relativePath),
-      `module not found: '${modulePath}'`,
-    );
-
-    return this.getModuleById(moduleId);
-  }
-
-  /**
-   * Get module by id.
-   */
-  getModuleById(moduleId: number): Module {
-    return assertValue(
-      this.dependencyGraph[moduleId],
-      `module not found (id: ${moduleId})`,
-    );
+  getModule(request: string | number): Module {
+    return this.INTERNAL__getModule(request);
   }
 
   /**
@@ -229,8 +232,8 @@ export class DependencyGraph {
    */
   addModule(
     modulePath: string,
-    dependencies: string[] = [],
-    dependents: string[] = [],
+    dependencies: (string | number)[] = [],
+    dependents: (string | number)[] = [],
   ): Module {
     const relativePath = this.toRelativePath(modulePath);
 
@@ -265,11 +268,11 @@ export class DependencyGraph {
    * Update registered module.
    */
   updateModule(
-    modulePath: string,
-    dependencies: string[] = [],
-    dependents: string[] = [],
-  ): void {
-    const targetModule = this.getModule(modulePath);
+    request: string | number,
+    dependencies: (string | number)[] = [],
+    dependents: (string | number)[] = [],
+  ): Module {
+    const targetModule = this.getModule(request);
 
     // Validate that the IDs of modules are registered.
     const dependencyModules = dependencies.map((dependencyPath) =>
@@ -290,18 +293,15 @@ export class DependencyGraph {
       targetModule.dependents.add(module.id);
       this.linkModules(module, targetModule);
     });
+
+    return targetModule;
   }
 
   /**
    * Remove module from graph.
    */
-  removeModule(modulePath: string): void {
-    const relativePath = this.toRelativePath(modulePath);
-    const moduleId = assertValue(
-      this.getModuleId(relativePath),
-      `module not found: '${modulePath}'`,
-    );
-    const module = this.getModuleById(moduleId);
+  removeModule(request: string | number): void {
+    const module = this.INTERNAL__getModule(request);
 
     this.unlinkModule(module);
     this.graphSize--;
@@ -310,47 +310,29 @@ export class DependencyGraph {
   /**
    * Get dependencies of specified module.
    */
-  dependenciesOf(modulePath: string): string[] {
-    const relativePath = this.toRelativePath(modulePath);
-    const moduleId = assertValue(
-      this.getModuleId(relativePath),
-      `module not found: '${modulePath}'`,
-    );
-    const module = this.getModuleById(moduleId);
+  dependenciesOf(request: string | number): Module[] {
+    const module = this.INTERNAL__getModule(request);
 
-    return Array.from(module.dependencies).map(
-      (id) => this.getModuleById(id).path,
-    );
+    return Array.from(module.dependencies).map((id) => this.getModule(id));
   }
 
   /**
    * Get dependents of specified module.
    */
-  dependentsOf(modulePath: string): string[] {
-    const relativePath = this.toRelativePath(modulePath);
-    const moduleId = assertValue(
-      this.getModuleId(relativePath),
-      `module not found: '${modulePath}'`,
-    );
-    const module = this.getModuleById(moduleId);
+  dependentsOf(request: string | number): Module[] {
+    const module = this.INTERNAL__getModule(request);
 
-    return Array.from(module.dependents).map(
-      (id) => this.getModuleById(id).path,
-    );
+    return Array.from(module.dependents).map((id) => this.getModule(id));
   }
 
   /**
    * Get inverse dependencies of specified module.
    */
-  inverseDependenciesOf(modulePath: string): string[] {
-    const relativePath = this.toRelativePath(modulePath);
-    const moduleId = assertValue(
-      this.getModuleId(relativePath),
-      `module not found: '${modulePath}'`,
-    );
+  inverseDependenciesOf(request: string | number): Module[] {
+    const module = this.INTERNAL__getModule(request);
 
-    return this.traverseInverseModules(moduleId).map(
-      (id) => this.getModuleById(id).path,
+    return this.traverseInverseModules(module.id).map((id) =>
+      this.getModule(id),
     );
   }
 }

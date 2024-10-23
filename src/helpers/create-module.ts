@@ -1,12 +1,7 @@
-import {
-  EXTERNAL,
-  type RelativePath,
-  type Module,
-  type ModuleId,
-} from '../types';
+import { EXTERNAL, type RelativePath, type Module } from '../types';
 
 export function createModule(
-  id: ModuleId,
+  id: number,
   path: RelativePath,
   external = false,
 ): Module {
