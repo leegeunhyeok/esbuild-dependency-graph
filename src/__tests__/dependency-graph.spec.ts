@@ -143,6 +143,26 @@ describe('DependencyGraph', () => {
     });
   });
 
+  describe('reset', () => {
+    let graph: DependencyGraph;
+
+    beforeAll(async () => {
+      const rawMetafile = await readFile(
+        join(__dirname, './fixtures/metafile.json'),
+        'utf-8',
+      );
+      graph = new DependencyGraph(rawMetafile);
+    });
+
+    it('should reset dependency graph', () => {
+      graph.reset();
+
+      expect(() =>
+        graph.getModule('src/screens/MainScreen.tsx'),
+      ).toThrowError();
+    });
+  });
+
   describe('when `root` path is provided', () => {
     let graph: DependencyGraph;
     const ROOT = '/root/workspaces';
@@ -157,18 +177,20 @@ describe('DependencyGraph', () => {
 
     it('should able to get the module by its absolute path', () => {
       // Relative
-      expect(() => graph.getModule('src/components/Button.tsx')).not.toThrow();
+      expect(() =>
+        graph.getModule('src/components/Button.tsx'),
+      ).not.toThrowError();
       expect(() =>
         graph.getModule('../node_modules/@swc/helpers/esm/_instanceof.js'),
-      ).not.toThrow();
+      ).not.toThrowError();
 
       // Absolute
       expect(() =>
         graph.getModule('/root/workspaces/src/components/Button.tsx'),
-      ).not.toThrow();
+      ).not.toThrowError();
       expect(() =>
         graph.getModule('/root/node_modules/@swc/helpers/esm/_instanceof.js'),
-      ).not.toThrow();
+      ).not.toThrowError();
     });
   });
 });

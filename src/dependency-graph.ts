@@ -21,13 +21,16 @@ export class DependencyGraph {
   private INTERNAL__moduleId = 0;
   private options: Required<DependencyGraphOptions>;
 
-  constructor(metafile: string | Metafile, options?: DependencyGraphOptions) {
+  constructor(metafile?: string | Metafile, options?: DependencyGraphOptions) {
     this.options = { root: process.cwd(), ...options };
-    this.generateDependencyGraph(
-      typeof metafile === 'string'
-        ? (JSON.parse(metafile) as Metafile)
-        : metafile,
-    );
+
+    if (metafile) {
+      this.generateDependencyGraph(
+        typeof metafile === 'string'
+          ? (JSON.parse(metafile) as Metafile)
+          : metafile,
+      );
+    }
   }
 
   /**
@@ -306,5 +309,22 @@ export class DependencyGraph {
     return this.traverseInverseModules(moduleId).map(
       (id) => this.getModuleById(id).path,
     );
+  }
+
+  /**
+   * Reset dependency graph.
+   */
+  reset(metafile?: string | Metafile): void {
+    this.INTERNAL__moduleId = 0;
+    this.INTERNAL__moduleIds = {};
+    this.dependencyGraph = {};
+
+    if (metafile) {
+      this.generateDependencyGraph(
+        typeof metafile === 'string'
+          ? (JSON.parse(metafile) as Metafile)
+          : metafile,
+      );
+    }
   }
 }
