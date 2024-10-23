@@ -126,7 +126,7 @@ export class DependencyGraph {
   /**
    * Remove the module and unlink the dependency relationship.
    */
-  unlinkModule(sourceModule: Module, unlinkOnly = false): void {
+  private unlinkModule(sourceModule: Module, unlinkOnly = false): void {
     const moduleId = sourceModule.id;
 
     sourceModule.dependencies.forEach((dependencyId) => {
@@ -221,7 +221,19 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module information by module path
+   * Check if the module exists.
+   */
+  hasModule(request: string | number): boolean {
+    try {
+      this.INTERNAL__getModule(request);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Get module data by module path.
    */
   getModule(request: string | number): Module {
     return this.INTERNAL__getModule(request);

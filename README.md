@@ -58,7 +58,10 @@ graph.reset();
 ```ts
 import { DependencyGraph, isExternal } from 'esbuild-dependency-graph';
 
-// Get module.
+// Check if the module exists.
+graph.hasModule('path/to/code.ts'); // `boolean`
+
+// Get module data by module path.
 graph.getModule('path/to/code.ts'); // `Module`
 
 // Register new module to the graph.
@@ -79,10 +82,11 @@ graph.updateModule(
 graph.removeModule('path/to/code.ts'); // `void`
 
 // You can also provide the module's ID.
-graph.getModule(0);
-graph.addModule(1, [2, 3], [4]);
-graph.updateModule(5, [6, 7], [8]);
-graph.removeModule(9);
+graph.hasModule(0);
+graph.getModule(1);
+graph.addModule(2, [3, 4], [5]);
+graph.updateModule(6, [7, 8], [9]);
+graph.removeModule(10);
 
 // Check if this module is external.
 isExternal(targetModule); // `boolean`

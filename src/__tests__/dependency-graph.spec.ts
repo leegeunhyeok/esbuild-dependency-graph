@@ -41,6 +41,16 @@ describe('DependencyGraph', () => {
     });
   });
 
+  describe('hasModule', () => {
+    it('should returns `true` if module exists', () => {
+      expect(graph.hasModule('src/screens/MainScreen.tsx')).toBe(true);
+    });
+
+    it('should returns `false` if module is not exists', () => {
+      expect(graph.hasModule('not/registered/module.ts')).toBe(false);
+    });
+  });
+
   describe('addModule', () => {
     beforeAll(() => {
       /**
