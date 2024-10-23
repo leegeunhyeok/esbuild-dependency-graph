@@ -16,6 +16,12 @@ describe('DependencyGraph', () => {
     graph = new DependencyGraph(rawMetafile);
   });
 
+  describe('size', () => {
+    it('should match snapshot', () => {
+      expect(graph.size).toMatchSnapshot();
+    });
+  });
+
   describe('dependenciesOf', () => {
     it('should match snapshot', () => {
       expect(graph.dependenciesOf(TEST_MODULE)).toMatchSnapshot();
@@ -135,11 +141,14 @@ describe('DependencyGraph', () => {
 
   describe('removeModule', () => {
     it('should match snapshot', () => {
+      const prevSize = graph.size;
+
       graph.removeModule('src/screens/index.ts');
       const inverseDependencies = graph.inverseDependenciesOf(
         'src/screens/MainScreen.tsx',
       );
       expect(inverseDependencies).toMatchSnapshot();
+      expect(graph.size).toEqual(prevSize - 1);
     });
   });
 

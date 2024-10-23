@@ -19,7 +19,12 @@ export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
   private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
   private INTERNAL__moduleId = 0;
+  private graphSize = 0;
   private options: Required<DependencyGraphOptions>;
+
+  get size(): number {
+    return this.graphSize;
+  }
 
   constructor(metafile?: string | Metafile, options?: DependencyGraphOptions) {
     this.options = { root: process.cwd(), ...options };
@@ -107,6 +112,8 @@ export class DependencyGraph {
 
     const newModuleId = this.generateUniqueModuleId(relativePath);
     const newModule = createModule(newModuleId, relativePath, external);
+
+    this.graphSize++;
 
     return (this.dependencyGraph[newModule.id] = newModule);
   }
@@ -276,6 +283,7 @@ export class DependencyGraph {
     const module = this.getModuleById(moduleId);
 
     this.unlinkModule(module);
+    this.graphSize--;
   }
 
   /**
