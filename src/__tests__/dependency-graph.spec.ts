@@ -165,7 +165,7 @@ describe('DependencyGraph', () => {
 
   describe('when `root` path is provided', () => {
     let graph: DependencyGraph;
-    const ROOT = '/root/workspaces';
+    const ROOT = '/root/workspace';
 
     beforeAll(async () => {
       const rawMetafile = await readFile(
@@ -178,15 +178,15 @@ describe('DependencyGraph', () => {
     it('should able to get the module by its absolute path', () => {
       // Relative
       expect(() =>
-        graph.getModule('src/components/Button.tsx'),
+        graph.getModule('../node_modules/@swc/helpers/esm/_instanceof.js'),
       ).not.toThrowError();
       expect(() =>
-        graph.getModule('../node_modules/@swc/helpers/esm/_instanceof.js'),
+        graph.getModule('src/components/Button.tsx'),
       ).not.toThrowError();
 
       // Absolute
       expect(() =>
-        graph.getModule('/root/workspaces/src/components/Button.tsx'),
+        graph.getModule('/root/workspace/src/components/Button.tsx'),
       ).not.toThrowError();
       expect(() =>
         graph.getModule('/root/node_modules/@swc/helpers/esm/_instanceof.js'),

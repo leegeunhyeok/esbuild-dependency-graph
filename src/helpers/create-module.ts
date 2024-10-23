@@ -1,13 +1,13 @@
 import {
   EXTERNAL,
+  type RelativePath,
   type Module,
-  type ModulePath,
   type ModuleId,
 } from '../types';
 
 export function createModule(
   id: ModuleId,
-  path: ModulePath,
+  path: RelativePath,
   external = false,
 ): Module {
   return Object.defineProperties(

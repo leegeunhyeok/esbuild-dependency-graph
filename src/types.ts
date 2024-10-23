@@ -15,3 +15,5 @@ export interface Module {
 
 export type ModuleId = number;
 export type ModulePath = string;
+
+export type RelativePath = string & { __relative: true };
