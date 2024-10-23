@@ -7,13 +7,10 @@ export type EsbuildMeta = Metafile['inputs'][string];
 export interface Module {
   /** @internal */
   readonly [EXTERNAL]: boolean;
-  id: ModuleId;
+  id: number;
   path: string;
-  dependencies: Set<ModuleId>;
-  dependents: Set<ModuleId>;
+  dependencies: Set<number>;
+  dependents: Set<number>;
 }
-
-export type ModuleId = number;
-export type ModulePath = string;
 
 export type RelativePath = string & { __relative: true };

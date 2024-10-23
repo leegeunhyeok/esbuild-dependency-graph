@@ -13,7 +13,7 @@ describe('DependencyGraph', () => {
       join(__dirname, './fixtures/metafile.json'),
       'utf-8',
     );
-    graph = new DependencyGraph(rawMetafile);
+    graph = new DependencyGraph().load(rawMetafile);
   });
 
   describe('size', () => {
@@ -152,12 +152,12 @@ describe('DependencyGraph', () => {
     });
   });
 
-  describe('update', () => {
+  describe('lazy load', () => {
     const ROOT = '/root/workspace';
     let graph: DependencyGraph;
 
     beforeAll(() => {
-      graph = new DependencyGraph(undefined, { root: ROOT });
+      graph = new DependencyGraph({ root: ROOT });
 
       graph.addModule('/root/workspace/index.js', [], []);
       graph.addModule('/root/workspace/src/App.tsx', [], []);
@@ -180,7 +180,9 @@ describe('DependencyGraph', () => {
         join(__dirname, './fixtures/metafile.json'),
         'utf-8',
       );
-      graph.update(rawMetafile);
+
+      // Load after add some modules.
+      graph.load(rawMetafile);
 
       // After update
       expect(graph.dependenciesOf(indexModule.path)).toMatchInlineSnapshot(`
@@ -229,7 +231,7 @@ describe('DependencyGraph', () => {
         join(__dirname, './fixtures/metafile.json'),
         'utf-8',
       );
-      graph = new DependencyGraph(rawMetafile);
+      graph = new DependencyGraph().load(rawMetafile);
     });
 
     it('should reset dependency graph', () => {
@@ -250,7 +252,7 @@ describe('DependencyGraph', () => {
         join(__dirname, './fixtures/metafile.json'),
         'utf-8',
       );
-      graph = new DependencyGraph(rawMetafile, { root: ROOT });
+      graph = new DependencyGraph({ root: ROOT }).load(rawMetafile);
     });
 
     it('should able to get the module by its absolute path', () => {

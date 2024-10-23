@@ -21,7 +21,7 @@ const result = await esbuild.build({
   /* other build options */
 });
 
-const graph = new DependencyGraph(result.metafile, {
+const graph = new DependencyGraph({
   /**
    * Root path for lookup modules.
    *
@@ -30,14 +30,20 @@ const graph = new DependencyGraph(result.metafile, {
   root: '/path/to/root-dir',
 });
 
+// Generate or update the dependency graph using the esbuild metafile.
+graph.load(result.metafile);
+
 // Get dependencies of the specified module.
-graph.dependenciesOf('path/to/code.ts'); // `ModulePath[]`
+graph.dependenciesOf('path/to/code.ts'); // `string[]`
 
 // Get dependents of the specified module.
-graph.dependentsOf('path/to/code.ts'); // `ModulePath[]`
+graph.dependentsOf('path/to/code.ts'); // `string[]`
 
 // Get inverse dependencies of the specified module.
-graph.inverseDependenciesOf('path/to/code.ts'); // `ModulePath[]`
+graph.inverseDependenciesOf('path/to/code.ts'); // `string[]`
+
+// Reset dependency graph.
+graph.reset();
 ```
 
 <details>

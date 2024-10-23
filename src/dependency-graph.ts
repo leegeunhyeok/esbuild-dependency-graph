@@ -2,9 +2,9 @@ import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
-import type { Module, ModuleId, ModulePath, RelativePath } from './types';
+import type { Module, RelativePath } from './types';
 
-type ModuleDependencyGraph = Record<ModuleId, Module | undefined>;
+type ModuleDependencyGraph = Record<number, Module | undefined>;
 
 interface DependencyGraphOptions {
   /**
@@ -17,7 +17,7 @@ interface DependencyGraphOptions {
 
 export class DependencyGraph {
   private dependencyGraph: ModuleDependencyGraph = {};
-  private INTERNAL__moduleIds: Record<ModulePath, number | undefined> = {};
+  private INTERNAL__moduleIds: Record<string, number | undefined> = {};
   private INTERNAL__moduleId = 0;
   private graphSize = 0;
   private options: Required<DependencyGraphOptions>;
@@ -26,16 +26,8 @@ export class DependencyGraph {
     return this.graphSize;
   }
 
-  constructor(metafile?: string | Metafile, options?: DependencyGraphOptions) {
+  constructor(options?: DependencyGraphOptions) {
     this.options = { root: process.cwd(), ...options };
-
-    if (metafile) {
-      this.generateDependencyGraph(
-        typeof metafile === 'string'
-          ? (JSON.parse(metafile) as Metafile)
-          : metafile,
-      );
-    }
   }
 
   /**
@@ -91,8 +83,8 @@ export class DependencyGraph {
   /**
    * Get module id
    */
-  private getModuleId(relativePath: RelativePath): ModuleId | null {
-    let id: ModuleId | undefined;
+  private getModuleId(relativePath: RelativePath): number | null {
+    let id: number | undefined;
 
     return typeof (id = this.INTERNAL__moduleIds[relativePath]) === 'number' &&
       id in this.dependencyGraph
@@ -161,10 +153,10 @@ export class DependencyGraph {
   /**
    * Traverse modules for get invert dependencies.
    */
-  private traverseInverseModules(moduleId: ModuleId): ModuleId[] {
-    const queue: ModuleId[] = [moduleId];
-    const visited: Record<ModuleId, boolean> = { [moduleId]: true };
-    const inverseModuleIds: ModuleId[] = [];
+  private traverseInverseModules(moduleId: number): number[] {
+    const queue: number[] = [moduleId];
+    const visited: Record<number, boolean> = { [moduleId]: true };
+    const inverseModuleIds: number[] = [];
 
     while (queue.length) {
       const currentModuleId = queue.shift()!;
@@ -188,6 +180,28 @@ export class DependencyGraph {
   }
 
   /**
+   * Generate or update the dependency graph using the esbuild metafile.
+   */
+  load(metafile: string | Metafile): this {
+    this.generateDependencyGraph(
+      typeof metafile === 'string'
+        ? (JSON.parse(metafile) as Metafile)
+        : metafile,
+    );
+
+    return this;
+  }
+
+  /**
+   * Reset dependency graph.
+   */
+  reset(): void {
+    this.INTERNAL__moduleId = 0;
+    this.INTERNAL__moduleIds = {};
+    this.dependencyGraph = {};
+  }
+
+  /**
    * Get module information by module path
    */
   getModule(modulePath: string): Module {
@@ -203,7 +217,7 @@ export class DependencyGraph {
   /**
    * Get module by id.
    */
-  getModuleById(moduleId: ModuleId): Module {
+  getModuleById(moduleId: number): Module {
     return assertValue(
       this.dependencyGraph[moduleId],
       `module not found (id: ${moduleId})`,
@@ -215,8 +229,8 @@ export class DependencyGraph {
    */
   addModule(
     modulePath: string,
-    dependencies: ModulePath[] = [],
-    dependents: ModulePath[] = [],
+    dependencies: string[] = [],
+    dependents: string[] = [],
   ): Module {
     const relativePath = this.toRelativePath(modulePath);
 
@@ -252,8 +266,8 @@ export class DependencyGraph {
    */
   updateModule(
     modulePath: string,
-    dependencies: ModulePath[] = [],
-    dependents: ModulePath[] = [],
+    dependencies: string[] = [],
+    dependents: string[] = [],
   ): void {
     const targetModule = this.getModule(modulePath);
 
@@ -296,7 +310,7 @@ export class DependencyGraph {
   /**
    * Get dependencies of specified module.
    */
-  dependenciesOf(modulePath: string): ModulePath[] {
+  dependenciesOf(modulePath: string): string[] {
     const relativePath = this.toRelativePath(modulePath);
     const moduleId = assertValue(
       this.getModuleId(relativePath),
@@ -312,7 +326,7 @@ export class DependencyGraph {
   /**
    * Get dependents of specified module.
    */
-  dependentsOf(modulePath: string): ModulePath[] {
+  dependentsOf(modulePath: string): string[] {
     const relativePath = this.toRelativePath(modulePath);
     const moduleId = assertValue(
       this.getModuleId(relativePath),
@@ -328,7 +342,7 @@ export class DependencyGraph {
   /**
    * Get inverse dependencies of specified module.
    */
-  inverseDependenciesOf(modulePath: string): ModulePath[] {
+  inverseDependenciesOf(modulePath: string): string[] {
     const relativePath = this.toRelativePath(modulePath);
     const moduleId = assertValue(
       this.getModuleId(relativePath),
@@ -338,25 +352,5 @@ export class DependencyGraph {
     return this.traverseInverseModules(moduleId).map(
       (id) => this.getModuleById(id).path,
     );
-  }
-
-  /**
-   * Update dependency graph
-   */
-  update(metafile: string | Metafile): void {
-    this.generateDependencyGraph(
-      typeof metafile === 'string'
-        ? (JSON.parse(metafile) as Metafile)
-        : metafile,
-    );
-  }
-
-  /**
-   * Reset dependency graph.
-   */
-  reset(): void {
-    this.INTERNAL__moduleId = 0;
-    this.INTERNAL__moduleIds = {};
-    this.dependencyGraph = {};
   }
 }
