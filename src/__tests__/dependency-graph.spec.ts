@@ -152,6 +152,75 @@ describe('DependencyGraph', () => {
     });
   });
 
+  describe('update', () => {
+    const ROOT = '/root/workspace';
+    let graph: DependencyGraph;
+
+    beforeAll(() => {
+      graph = new DependencyGraph(undefined, { root: ROOT });
+
+      graph.addModule('/root/workspace/index.js', [], []);
+      graph.addModule('/root/workspace/src/App.tsx', [], []);
+      graph.addModule('/root/workspace/src/screens/MainScreen.tsx', [], []);
+    });
+
+    it('should update module data', async () => {
+      const indexModule = graph.getModule('/root/workspace/index.js');
+      const appModule = graph.getModule('/root/workspace/src/App.tsx');
+      const mainScreenModule = graph.getModule(
+        '/root/workspace/src/screens/MainScreen.tsx',
+      );
+
+      // Before update
+      expect(graph.dependenciesOf(indexModule.path)).toHaveLength(0);
+      expect(graph.dependenciesOf(appModule.path)).toHaveLength(0);
+      expect(graph.dependenciesOf(mainScreenModule.path)).toHaveLength(0);
+
+      const rawMetafile = await readFile(
+        join(__dirname, './fixtures/metafile.json'),
+        'utf-8',
+      );
+      graph.update(rawMetafile);
+
+      // After update
+      expect(graph.dependenciesOf(indexModule.path)).toMatchInlineSnapshot(`
+        [
+          "node_modules/react-native/Libraries/Core/InitializeCore.js",
+          "node_modules/react-native/index.js",
+          "src/App.tsx",
+          "app.json",
+        ]
+      `);
+
+      expect(graph.dependenciesOf(appModule.path)).toMatchInlineSnapshot(`
+        [
+          "node_modules/react/jsx-runtime.js",
+          "node_modules/react/index.js",
+          "node_modules/react-native-safe-area-context/src/index.tsx",
+          "node_modules/react-native-gesture-handler/src/index.ts",
+          "node_modules/@react-navigation/native/src/index.tsx",
+          "node_modules/@react-navigation/devtools/src/index.tsx",
+          "node_modules/dripsy/src/index.ts",
+          "src/navigators/index.ts",
+          "src/theme/index.ts",
+        ]
+      `);
+
+      expect(graph.dependenciesOf(mainScreenModule.path))
+        .toMatchInlineSnapshot(`
+          [
+            "node_modules/react/jsx-runtime.js",
+            "node_modules/react/index.js",
+            "node_modules/react-native/index.js",
+            "node_modules/react-native-safe-area-context/src/index.tsx",
+            "node_modules/dripsy/src/index.ts",
+            "src/components/index.ts",
+            "src/assets/logo.svg",
+          ]
+        `);
+    });
+  });
+
   describe('reset', () => {
     let graph: DependencyGraph;
 

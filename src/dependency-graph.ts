@@ -44,7 +44,7 @@ export class DependencyGraph {
   private generateDependencyGraph(metafile: Metafile): void {
     for (const modulePath in metafile.inputs) {
       // esbuild's paths are relative path.
-      const currentModule = this.createModule(modulePath as RelativePath);
+      const currentModule = this.getOrCreateModule(modulePath as RelativePath);
       const imports = metafile.inputs[modulePath]?.imports ?? [];
 
       if (isExternal(currentModule)) {
@@ -52,7 +52,7 @@ export class DependencyGraph {
       }
 
       for (const importMeta of imports) {
-        const dependencyModule = this.createModule(
+        const dependencyModule = this.getOrCreateModule(
           importMeta.path as RelativePath,
           importMeta.external,
         );
@@ -101,12 +101,17 @@ export class DependencyGraph {
   }
 
   /**
-   * Get module by actual path in metafile.
+   * Get the module by its actual path in the metafile,
+   * or return the existing module if it's already in the graph.
    */
-  private createModule(relativePath: RelativePath, external = false): Module {
+  private getOrCreateModule(
+    relativePath: RelativePath,
+    external = false,
+  ): Module {
     const id = this.getModuleId(relativePath);
 
     if (typeof id === 'number') {
+      // Returns exist module.
       return this.dependencyGraph[id]!;
     }
 
@@ -212,7 +217,7 @@ export class DependencyGraph {
     modulePath: string,
     dependencies: ModulePath[] = [],
     dependents: ModulePath[] = [],
-  ): void {
+  ): Module {
     const relativePath = this.toRelativePath(modulePath);
 
     if (typeof this.getModuleId(relativePath) === 'number') {
@@ -227,7 +232,7 @@ export class DependencyGraph {
       this.getModule(dependentPath),
     );
 
-    const newModule = this.createModule(relativePath);
+    const newModule = this.getOrCreateModule(relativePath);
 
     dependencyModules.forEach((module) => {
       newModule.dependencies.add(module.id);
@@ -238,6 +243,8 @@ export class DependencyGraph {
       newModule.dependents.add(module.id);
       this.linkModules(module, newModule);
     });
+
+    return newModule;
   }
 
   /**
@@ -334,19 +341,22 @@ export class DependencyGraph {
   }
 
   /**
+   * Update dependency graph
+   */
+  update(metafile: string | Metafile): void {
+    this.generateDependencyGraph(
+      typeof metafile === 'string'
+        ? (JSON.parse(metafile) as Metafile)
+        : metafile,
+    );
+  }
+
+  /**
    * Reset dependency graph.
    */
-  reset(metafile?: string | Metafile): void {
+  reset(): void {
     this.INTERNAL__moduleId = 0;
     this.INTERNAL__moduleIds = {};
     this.dependencyGraph = {};
-
-    if (metafile) {
-      this.generateDependencyGraph(
-        typeof metafile === 'string'
-          ? (JSON.parse(metafile) as Metafile)
-          : metafile,
-      );
-    }
   }
 }
