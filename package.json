@@ -1,6 +1,6 @@
 {
   "name": "esbuild-dependency-graph",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Generate a dependency graph using esbuild's metadata",
   "repository": "git@github.com:leegeunhyeok/esbuild-dependency-graph.git",
   "license": "MIT",
