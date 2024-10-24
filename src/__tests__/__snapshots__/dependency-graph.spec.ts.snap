@@ -3,75 +3,75 @@
 exports[`DependencyGraph > addModule > when add new modules > should match snapshots 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
       1361,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1363,
-    },
+    ],
     "id": 1362,
     "path": "src/screens/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1371,
-    },
+    ],
     "id": 1372,
     "path": "root/screens.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       1119,
       1362,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1364,
-    },
+    ],
     "id": 1363,
     "path": "src/navigators/RootStack.tsx",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       73,
       448,
       1372,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1371,
     "path": "root/entry.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1363,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1368,
-    },
+    ],
     "id": 1364,
     "path": "src/navigators/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       254,
       448,
       1368,
       1369,
       1371,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1370,
     "path": "index.js",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       518,
@@ -81,10 +81,10 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1043,
       1364,
       1367,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1368,
     "path": "src/App.tsx",
   },
@@ -94,10 +94,10 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
 exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       508,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       512,
       514,
       633,
@@ -193,15 +193,15 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1361,
       1363,
       1368,
-    },
+    ],
     "id": 509,
     "path": "node_modules/react/jsx-runtime.js",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       72,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       74,
       206,
       207,
@@ -492,12 +492,12 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1361,
       1363,
       1368,
-    },
+    ],
     "id": 73,
     "path": "node_modules/react/index.js",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       18,
       32,
       335,
@@ -577,8 +577,8 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       274,
       265,
       373,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       451,
       460,
       461,
@@ -690,18 +690,18 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1359,
       1361,
       1370,
-    },
+    ],
     "id": 448,
     "path": "node_modules/react-native/index.js",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       512,
       514,
       516,
       517,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1057,
       1070,
       1071,
@@ -709,47 +709,47 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1115,
       1359,
       1368,
-    },
+    ],
     "id": 518,
     "path": "node_modules/react-native-safe-area-context/src/index.tsx",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1042,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1120,
       1122,
       1359,
       1361,
       1367,
       1368,
-    },
+    ],
     "id": 1043,
     "path": "node_modules/dripsy/src/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1120,
       1121,
       1122,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1359,
       1361,
-    },
+    ],
     "id": 1123,
     "path": "src/components/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       73,
       1357,
       666,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1359,
-    },
+    ],
     "id": 1358,
     "path": "src/assets/logo.svg",
   },
@@ -759,13 +759,13 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
 exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
       1361,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1363,
-    },
+    ],
     "id": 1362,
     "path": "src/screens/index.ts",
   },
@@ -775,41 +775,41 @@ exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
 exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
       1361,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1363,
-    },
+    ],
     "id": 1362,
     "path": "src/screens/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       1119,
       1362,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1364,
-    },
+    ],
     "id": 1363,
     "path": "src/navigators/RootStack.tsx",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1363,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1368,
-    },
+    ],
     "id": 1364,
     "path": "src/navigators/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       518,
@@ -819,21 +819,21 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1043,
       1364,
       1367,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1368,
     "path": "src/App.tsx",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       254,
       448,
       1368,
       1369,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1370,
     "path": "index.js",
   },
@@ -843,44 +843,44 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
 exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1371,
-    },
+    ],
     "id": 1372,
     "path": "root/screens.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1374,
     "path": "re-export.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       73,
       448,
       1372,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1371,
     "path": "root/entry.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       254,
       448,
       1368,
       1369,
       1371,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1370,
     "path": "index.js",
   },
@@ -892,7 +892,7 @@ exports[`DependencyGraph > size > should match snapshot 1`] = `1371`;
 exports[`DependencyGraph > updateModule > should match snapshots 1`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       448,
@@ -901,12 +901,12 @@ exports[`DependencyGraph > updateModule > should match snapshots 1`] = `
       1123,
       1358,
       1373,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1362,
       1372,
       1374,
-    },
+    ],
     "id": 1359,
     "path": "src/screens/MainScreen.tsx",
   },
@@ -916,7 +916,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 1`] = `
 exports[`DependencyGraph > updateModule > should match snapshots 2`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       448,
@@ -925,12 +925,12 @@ exports[`DependencyGraph > updateModule > should match snapshots 2`] = `
       1123,
       1358,
       1373,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1362,
       1372,
       1374,
-    },
+    ],
     "id": 1359,
     "path": "src/screens/MainScreen.tsx",
   },
@@ -940,83 +940,83 @@ exports[`DependencyGraph > updateModule > should match snapshots 2`] = `
 exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
 [
   {
-    "dependencies": Set {
+    "dependencies": [
       1361,
       1359,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1363,
-    },
+    ],
     "id": 1362,
     "path": "src/screens/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1371,
-    },
+    ],
     "id": 1372,
     "path": "root/screens.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1359,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1374,
     "path": "re-export.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       1119,
       1362,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1364,
-    },
+    ],
     "id": 1363,
     "path": "src/navigators/RootStack.tsx",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       73,
       448,
       1372,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1371,
     "path": "root/entry.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       1363,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1368,
-    },
+    ],
     "id": 1364,
     "path": "src/navigators/index.ts",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       254,
       448,
       1368,
       1369,
       1371,
-    },
-    "dependents": Set {},
+    ],
+    "dependents": [],
     "id": 1370,
     "path": "index.js",
   },
   {
-    "dependencies": Set {
+    "dependencies": [
       509,
       73,
       518,
@@ -1026,10 +1026,10 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1043,
       1364,
       1367,
-    },
-    "dependents": Set {
+    ],
+    "dependents": [
       1370,
-    },
+    ],
     "id": 1368,
     "path": "src/App.tsx",
   },

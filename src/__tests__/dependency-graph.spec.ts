@@ -212,7 +212,7 @@ describe('DependencyGraph', () => {
       expect(graph.dependenciesOf(indexModule.path)).toMatchInlineSnapshot(`
         [
           {
-            "dependencies": Set {
+            "dependencies": [
               3,
               20,
               52,
@@ -230,16 +230,16 @@ describe('DependencyGraph', () => {
               79,
               453,
               125,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               256,
               0,
-            },
+            ],
             "id": 257,
             "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               21,
               35,
               338,
@@ -319,8 +319,8 @@ describe('DependencyGraph', () => {
               277,
               268,
               376,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               454,
               463,
               464,
@@ -432,12 +432,12 @@ describe('DependencyGraph', () => {
               2,
               1363,
               0,
-            },
+            ],
             "id": 451,
             "path": "node_modules/react-native/index.js",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               512,
               76,
               521,
@@ -447,18 +447,18 @@ describe('DependencyGraph', () => {
               1046,
               1366,
               1369,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               0,
-            },
+            ],
             "id": 1,
             "path": "src/App.tsx",
           },
           {
-            "dependencies": Set {},
-            "dependents": Set {
+            "dependencies": [],
+            "dependents": [
               0,
-            },
+            ],
             "id": 1370,
             "path": "app.json",
           },
@@ -468,10 +468,10 @@ describe('DependencyGraph', () => {
       expect(graph.dependenciesOf(appModule.path)).toMatchInlineSnapshot(`
         [
           {
-            "dependencies": Set {
+            "dependencies": [
               511,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               515,
               517,
               636,
@@ -567,15 +567,15 @@ describe('DependencyGraph', () => {
               1363,
               1365,
               1,
-            },
+            ],
             "id": 512,
             "path": "node_modules/react/jsx-runtime.js",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               75,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               77,
               209,
               210,
@@ -866,18 +866,18 @@ describe('DependencyGraph', () => {
               1363,
               1365,
               1,
-            },
+            ],
             "id": 76,
             "path": "node_modules/react/index.js",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               515,
               517,
               519,
               520,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1060,
               1073,
               1074,
@@ -885,12 +885,12 @@ describe('DependencyGraph', () => {
               1118,
               2,
               1,
-            },
+            ],
             "id": 521,
             "path": "node_modules/react-native-safe-area-context/src/index.tsx",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               676,
               677,
               522,
@@ -914,16 +914,16 @@ describe('DependencyGraph', () => {
               815,
               816,
               792,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1079,
               1,
-            },
+            ],
             "id": 817,
             "path": "node_modules/react-native-gesture-handler/src/index.ts",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               900,
               897,
               909,
@@ -938,8 +938,8 @@ describe('DependencyGraph', () => {
               898,
               916,
               896,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1053,
               1056,
               1059,
@@ -953,56 +953,56 @@ describe('DependencyGraph', () => {
               1118,
               1119,
               1,
-            },
+            ],
             "id": 917,
             "path": "node_modules/@react-navigation/native/src/index.tsx",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               985,
               988,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1,
-            },
+            ],
             "id": 989,
             "path": "node_modules/@react-navigation/devtools/src/index.tsx",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               1045,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1123,
               1125,
               2,
               1363,
               1369,
               1,
-            },
+            ],
             "id": 1046,
             "path": "node_modules/dripsy/src/index.ts",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               1365,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1,
-            },
+            ],
             "id": 1366,
             "path": "src/navigators/index.ts",
           },
           {
-            "dependencies": Set {
+            "dependencies": [
               54,
               1046,
               1367,
               1368,
-            },
-            "dependents": Set {
+            ],
+            "dependents": [
               1,
-            },
+            ],
             "id": 1369,
             "path": "src/theme/index.ts",
           },
@@ -1013,10 +1013,10 @@ describe('DependencyGraph', () => {
         .toMatchInlineSnapshot(`
           [
             {
-              "dependencies": Set {
+              "dependencies": [
                 511,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 515,
                 517,
                 636,
@@ -1112,15 +1112,15 @@ describe('DependencyGraph', () => {
                 1363,
                 1365,
                 1,
-              },
+              ],
               "id": 512,
               "path": "node_modules/react/jsx-runtime.js",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 75,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 77,
                 209,
                 210,
@@ -1411,12 +1411,12 @@ describe('DependencyGraph', () => {
                 1363,
                 1365,
                 1,
-              },
+              ],
               "id": 76,
               "path": "node_modules/react/index.js",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 21,
                 35,
                 338,
@@ -1496,8 +1496,8 @@ describe('DependencyGraph', () => {
                 277,
                 268,
                 376,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 454,
                 463,
                 464,
@@ -1609,18 +1609,18 @@ describe('DependencyGraph', () => {
                 2,
                 1363,
                 0,
-              },
+              ],
               "id": 451,
               "path": "node_modules/react-native/index.js",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 515,
                 517,
                 519,
                 520,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 1060,
                 1073,
                 1074,
@@ -1628,47 +1628,47 @@ describe('DependencyGraph', () => {
                 1118,
                 2,
                 1,
-              },
+              ],
               "id": 521,
               "path": "node_modules/react-native-safe-area-context/src/index.tsx",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 1045,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 1123,
                 1125,
                 2,
                 1363,
                 1369,
                 1,
-              },
+              ],
               "id": 1046,
               "path": "node_modules/dripsy/src/index.ts",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 1123,
                 1124,
                 1125,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 2,
                 1363,
-              },
+              ],
               "id": 1126,
               "path": "src/components/index.ts",
             },
             {
-              "dependencies": Set {
+              "dependencies": [
                 76,
                 1360,
                 669,
-              },
-              "dependents": Set {
+              ],
+              "dependents": [
                 2,
-              },
+              ],
               "id": 1361,
               "path": "src/assets/logo.svg",
             },

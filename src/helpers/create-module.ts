@@ -1,10 +1,10 @@
-import { EXTERNAL, type RelativePath, type Module } from '../types';
+import { EXTERNAL, type RelativePath, type InternalModule } from '../types';
 
 export function createModule(
   id: number,
   path: RelativePath,
   external = false,
-): Module {
+): InternalModule {
   return Object.defineProperties(
     {},
     {
@@ -14,5 +14,5 @@ export function createModule(
       dependencies: { value: new Set(), enumerable: true },
       dependents: { value: new Set(), enumerable: true },
     },
-  ) as Module;
+  ) as InternalModule;
 }

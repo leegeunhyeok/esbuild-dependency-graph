@@ -104,8 +104,8 @@ type EsbuildModule = Metafile['inputs'][string];
 interface Module {
   id: number;
   path: string;
-  dependencies: Set<number>;
-  dependents: Set<number>;
+  dependencies: number[];
+  dependents: number[];
 }
 ```
 
@@ -143,8 +143,8 @@ Demo code [here](./demo/index.ts).
 {
   id: 1122,
   path: 'src/components/Section.tsx',
-  dependencies: Set(3) { 509, 73, 1043 },
-  dependents: Set(1) { 1123 }
+  dependencies: [ 509, 73, 1043 ],
+  dependents: [ 1123 ]
 }
 
 // Dependencies
@@ -152,24 +152,42 @@ Demo code [here](./demo/index.ts).
   {
     id: 509,
     path: 'node_modules/react/jsx-runtime.js',
-    dependencies: Set(1) { 508 },
-    dependents: Set(95) {
-      ...
-    }
+    dependencies: [ 508 ],
+    dependents: [
+       512,  514,  633,  655,  657,  679,  680,  774,  784,  790,
+       804,  806,  807,  808,  809,  811,  812,  813,  826,  840,
+       862,  871,  876,  878,  887,  900,  906,  908,  996, 1000,
+      1025, 1028, 1030, 1035, 1036, 1038, 1050, 1053, 1056, 1057,
+      1058, 1061, 1064, 1068, 1069, 1070, 1071, 1076, 1080, 1081,
+      1082, 1094, 1106, 1107, 1109, 1110, 1111, 1113, 1114, 1115,
+      1116, 1120, 1121, 1122, 1139, 1141, 1143, 1145, 1147, 1148,
+      1150, 1152, 1154, 1158, 1160, 1162, 1164, 1166, 1168, 1170,
+      1172, 1176, 1178, 1181, 1183, 1185, 1187, 1189, 1190, 1352,
+      1353, 1359, 1361, 1363, 1368
+    ]
   },
   {
     id: 73,
     path: 'node_modules/react/index.js',
-    dependencies: Set(1) { 72 },
-    dependents: Set(290) {
-      ...
-    }
+    dependencies: [ 72 ],
+    dependents: [
+       74, 206, 207, 237, 243, 257, 259, 262, 263, 265, 266, 270,
+      271, 272, 276, 277, 279, 280, 282, 302, 304, 308, 309, 329,
+      330, 336, 339, 344, 345, 374, 375, 376, 378, 380, 383, 387,
+      388, 390, 391, 395, 399, 400, 401, 402, 403, 404, 407, 408,
+      409, 410, 412, 416, 417, 418, 439, 440, 443, 446, 457, 459,
+      460, 461, 462, 449, 464, 465, 466, 467, 468, 469, 470, 397,
+      473, 474, 475, 478, 479, 480, 481, 483, 484, 487, 488, 398,
+      489, 490, 492, 493, 494, 495, 498, 499, 500, 503, 504, 505,
+      506, 507, 508, 512,
+      ... 190 more items
+    ]
   },
   {
     id: 1043,
     path: 'node_modules/dripsy/src/index.ts',
-    dependencies: Set(1) { 1042 },
-    dependents: Set(6) { 1120, 1122, 1359, 1361, 1367, 1368 }
+    dependencies: [ 1042 ],
+    dependents: [ 1120, 1122, 1359, 1361, 1367, 1368 ]
   }
 ]
 
@@ -178,8 +196,8 @@ Demo code [here](./demo/index.ts).
   {
     id: 1123,
     path: 'src/components/index.ts',
-    dependencies: Set(3) { 1120, 1121, 1122 },
-    dependents: Set(2) { 1359, 1361 }
+    dependencies: [ 1120, 1121, 1122 ],
+    dependents: [ 1359, 1361 ]
   }
 ]
 
@@ -188,50 +206,58 @@ Demo code [here](./demo/index.ts).
   {
     id: 1123,
     path: 'src/components/index.ts',
-    dependencies: Set(3) { 1120, 1121, 1122 },
-    dependents: Set(2) { 1359, 1361 }
+    dependencies: [ 1120, 1121, 1122 ],
+    dependents: [ 1359, 1361 ]
   },
   {
     id: 1359,
     path: 'src/screens/MainScreen.tsx',
-    dependencies: Set(7) { 509, 73, 448, 518, 1043, 1123, 1358 },
-    dependents: Set(1) { 1362 }
+    dependencies: [
+       509,   73,  448,
+       518, 1043, 1123,
+      1358
+    ],
+    dependents: [ 1362 ]
   },
   {
     id: 1361,
     path: 'src/screens/IntroScreen.tsx',
-    dependencies: Set(6) { 509, 73, 448, 1043, 1123, 1360 },
-    dependents: Set(1) { 1362 }
+    dependencies: [ 509, 73, 448, 1043, 1123, 1360 ],
+    dependents: [ 1362 ]
   },
   {
     id: 1362,
     path: 'src/screens/index.ts',
-    dependencies: Set(2) { 1359, 1361 },
-    dependents: Set(1) { 1363 }
+    dependencies: [ 1359, 1361 ],
+    dependents: [ 1363 ]
   },
   {
     id: 1363,
     path: 'src/navigators/RootStack.tsx',
-    dependencies: Set(4) { 509, 73, 1119, 1362 },
-    dependents: Set(1) { 1364 }
+    dependencies: [ 509, 73, 1119, 1362 ],
+    dependents: [ 1364 ]
   },
   {
     id: 1364,
     path: 'src/navigators/index.ts',
-    dependencies: Set(1) { 1363 },
-    dependents: Set(1) { 1368 }
+    dependencies: [ 1363 ],
+    dependents: [ 1368 ]
   },
   {
     id: 1368,
     path: 'src/App.tsx',
-    dependencies: Set(9) { 509, 73, 518, 814, 914, 986, 1043, 1364, 1367 },
-    dependents: Set(1) { 1370 }
+    dependencies: [
+       509,   73,  518,
+       814,  914,  986,
+      1043, 1364, 1367
+    ],
+    dependents: [ 1370 ]
   },
   {
     id: 1370,
     path: 'index.js',
-    dependencies: Set(4) { 254, 448, 1368, 1369 },
-    dependents: Set(0) {}
+    dependencies: [ 254, 448, 1368, 1369 ],
+    dependents: []
   }
 ]
 ```

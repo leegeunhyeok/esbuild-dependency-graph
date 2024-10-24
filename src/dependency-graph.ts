@@ -2,9 +2,10 @@ import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
-import type { Module, RelativePath } from './types';
+import type { InternalModule, Module, RelativePath } from './types';
+import { toModule } from './helpers/to-module';
 
-type ModuleDependencyGraph = Record<number, Module | undefined>;
+type ModuleDependencyGraph = Record<number, InternalModule | undefined>;
 
 interface DependencyGraphOptions {
   /**
@@ -99,7 +100,7 @@ export class DependencyGraph {
   private getOrCreateModule(
     relativePath: RelativePath,
     external = false,
-  ): Module {
+  ): InternalModule {
     const id = this.getModuleId(relativePath);
 
     if (typeof id === 'number') {
@@ -118,7 +119,10 @@ export class DependencyGraph {
   /**
    * Link the dependency relationship between the two modules.
    */
-  private linkModules(sourceModule: Module, targetModule: Module): void {
+  private linkModules(
+    sourceModule: InternalModule,
+    targetModule: InternalModule,
+  ): void {
     sourceModule.dependencies.add(targetModule.id);
     targetModule.dependents.add(sourceModule.id);
   }
@@ -126,17 +130,17 @@ export class DependencyGraph {
   /**
    * Remove the module and unlink the dependency relationship.
    */
-  private unlinkModule(sourceModule: Module, unlinkOnly = false): void {
+  private unlinkModule(sourceModule: InternalModule, unlinkOnly = false): void {
     const moduleId = sourceModule.id;
 
     sourceModule.dependencies.forEach((dependencyId) => {
-      const dependencyModule = this.getModule(dependencyId);
+      const dependencyModule = this.INTERNAL__getModule(dependencyId);
 
       dependencyModule.dependents.delete(moduleId);
     });
 
     sourceModule.dependents.forEach((dependentId) => {
-      const dependentModule = this.getModule(dependentId);
+      const dependentModule = this.INTERNAL__getModule(dependentId);
 
       dependentModule.dependencies.delete(moduleId);
     });
@@ -179,7 +183,7 @@ export class DependencyGraph {
     return inverseModuleIds;
   }
 
-  private INTERNAL__getModule(request: string | number): Module {
+  private INTERNAL__getModule(request: string | number): InternalModule {
     let moduleId: number;
 
     if (typeof request === 'number') {
@@ -236,7 +240,9 @@ export class DependencyGraph {
    * Get module data by module path.
    */
   getModule(request: string | number): Module {
-    return this.INTERNAL__getModule(request);
+    const module = this.INTERNAL__getModule(request);
+
+    return toModule(module);
   }
 
   /**
@@ -255,10 +261,10 @@ export class DependencyGraph {
 
     // Validate that the IDs of modules are registered.
     const dependencyModules = dependencies.map((dependencyPath) =>
-      this.getModule(dependencyPath),
+      this.INTERNAL__getModule(dependencyPath),
     );
     const dependentModules = dependents.map((dependentPath) =>
-      this.getModule(dependentPath),
+      this.INTERNAL__getModule(dependentPath),
     );
 
     const newModule = this.getOrCreateModule(relativePath);
@@ -273,7 +279,7 @@ export class DependencyGraph {
       this.linkModules(module, newModule);
     });
 
-    return newModule;
+    return toModule(newModule);
   }
 
   /**
@@ -284,14 +290,14 @@ export class DependencyGraph {
     dependencies: (string | number)[] = [],
     dependents: (string | number)[] = [],
   ): Module {
-    const targetModule = this.getModule(request);
+    const targetModule = this.INTERNAL__getModule(request);
 
     // Validate that the IDs of modules are registered.
     const dependencyModules = dependencies.map((dependencyPath) =>
-      this.getModule(dependencyPath),
+      this.INTERNAL__getModule(dependencyPath),
     );
     const dependentModules = dependents.map((dependentPath) =>
-      this.getModule(dependentPath),
+      this.INTERNAL__getModule(dependentPath),
     );
 
     this.unlinkModule(targetModule, true);
@@ -306,7 +312,7 @@ export class DependencyGraph {
       this.linkModules(module, targetModule);
     });
 
-    return targetModule;
+    return toModule(targetModule);
   }
 
   /**

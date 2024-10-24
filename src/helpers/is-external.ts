@@ -1,8 +1,10 @@
-import { EXTERNAL, type Module } from '../types';
+import { EXTERNAL, type ModuleBase } from '../types';
 
 /**
  * Check if the module is external.
  */
-export const isExternal = (module: Module): boolean => {
+export const isExternal = <Module extends ModuleBase>(
+  module: Module,
+): boolean => {
   return Boolean(module[EXTERNAL]);
 };
