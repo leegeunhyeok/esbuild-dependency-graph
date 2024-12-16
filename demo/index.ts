@@ -13,10 +13,14 @@ async function main(): Promise<void> {
   const graph = new DependencyGraph().load(rawMetafile);
   const module = graph.getModule(TEST_MODULE);
 
-  console.log(`Module: ${TEST_MODULE}`, module);
-  console.log('Dependencies', graph.dependenciesOf(TEST_MODULE));
-  console.log('Dependents', graph.dependentsOf(TEST_MODULE));
-  console.log('Inverse dependencies', graph.inverseDependenciesOf(TEST_MODULE));
+  print(`Module: ${TEST_MODULE}`, module);
+  print('Dependencies', graph.dependenciesOf(TEST_MODULE));
+  print('Dependents', graph.dependentsOf(TEST_MODULE));
+  print('Inverse dependencies', graph.inverseDependenciesOf(TEST_MODULE));
+}
+
+function print(label: string, data: unknown) {
+  console.log(label, JSON.stringify(data, null, 2));
 }
 
 main().catch(console.error);
