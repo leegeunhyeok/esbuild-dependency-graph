@@ -316,12 +316,6 @@ describe('DependencyGraph', () => {
     });
 
     it('should throw an error if there is a mismatch between the dependency information and metadata', () => {
-      const moduleIds = [
-        graph.getModule('a.js'),
-        graph.getModule('b.js'),
-        graph.getModule('c.js'),
-      ].map(({ id }) => id);
-
       expect(() =>
         graph.updateModule('index.js', {
           dependencies: ['a.js', 'b.js', 'c.js'],
