@@ -11,6 +11,18 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1363,
     ],
     "id": 1362,
+    "meta": {
+      "imports": {
+        "./IntroScreen": {
+          "id": 1361,
+          "path": "src/screens/IntroScreen.tsx",
+        },
+        "./MainScreen": {
+          "id": 1359,
+          "path": "src/screens/MainScreen.tsx",
+        },
+      },
+    },
     "path": "src/screens/index.ts",
   },
   {
@@ -21,6 +33,9 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1371,
     ],
     "id": 1372,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/screens.ts",
   },
   {
@@ -34,6 +49,26 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1364,
     ],
     "id": 1363,
+    "meta": {
+      "imports": {
+        "../screens": {
+          "id": 1362,
+          "path": "src/screens/index.ts",
+        },
+        "@react-navigation/stack": {
+          "id": 1119,
+          "path": "node_modules/@react-navigation/stack/src/index.tsx",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/navigators/RootStack.tsx",
   },
   {
@@ -46,6 +81,9 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1370,
     ],
     "id": 1371,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/entry.ts",
   },
   {
@@ -56,6 +94,14 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1368,
     ],
     "id": 1364,
+    "meta": {
+      "imports": {
+        "./RootStack": {
+          "id": 1363,
+          "path": "src/navigators/RootStack.tsx",
+        },
+      },
+    },
     "path": "src/navigators/index.ts",
   },
   {
@@ -68,6 +114,26 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "dependents": [],
     "id": 1370,
+    "meta": {
+      "imports": {
+        "./app.json": {
+          "id": 1369,
+          "path": "app.json",
+        },
+        "./src/App": {
+          "id": 1368,
+          "path": "src/App.tsx",
+        },
+        "/Users/ghlee/workspace/react-native-esbuild/example/node_modules/react-native/Libraries/Core/InitializeCore.js": {
+          "id": 254,
+          "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+        },
+        "react-native": {
+          "id": 448,
+          "path": "node_modules/react-native/index.js",
+        },
+      },
+    },
     "path": "index.js",
   },
   {
@@ -86,6 +152,46 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1370,
     ],
     "id": 1368,
+    "meta": {
+      "imports": {
+        "./navigators": {
+          "id": 1364,
+          "path": "src/navigators/index.ts",
+        },
+        "./theme": {
+          "id": 1367,
+          "path": "src/theme/index.ts",
+        },
+        "@react-navigation/devtools": {
+          "id": 986,
+          "path": "node_modules/@react-navigation/devtools/src/index.tsx",
+        },
+        "@react-navigation/native": {
+          "id": 914,
+          "path": "node_modules/@react-navigation/native/src/index.tsx",
+        },
+        "dripsy": {
+          "id": 1043,
+          "path": "node_modules/dripsy/src/index.ts",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react-native-gesture-handler": {
+          "id": 814,
+          "path": "node_modules/react-native-gesture-handler/src/index.ts",
+        },
+        "react-native-safe-area-context": {
+          "id": 518,
+          "path": "node_modules/react-native-safe-area-context/src/index.tsx",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/App.tsx",
   },
 ]
@@ -195,6 +301,14 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 509,
+    "meta": {
+      "imports": {
+        "./cjs/react-jsx-runtime.development.js": {
+          "id": 508,
+          "path": "node_modules/react/cjs/react-jsx-runtime.development.js",
+        },
+      },
+    },
     "path": "node_modules/react/jsx-runtime.js",
   },
   {
@@ -494,6 +608,14 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 73,
+    "meta": {
+      "imports": {
+        "./cjs/react.development.js": {
+          "id": 72,
+          "path": "node_modules/react/cjs/react.development.js",
+        },
+      },
+    },
     "path": "node_modules/react/index.js",
   },
   {
@@ -692,6 +814,326 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1370,
     ],
     "id": 448,
+    "meta": {
+      "imports": {
+        "./Libraries/ActionSheetIOS/ActionSheetIOS": {
+          "id": 422,
+          "path": "node_modules/react-native/Libraries/ActionSheetIOS/ActionSheetIOS.js",
+        },
+        "./Libraries/Alert/Alert": {
+          "id": 148,
+          "path": "node_modules/react-native/Libraries/Alert/Alert.js",
+        },
+        "./Libraries/Animated/Animated": {
+          "id": 377,
+          "path": "node_modules/react-native/Libraries/Animated/Animated.js",
+        },
+        "./Libraries/Animated/Easing": {
+          "id": 289,
+          "path": "node_modules/react-native/Libraries/Animated/Easing.js",
+        },
+        "./Libraries/Animated/useAnimatedValue": {
+          "id": 439,
+          "path": "node_modules/react-native/Libraries/Animated/useAnimatedValue.js",
+        },
+        "./Libraries/AppState/AppState": {
+          "id": 181,
+          "path": "node_modules/react-native/Libraries/AppState/AppState.js",
+        },
+        "./Libraries/BatchedBridge/NativeModules": {
+          "id": 37,
+          "path": "node_modules/react-native/Libraries/BatchedBridge/NativeModules.js",
+        },
+        "./Libraries/Components/AccessibilityInfo/AccessibilityInfo": {
+          "id": 335,
+          "path": "node_modules/react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo.js",
+        },
+        "./Libraries/Components/ActivityIndicator/ActivityIndicator": {
+          "id": 339,
+          "path": "node_modules/react-native/Libraries/Components/ActivityIndicator/ActivityIndicator.js",
+        },
+        "./Libraries/Components/Button": {
+          "id": 378,
+          "path": "node_modules/react-native/Libraries/Components/Button.js",
+        },
+        "./Libraries/Components/Clipboard/Clipboard": {
+          "id": 425,
+          "path": "node_modules/react-native/Libraries/Components/Clipboard/Clipboard.js",
+        },
+        "./Libraries/Components/DrawerAndroid/DrawerLayoutAndroid": {
+          "id": 379,
+          "path": "node_modules/react-native/Libraries/Components/DrawerAndroid/DrawerLayoutAndroid.ios.js",
+        },
+        "./Libraries/Components/Keyboard/Keyboard": {
+          "id": 324,
+          "path": "node_modules/react-native/Libraries/Components/Keyboard/Keyboard.js",
+        },
+        "./Libraries/Components/Keyboard/KeyboardAvoidingView": {
+          "id": 391,
+          "path": "node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js",
+        },
+        "./Libraries/Components/Pressable/Pressable": {
+          "id": 400,
+          "path": "node_modules/react-native/Libraries/Components/Pressable/Pressable.js",
+        },
+        "./Libraries/Components/ProgressBarAndroid/ProgressBarAndroid": {
+          "id": 337,
+          "path": "node_modules/react-native/Libraries/Components/ProgressBarAndroid/ProgressBarAndroid.ios.js",
+        },
+        "./Libraries/Components/RefreshControl/RefreshControl": {
+          "id": 403,
+          "path": "node_modules/react-native/Libraries/Components/RefreshControl/RefreshControl.js",
+        },
+        "./Libraries/Components/SafeAreaView/SafeAreaView": {
+          "id": 282,
+          "path": "node_modules/react-native/Libraries/Components/SafeAreaView/SafeAreaView.js",
+        },
+        "./Libraries/Components/ScrollView/ScrollView": {
+          "id": 397,
+          "path": "node_modules/react-native/Libraries/Components/ScrollView/ScrollView.js",
+        },
+        "./Libraries/Components/StatusBar/StatusBar": {
+          "id": 407,
+          "path": "node_modules/react-native/Libraries/Components/StatusBar/StatusBar.js",
+        },
+        "./Libraries/Components/Switch/Switch": {
+          "id": 410,
+          "path": "node_modules/react-native/Libraries/Components/Switch/Switch.js",
+        },
+        "./Libraries/Components/TextInput/InputAccessoryView": {
+          "id": 390,
+          "path": "node_modules/react-native/Libraries/Components/TextInput/InputAccessoryView.js",
+        },
+        "./Libraries/Components/TextInput/TextInput": {
+          "id": 412,
+          "path": "node_modules/react-native/Libraries/Components/TextInput/TextInput.js",
+        },
+        "./Libraries/Components/ToastAndroid/ToastAndroid": {
+          "id": 438,
+          "path": "node_modules/react-native/Libraries/Components/ToastAndroid/ToastAndroid.ios.js",
+        },
+        "./Libraries/Components/Touchable/Touchable": {
+          "id": 416,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/Touchable.js",
+        },
+        "./Libraries/Components/Touchable/TouchableHighlight": {
+          "id": 417,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableHighlight.js",
+        },
+        "./Libraries/Components/Touchable/TouchableNativeFeedback": {
+          "id": 375,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableNativeFeedback.js",
+        },
+        "./Libraries/Components/Touchable/TouchableOpacity": {
+          "id": 376,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js",
+        },
+        "./Libraries/Components/Touchable/TouchableWithoutFeedback": {
+          "id": 418,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableWithoutFeedback.js",
+        },
+        "./Libraries/Components/View/View": {
+          "id": 263,
+          "path": "node_modules/react-native/Libraries/Components/View/View.js",
+        },
+        "./Libraries/EventEmitter/NativeEventEmitter": {
+          "id": 135,
+          "path": "node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js",
+        },
+        "./Libraries/EventEmitter/RCTDeviceEventEmitter": {
+          "id": 124,
+          "path": "node_modules/react-native/Libraries/EventEmitter/RCTDeviceEventEmitter.js",
+        },
+        "./Libraries/EventEmitter/RCTNativeAppEventEmitter": {
+          "id": 155,
+          "path": "node_modules/react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter.js",
+        },
+        "./Libraries/Image/Image": {
+          "id": 387,
+          "path": "node_modules/react-native/Libraries/Image/Image.ios.js",
+        },
+        "./Libraries/Image/ImageBackground": {
+          "id": 388,
+          "path": "node_modules/react-native/Libraries/Image/ImageBackground.js",
+        },
+        "./Libraries/Interaction/InteractionManager": {
+          "id": 287,
+          "path": "node_modules/react-native/Libraries/Interaction/InteractionManager.js",
+        },
+        "./Libraries/Interaction/PanResponder": {
+          "id": 431,
+          "path": "node_modules/react-native/Libraries/Interaction/PanResponder.js",
+        },
+        "./Libraries/LayoutAnimation/LayoutAnimation": {
+          "id": 322,
+          "path": "node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js",
+        },
+        "./Libraries/Linking/Linking": {
+          "id": 429,
+          "path": "node_modules/react-native/Libraries/Linking/Linking.js",
+        },
+        "./Libraries/Lists/FlatList": {
+          "id": 449,
+          "path": "node_modules/react-native/Libraries/Lists/FlatList.js",
+        },
+        "./Libraries/Lists/SectionList": {
+          "id": 404,
+          "path": "node_modules/react-native/Libraries/Lists/SectionList.js",
+        },
+        "./Libraries/Lists/VirtualizedList": {
+          "id": 419,
+          "path": "node_modules/react-native/Libraries/Lists/VirtualizedList.js",
+        },
+        "./Libraries/Lists/VirtualizedSectionList": {
+          "id": 420,
+          "path": "node_modules/react-native/Libraries/Lists/VirtualizedSectionList.js",
+        },
+        "./Libraries/LogBox/LogBox": {
+          "id": 76,
+          "path": "node_modules/react-native/Libraries/LogBox/LogBox.js",
+        },
+        "./Libraries/Modal/Modal": {
+          "id": 395,
+          "path": "node_modules/react-native/Libraries/Modal/Modal.js",
+        },
+        "./Libraries/NativeModules/specs/NativeDialogManagerAndroid": {
+          "id": 147,
+          "path": "node_modules/react-native/Libraries/NativeModules/specs/NativeDialogManagerAndroid.js",
+        },
+        "./Libraries/Network/RCTNetworking": {
+          "id": 130,
+          "path": "node_modules/react-native/Libraries/Network/RCTNetworking.ios.js",
+        },
+        "./Libraries/Performance/Systrace": {
+          "id": 29,
+          "path": "node_modules/react-native/Libraries/Performance/Systrace.js",
+        },
+        "./Libraries/PermissionsAndroid/PermissionsAndroid": {
+          "id": 433,
+          "path": "node_modules/react-native/Libraries/PermissionsAndroid/PermissionsAndroid.js",
+        },
+        "./Libraries/PushNotificationIOS/PushNotificationIOS": {
+          "id": 435,
+          "path": "node_modules/react-native/Libraries/PushNotificationIOS/PushNotificationIOS.js",
+        },
+        "./Libraries/ReactNative/AppRegistry": {
+          "id": 450,
+          "path": "node_modules/react-native/Libraries/ReactNative/AppRegistry.js",
+        },
+        "./Libraries/ReactNative/I18nManager": {
+          "id": 268,
+          "path": "node_modules/react-native/Libraries/ReactNative/I18nManager.js",
+        },
+        "./Libraries/ReactNative/RendererProxy": {
+          "id": 244,
+          "path": "node_modules/react-native/Libraries/ReactNative/RendererProxy.js",
+        },
+        "./Libraries/ReactNative/RootTag": {
+          "id": 265,
+          "path": "node_modules/react-native/Libraries/ReactNative/RootTag.js",
+        },
+        "./Libraries/ReactNative/UIManager": {
+          "id": 228,
+          "path": "node_modules/react-native/Libraries/ReactNative/UIManager.js",
+        },
+        "./Libraries/ReactNative/requireNativeComponent": {
+          "id": 274,
+          "path": "node_modules/react-native/Libraries/ReactNative/requireNativeComponent.js",
+        },
+        "./Libraries/Settings/Settings": {
+          "id": 188,
+          "path": "node_modules/react-native/Libraries/Settings/Settings.ios.js",
+        },
+        "./Libraries/Share/Share": {
+          "id": 437,
+          "path": "node_modules/react-native/Libraries/Share/Share.js",
+        },
+        "./Libraries/StyleSheet/PlatformColorValueTypes": {
+          "id": 162,
+          "path": "node_modules/react-native/Libraries/StyleSheet/PlatformColorValueTypes.ios.js",
+        },
+        "./Libraries/StyleSheet/PlatformColorValueTypesIOS": {
+          "id": 447,
+          "path": "node_modules/react-native/Libraries/StyleSheet/PlatformColorValueTypesIOS.ios.js",
+        },
+        "./Libraries/StyleSheet/StyleSheet": {
+          "id": 264,
+          "path": "node_modules/react-native/Libraries/StyleSheet/StyleSheet.js",
+        },
+        "./Libraries/StyleSheet/processColor": {
+          "id": 164,
+          "path": "node_modules/react-native/Libraries/StyleSheet/processColor.js",
+        },
+        "./Libraries/Text/Text": {
+          "id": 374,
+          "path": "node_modules/react-native/Libraries/Text/Text.js",
+        },
+        "./Libraries/TurboModule/TurboModuleRegistry": {
+          "id": 38,
+          "path": "node_modules/react-native/Libraries/TurboModule/TurboModuleRegistry.js",
+        },
+        "./Libraries/UTFSequence": {
+          "id": 70,
+          "path": "node_modules/react-native/Libraries/UTFSequence.js",
+        },
+        "./Libraries/Utilities/Appearance": {
+          "id": 167,
+          "path": "node_modules/react-native/Libraries/Utilities/Appearance.js",
+        },
+        "./Libraries/Utilities/BackHandler": {
+          "id": 423,
+          "path": "node_modules/react-native/Libraries/Utilities/BackHandler.ios.js",
+        },
+        "./Libraries/Utilities/DevSettings": {
+          "id": 158,
+          "path": "node_modules/react-native/Libraries/Utilities/DevSettings.js",
+        },
+        "./Libraries/Utilities/DeviceInfo": {
+          "id": 426,
+          "path": "node_modules/react-native/Libraries/Utilities/DeviceInfo.js",
+        },
+        "./Libraries/Utilities/Dimensions": {
+          "id": 210,
+          "path": "node_modules/react-native/Libraries/Utilities/Dimensions.js",
+        },
+        "./Libraries/Utilities/PixelRatio": {
+          "id": 211,
+          "path": "node_modules/react-native/Libraries/Utilities/PixelRatio.js",
+        },
+        "./Libraries/Utilities/Platform": {
+          "id": 57,
+          "path": "node_modules/react-native/Libraries/Utilities/Platform.ios.js",
+        },
+        "./Libraries/Utilities/useColorScheme": {
+          "id": 442,
+          "path": "node_modules/react-native/Libraries/Utilities/useColorScheme.js",
+        },
+        "./Libraries/Utilities/useWindowDimensions": {
+          "id": 443,
+          "path": "node_modules/react-native/Libraries/Utilities/useWindowDimensions.js",
+        },
+        "./Libraries/Utilities/warnOnce": {
+          "id": 32,
+          "path": "node_modules/react-native/Libraries/Utilities/warnOnce.js",
+        },
+        "./Libraries/Vibration/Vibration": {
+          "id": 445,
+          "path": "node_modules/react-native/Libraries/Vibration/Vibration.js",
+        },
+        "./Libraries/YellowBox/YellowBoxDeprecated": {
+          "id": 446,
+          "path": "node_modules/react-native/Libraries/YellowBox/YellowBoxDeprecated.js",
+        },
+        "deprecated-react-native-prop-types": {
+          "id": 373,
+          "path": "node_modules/deprecated-react-native-prop-types/index.js",
+        },
+        "invariant": {
+          "id": 18,
+          "path": "node_modules/invariant/browser.js",
+        },
+      },
+    },
     "path": "node_modules/react-native/index.js",
   },
   {
@@ -711,6 +1153,26 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 518,
+    "meta": {
+      "imports": {
+        "./InitialWindow": {
+          "id": 516,
+          "path": "node_modules/react-native-safe-area-context/src/InitialWindow.native.ts",
+        },
+        "./SafeArea.types": {
+          "id": 517,
+          "path": "node_modules/react-native-safe-area-context/src/SafeArea.types.ts",
+        },
+        "./SafeAreaContext": {
+          "id": 512,
+          "path": "node_modules/react-native-safe-area-context/src/SafeAreaContext.tsx",
+        },
+        "./SafeAreaView": {
+          "id": 514,
+          "path": "node_modules/react-native-safe-area-context/src/SafeAreaView.tsx",
+        },
+      },
+    },
     "path": "node_modules/react-native-safe-area-context/src/index.tsx",
   },
   {
@@ -726,6 +1188,14 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 1043,
+    "meta": {
+      "imports": {
+        "./core": {
+          "id": 1042,
+          "path": "node_modules/dripsy/src/core/index.ts",
+        },
+      },
+    },
     "path": "node_modules/dripsy/src/index.ts",
   },
   {
@@ -739,6 +1209,22 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1361,
     ],
     "id": 1123,
+    "meta": {
+      "imports": {
+        "./Button": {
+          "id": 1120,
+          "path": "src/components/Button.tsx",
+        },
+        "./Fade": {
+          "id": 1121,
+          "path": "src/components/Fade.tsx",
+        },
+        "./Section": {
+          "id": 1122,
+          "path": "src/components/Section.tsx",
+        },
+      },
+    },
     "path": "src/components/index.ts",
   },
   {
@@ -751,6 +1237,18 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1359,
     ],
     "id": 1358,
+    "meta": {
+      "imports": {
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react-native-svg": {
+          "id": 1357,
+          "path": "node_modules/react-native-svg/src/index.ts",
+        },
+      },
+    },
     "path": "src/assets/logo.svg",
   },
 ]
@@ -767,6 +1265,18 @@ exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
       1363,
     ],
     "id": 1362,
+    "meta": {
+      "imports": {
+        "./IntroScreen": {
+          "id": 1361,
+          "path": "src/screens/IntroScreen.tsx",
+        },
+        "./MainScreen": {
+          "id": 1359,
+          "path": "src/screens/MainScreen.tsx",
+        },
+      },
+    },
     "path": "src/screens/index.ts",
   },
 ]
@@ -783,6 +1293,18 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1363,
     ],
     "id": 1362,
+    "meta": {
+      "imports": {
+        "./IntroScreen": {
+          "id": 1361,
+          "path": "src/screens/IntroScreen.tsx",
+        },
+        "./MainScreen": {
+          "id": 1359,
+          "path": "src/screens/MainScreen.tsx",
+        },
+      },
+    },
     "path": "src/screens/index.ts",
   },
   {
@@ -796,6 +1318,26 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1364,
     ],
     "id": 1363,
+    "meta": {
+      "imports": {
+        "../screens": {
+          "id": 1362,
+          "path": "src/screens/index.ts",
+        },
+        "@react-navigation/stack": {
+          "id": 1119,
+          "path": "node_modules/@react-navigation/stack/src/index.tsx",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/navigators/RootStack.tsx",
   },
   {
@@ -806,6 +1348,14 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 1364,
+    "meta": {
+      "imports": {
+        "./RootStack": {
+          "id": 1363,
+          "path": "src/navigators/RootStack.tsx",
+        },
+      },
+    },
     "path": "src/navigators/index.ts",
   },
   {
@@ -824,6 +1374,46 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1370,
     ],
     "id": 1368,
+    "meta": {
+      "imports": {
+        "./navigators": {
+          "id": 1364,
+          "path": "src/navigators/index.ts",
+        },
+        "./theme": {
+          "id": 1367,
+          "path": "src/theme/index.ts",
+        },
+        "@react-navigation/devtools": {
+          "id": 986,
+          "path": "node_modules/@react-navigation/devtools/src/index.tsx",
+        },
+        "@react-navigation/native": {
+          "id": 914,
+          "path": "node_modules/@react-navigation/native/src/index.tsx",
+        },
+        "dripsy": {
+          "id": 1043,
+          "path": "node_modules/dripsy/src/index.ts",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react-native-gesture-handler": {
+          "id": 814,
+          "path": "node_modules/react-native-gesture-handler/src/index.ts",
+        },
+        "react-native-safe-area-context": {
+          "id": 518,
+          "path": "node_modules/react-native-safe-area-context/src/index.tsx",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/App.tsx",
   },
   {
@@ -835,7 +1425,718 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1370,
+    "meta": {
+      "imports": {
+        "./app.json": {
+          "id": 1369,
+          "path": "app.json",
+        },
+        "./src/App": {
+          "id": 1368,
+          "path": "src/App.tsx",
+        },
+        "/Users/ghlee/workspace/react-native-esbuild/example/node_modules/react-native/Libraries/Core/InitializeCore.js": {
+          "id": 254,
+          "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+        },
+        "react-native": {
+          "id": 448,
+          "path": "node_modules/react-native/index.js",
+        },
+      },
+    },
     "path": "index.js",
+  },
+]
+`;
+
+exports[`DependencyGraph > lazy load > should update module data 1`] = `
+[
+  {
+    "dependencies": [
+      3,
+      20,
+      52,
+      80,
+      107,
+      110,
+      115,
+      147,
+      152,
+      153,
+      175,
+      177,
+      180,
+      201,
+      79,
+      453,
+      125,
+    ],
+    "dependents": [
+      256,
+      0,
+    ],
+    "id": 257,
+    "meta": {
+      "imports": {
+        "../LogBox/LogBox": {
+          "id": 79,
+          "path": "node_modules/react-native/Libraries/LogBox/LogBox.js",
+        },
+        "../ReactNative/AppRegistry": {
+          "id": 453,
+          "path": "node_modules/react-native/Libraries/ReactNative/AppRegistry.js",
+        },
+        "../Utilities/GlobalPerformanceLogger": {
+          "id": 125,
+          "path": "node_modules/react-native/Libraries/Utilities/GlobalPerformanceLogger.js",
+        },
+        "./checkNativeVersion": {
+          "id": 180,
+          "path": "node_modules/react-native/Libraries/Core/checkNativeVersion.js",
+        },
+        "./polyfillPromise": {
+          "id": 107,
+          "path": "node_modules/react-native/Libraries/Core/polyfillPromise.js",
+        },
+        "./setUpAlert": {
+          "id": 152,
+          "path": "node_modules/react-native/Libraries/Core/setUpAlert.js",
+        },
+        "./setUpBatchedBridge": {
+          "id": 175,
+          "path": "node_modules/react-native/Libraries/Core/setUpBatchedBridge.js",
+        },
+        "./setUpDOM": {
+          "id": 20,
+          "path": "node_modules/react-native/Libraries/Core/setUpDOM.js",
+        },
+        "./setUpDeveloperTools": {
+          "id": 201,
+          "path": "node_modules/react-native/Libraries/Core/setUpDeveloperTools.js",
+        },
+        "./setUpErrorHandling": {
+          "id": 80,
+          "path": "node_modules/react-native/Libraries/Core/setUpErrorHandling.js",
+        },
+        "./setUpGlobals": {
+          "id": 3,
+          "path": "node_modules/react-native/Libraries/Core/setUpGlobals.js",
+        },
+        "./setUpNavigator": {
+          "id": 153,
+          "path": "node_modules/react-native/Libraries/Core/setUpNavigator.js",
+        },
+        "./setUpPerformance": {
+          "id": 52,
+          "path": "node_modules/react-native/Libraries/Core/setUpPerformance.js",
+        },
+        "./setUpRegeneratorRuntime": {
+          "id": 110,
+          "path": "node_modules/react-native/Libraries/Core/setUpRegeneratorRuntime.js",
+        },
+        "./setUpSegmentFetcher": {
+          "id": 177,
+          "path": "node_modules/react-native/Libraries/Core/setUpSegmentFetcher.js",
+        },
+        "./setUpTimers": {
+          "id": 115,
+          "path": "node_modules/react-native/Libraries/Core/setUpTimers.js",
+        },
+        "./setUpXHR": {
+          "id": 147,
+          "path": "node_modules/react-native/Libraries/Core/setUpXHR.js",
+        },
+      },
+    },
+    "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+  },
+  {
+    "dependencies": [
+      21,
+      35,
+      338,
+      342,
+      381,
+      382,
+      452,
+      390,
+      391,
+      393,
+      394,
+      398,
+      403,
+      340,
+      406,
+      285,
+      400,
+      407,
+      410,
+      413,
+      377,
+      415,
+      419,
+      420,
+      378,
+      379,
+      421,
+      266,
+      422,
+      423,
+      425,
+      151,
+      380,
+      170,
+      453,
+      184,
+      426,
+      428,
+      429,
+      161,
+      213,
+      292,
+      247,
+      271,
+      290,
+      327,
+      325,
+      432,
+      79,
+      150,
+      138,
+      133,
+      434,
+      436,
+      214,
+      438,
+      191,
+      440,
+      267,
+      32,
+      441,
+      41,
+      231,
+      442,
+      445,
+      446,
+      73,
+      448,
+      449,
+      127,
+      450,
+      158,
+      40,
+      60,
+      165,
+      167,
+      277,
+      268,
+      376,
+    ],
+    "dependents": [
+      454,
+      463,
+      464,
+      465,
+      515,
+      518,
+      548,
+      567,
+      624,
+      633,
+      636,
+      637,
+      638,
+      648,
+      656,
+      658,
+      659,
+      660,
+      674,
+      675,
+      682,
+      683,
+      774,
+      777,
+      779,
+      792,
+      793,
+      807,
+      808,
+      809,
+      811,
+      812,
+      814,
+      815,
+      816,
+      899,
+      900,
+      904,
+      907,
+      987,
+      995,
+      996,
+      1001,
+      1002,
+      1003,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1016,
+      1017,
+      1028,
+      1031,
+      1032,
+      1033,
+      1034,
+      1035,
+      1038,
+      1039,
+      1041,
+      1042,
+      1047,
+      1048,
+      1049,
+      1050,
+      1051,
+      1053,
+      1054,
+      1056,
+      1059,
+      1060,
+      1061,
+      1064,
+      1067,
+      1071,
+      1072,
+      1073,
+      1074,
+      1083,
+      1085,
+      1095,
+      1100,
+      1109,
+      1110,
+      1112,
+      1113,
+      1114,
+      1115,
+      1116,
+      1117,
+      1118,
+      1127,
+      1128,
+      1129,
+      1130,
+      1132,
+      1138,
+      1160,
+      1161,
+      1171,
+      1177,
+      1356,
+      2,
+      1363,
+      0,
+    ],
+    "id": 451,
+    "meta": {
+      "imports": {
+        "./Libraries/ActionSheetIOS/ActionSheetIOS": {
+          "id": 425,
+          "path": "node_modules/react-native/Libraries/ActionSheetIOS/ActionSheetIOS.js",
+        },
+        "./Libraries/Alert/Alert": {
+          "id": 151,
+          "path": "node_modules/react-native/Libraries/Alert/Alert.js",
+        },
+        "./Libraries/Animated/Animated": {
+          "id": 380,
+          "path": "node_modules/react-native/Libraries/Animated/Animated.js",
+        },
+        "./Libraries/Animated/Easing": {
+          "id": 292,
+          "path": "node_modules/react-native/Libraries/Animated/Easing.js",
+        },
+        "./Libraries/Animated/useAnimatedValue": {
+          "id": 442,
+          "path": "node_modules/react-native/Libraries/Animated/useAnimatedValue.js",
+        },
+        "./Libraries/AppState/AppState": {
+          "id": 184,
+          "path": "node_modules/react-native/Libraries/AppState/AppState.js",
+        },
+        "./Libraries/BatchedBridge/NativeModules": {
+          "id": 40,
+          "path": "node_modules/react-native/Libraries/BatchedBridge/NativeModules.js",
+        },
+        "./Libraries/Components/AccessibilityInfo/AccessibilityInfo": {
+          "id": 338,
+          "path": "node_modules/react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo.js",
+        },
+        "./Libraries/Components/ActivityIndicator/ActivityIndicator": {
+          "id": 342,
+          "path": "node_modules/react-native/Libraries/Components/ActivityIndicator/ActivityIndicator.js",
+        },
+        "./Libraries/Components/Button": {
+          "id": 381,
+          "path": "node_modules/react-native/Libraries/Components/Button.js",
+        },
+        "./Libraries/Components/Clipboard/Clipboard": {
+          "id": 428,
+          "path": "node_modules/react-native/Libraries/Components/Clipboard/Clipboard.js",
+        },
+        "./Libraries/Components/DrawerAndroid/DrawerLayoutAndroid": {
+          "id": 382,
+          "path": "node_modules/react-native/Libraries/Components/DrawerAndroid/DrawerLayoutAndroid.ios.js",
+        },
+        "./Libraries/Components/Keyboard/Keyboard": {
+          "id": 327,
+          "path": "node_modules/react-native/Libraries/Components/Keyboard/Keyboard.js",
+        },
+        "./Libraries/Components/Keyboard/KeyboardAvoidingView": {
+          "id": 394,
+          "path": "node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js",
+        },
+        "./Libraries/Components/Pressable/Pressable": {
+          "id": 403,
+          "path": "node_modules/react-native/Libraries/Components/Pressable/Pressable.js",
+        },
+        "./Libraries/Components/ProgressBarAndroid/ProgressBarAndroid": {
+          "id": 340,
+          "path": "node_modules/react-native/Libraries/Components/ProgressBarAndroid/ProgressBarAndroid.ios.js",
+        },
+        "./Libraries/Components/RefreshControl/RefreshControl": {
+          "id": 406,
+          "path": "node_modules/react-native/Libraries/Components/RefreshControl/RefreshControl.js",
+        },
+        "./Libraries/Components/SafeAreaView/SafeAreaView": {
+          "id": 285,
+          "path": "node_modules/react-native/Libraries/Components/SafeAreaView/SafeAreaView.js",
+        },
+        "./Libraries/Components/ScrollView/ScrollView": {
+          "id": 400,
+          "path": "node_modules/react-native/Libraries/Components/ScrollView/ScrollView.js",
+        },
+        "./Libraries/Components/StatusBar/StatusBar": {
+          "id": 410,
+          "path": "node_modules/react-native/Libraries/Components/StatusBar/StatusBar.js",
+        },
+        "./Libraries/Components/Switch/Switch": {
+          "id": 413,
+          "path": "node_modules/react-native/Libraries/Components/Switch/Switch.js",
+        },
+        "./Libraries/Components/TextInput/InputAccessoryView": {
+          "id": 393,
+          "path": "node_modules/react-native/Libraries/Components/TextInput/InputAccessoryView.js",
+        },
+        "./Libraries/Components/TextInput/TextInput": {
+          "id": 415,
+          "path": "node_modules/react-native/Libraries/Components/TextInput/TextInput.js",
+        },
+        "./Libraries/Components/ToastAndroid/ToastAndroid": {
+          "id": 441,
+          "path": "node_modules/react-native/Libraries/Components/ToastAndroid/ToastAndroid.ios.js",
+        },
+        "./Libraries/Components/Touchable/Touchable": {
+          "id": 419,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/Touchable.js",
+        },
+        "./Libraries/Components/Touchable/TouchableHighlight": {
+          "id": 420,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableHighlight.js",
+        },
+        "./Libraries/Components/Touchable/TouchableNativeFeedback": {
+          "id": 378,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableNativeFeedback.js",
+        },
+        "./Libraries/Components/Touchable/TouchableOpacity": {
+          "id": 379,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js",
+        },
+        "./Libraries/Components/Touchable/TouchableWithoutFeedback": {
+          "id": 421,
+          "path": "node_modules/react-native/Libraries/Components/Touchable/TouchableWithoutFeedback.js",
+        },
+        "./Libraries/Components/View/View": {
+          "id": 266,
+          "path": "node_modules/react-native/Libraries/Components/View/View.js",
+        },
+        "./Libraries/EventEmitter/NativeEventEmitter": {
+          "id": 138,
+          "path": "node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js",
+        },
+        "./Libraries/EventEmitter/RCTDeviceEventEmitter": {
+          "id": 127,
+          "path": "node_modules/react-native/Libraries/EventEmitter/RCTDeviceEventEmitter.js",
+        },
+        "./Libraries/EventEmitter/RCTNativeAppEventEmitter": {
+          "id": 158,
+          "path": "node_modules/react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter.js",
+        },
+        "./Libraries/Image/Image": {
+          "id": 390,
+          "path": "node_modules/react-native/Libraries/Image/Image.ios.js",
+        },
+        "./Libraries/Image/ImageBackground": {
+          "id": 391,
+          "path": "node_modules/react-native/Libraries/Image/ImageBackground.js",
+        },
+        "./Libraries/Interaction/InteractionManager": {
+          "id": 290,
+          "path": "node_modules/react-native/Libraries/Interaction/InteractionManager.js",
+        },
+        "./Libraries/Interaction/PanResponder": {
+          "id": 434,
+          "path": "node_modules/react-native/Libraries/Interaction/PanResponder.js",
+        },
+        "./Libraries/LayoutAnimation/LayoutAnimation": {
+          "id": 325,
+          "path": "node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js",
+        },
+        "./Libraries/Linking/Linking": {
+          "id": 432,
+          "path": "node_modules/react-native/Libraries/Linking/Linking.js",
+        },
+        "./Libraries/Lists/FlatList": {
+          "id": 452,
+          "path": "node_modules/react-native/Libraries/Lists/FlatList.js",
+        },
+        "./Libraries/Lists/SectionList": {
+          "id": 407,
+          "path": "node_modules/react-native/Libraries/Lists/SectionList.js",
+        },
+        "./Libraries/Lists/VirtualizedList": {
+          "id": 422,
+          "path": "node_modules/react-native/Libraries/Lists/VirtualizedList.js",
+        },
+        "./Libraries/Lists/VirtualizedSectionList": {
+          "id": 423,
+          "path": "node_modules/react-native/Libraries/Lists/VirtualizedSectionList.js",
+        },
+        "./Libraries/LogBox/LogBox": {
+          "id": 79,
+          "path": "node_modules/react-native/Libraries/LogBox/LogBox.js",
+        },
+        "./Libraries/Modal/Modal": {
+          "id": 398,
+          "path": "node_modules/react-native/Libraries/Modal/Modal.js",
+        },
+        "./Libraries/NativeModules/specs/NativeDialogManagerAndroid": {
+          "id": 150,
+          "path": "node_modules/react-native/Libraries/NativeModules/specs/NativeDialogManagerAndroid.js",
+        },
+        "./Libraries/Network/RCTNetworking": {
+          "id": 133,
+          "path": "node_modules/react-native/Libraries/Network/RCTNetworking.ios.js",
+        },
+        "./Libraries/Performance/Systrace": {
+          "id": 32,
+          "path": "node_modules/react-native/Libraries/Performance/Systrace.js",
+        },
+        "./Libraries/PermissionsAndroid/PermissionsAndroid": {
+          "id": 436,
+          "path": "node_modules/react-native/Libraries/PermissionsAndroid/PermissionsAndroid.js",
+        },
+        "./Libraries/PushNotificationIOS/PushNotificationIOS": {
+          "id": 438,
+          "path": "node_modules/react-native/Libraries/PushNotificationIOS/PushNotificationIOS.js",
+        },
+        "./Libraries/ReactNative/AppRegistry": {
+          "id": 453,
+          "path": "node_modules/react-native/Libraries/ReactNative/AppRegistry.js",
+        },
+        "./Libraries/ReactNative/I18nManager": {
+          "id": 271,
+          "path": "node_modules/react-native/Libraries/ReactNative/I18nManager.js",
+        },
+        "./Libraries/ReactNative/RendererProxy": {
+          "id": 247,
+          "path": "node_modules/react-native/Libraries/ReactNative/RendererProxy.js",
+        },
+        "./Libraries/ReactNative/RootTag": {
+          "id": 268,
+          "path": "node_modules/react-native/Libraries/ReactNative/RootTag.js",
+        },
+        "./Libraries/ReactNative/UIManager": {
+          "id": 231,
+          "path": "node_modules/react-native/Libraries/ReactNative/UIManager.js",
+        },
+        "./Libraries/ReactNative/requireNativeComponent": {
+          "id": 277,
+          "path": "node_modules/react-native/Libraries/ReactNative/requireNativeComponent.js",
+        },
+        "./Libraries/Settings/Settings": {
+          "id": 191,
+          "path": "node_modules/react-native/Libraries/Settings/Settings.ios.js",
+        },
+        "./Libraries/Share/Share": {
+          "id": 440,
+          "path": "node_modules/react-native/Libraries/Share/Share.js",
+        },
+        "./Libraries/StyleSheet/PlatformColorValueTypes": {
+          "id": 165,
+          "path": "node_modules/react-native/Libraries/StyleSheet/PlatformColorValueTypes.ios.js",
+        },
+        "./Libraries/StyleSheet/PlatformColorValueTypesIOS": {
+          "id": 450,
+          "path": "node_modules/react-native/Libraries/StyleSheet/PlatformColorValueTypesIOS.ios.js",
+        },
+        "./Libraries/StyleSheet/StyleSheet": {
+          "id": 267,
+          "path": "node_modules/react-native/Libraries/StyleSheet/StyleSheet.js",
+        },
+        "./Libraries/StyleSheet/processColor": {
+          "id": 167,
+          "path": "node_modules/react-native/Libraries/StyleSheet/processColor.js",
+        },
+        "./Libraries/Text/Text": {
+          "id": 377,
+          "path": "node_modules/react-native/Libraries/Text/Text.js",
+        },
+        "./Libraries/TurboModule/TurboModuleRegistry": {
+          "id": 41,
+          "path": "node_modules/react-native/Libraries/TurboModule/TurboModuleRegistry.js",
+        },
+        "./Libraries/UTFSequence": {
+          "id": 73,
+          "path": "node_modules/react-native/Libraries/UTFSequence.js",
+        },
+        "./Libraries/Utilities/Appearance": {
+          "id": 170,
+          "path": "node_modules/react-native/Libraries/Utilities/Appearance.js",
+        },
+        "./Libraries/Utilities/BackHandler": {
+          "id": 426,
+          "path": "node_modules/react-native/Libraries/Utilities/BackHandler.ios.js",
+        },
+        "./Libraries/Utilities/DevSettings": {
+          "id": 161,
+          "path": "node_modules/react-native/Libraries/Utilities/DevSettings.js",
+        },
+        "./Libraries/Utilities/DeviceInfo": {
+          "id": 429,
+          "path": "node_modules/react-native/Libraries/Utilities/DeviceInfo.js",
+        },
+        "./Libraries/Utilities/Dimensions": {
+          "id": 213,
+          "path": "node_modules/react-native/Libraries/Utilities/Dimensions.js",
+        },
+        "./Libraries/Utilities/PixelRatio": {
+          "id": 214,
+          "path": "node_modules/react-native/Libraries/Utilities/PixelRatio.js",
+        },
+        "./Libraries/Utilities/Platform": {
+          "id": 60,
+          "path": "node_modules/react-native/Libraries/Utilities/Platform.ios.js",
+        },
+        "./Libraries/Utilities/useColorScheme": {
+          "id": 445,
+          "path": "node_modules/react-native/Libraries/Utilities/useColorScheme.js",
+        },
+        "./Libraries/Utilities/useWindowDimensions": {
+          "id": 446,
+          "path": "node_modules/react-native/Libraries/Utilities/useWindowDimensions.js",
+        },
+        "./Libraries/Utilities/warnOnce": {
+          "id": 35,
+          "path": "node_modules/react-native/Libraries/Utilities/warnOnce.js",
+        },
+        "./Libraries/Vibration/Vibration": {
+          "id": 448,
+          "path": "node_modules/react-native/Libraries/Vibration/Vibration.js",
+        },
+        "./Libraries/YellowBox/YellowBoxDeprecated": {
+          "id": 449,
+          "path": "node_modules/react-native/Libraries/YellowBox/YellowBoxDeprecated.js",
+        },
+        "deprecated-react-native-prop-types": {
+          "id": 376,
+          "path": "node_modules/deprecated-react-native-prop-types/index.js",
+        },
+        "invariant": {
+          "id": 21,
+          "path": "node_modules/invariant/browser.js",
+        },
+      },
+    },
+    "path": "node_modules/react-native/index.js",
+  },
+  {
+    "dependencies": [
+      512,
+      76,
+      521,
+      817,
+      917,
+      989,
+      1046,
+      1366,
+      1369,
+    ],
+    "dependents": [
+      0,
+    ],
+    "id": 1,
+    "meta": {
+      "imports": {
+        "./navigators": {
+          "id": 1366,
+          "path": "src/navigators/index.ts",
+        },
+        "./theme": {
+          "id": 1369,
+          "path": "src/theme/index.ts",
+        },
+        "@react-navigation/devtools": {
+          "id": 989,
+          "path": "node_modules/@react-navigation/devtools/src/index.tsx",
+        },
+        "@react-navigation/native": {
+          "id": 917,
+          "path": "node_modules/@react-navigation/native/src/index.tsx",
+        },
+        "dripsy": {
+          "id": 1046,
+          "path": "node_modules/dripsy/src/index.ts",
+        },
+        "react": {
+          "id": 76,
+          "path": "node_modules/react/index.js",
+        },
+        "react-native-gesture-handler": {
+          "id": 817,
+          "path": "node_modules/react-native-gesture-handler/src/index.ts",
+        },
+        "react-native-safe-area-context": {
+          "id": 521,
+          "path": "node_modules/react-native-safe-area-context/src/index.tsx",
+        },
+        "react/jsx-runtime": {
+          "id": 512,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
+    "path": "src/App.tsx",
+  },
+  {
+    "dependencies": [],
+    "dependents": [
+      0,
+    ],
+    "id": 1370,
+    "meta": {
+      "imports": {},
+    },
+    "path": "app.json",
   },
 ]
 `;
@@ -850,6 +2151,9 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
       1371,
     ],
     "id": 1372,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/screens.ts",
   },
   {
@@ -858,6 +2162,9 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1374,
+    "meta": {
+      "imports": {},
+    },
     "path": "re-export.ts",
   },
   {
@@ -870,6 +2177,9 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
       1370,
     ],
     "id": 1371,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/entry.ts",
   },
   {
@@ -882,6 +2192,26 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1370,
+    "meta": {
+      "imports": {
+        "./app.json": {
+          "id": 1369,
+          "path": "app.json",
+        },
+        "./src/App": {
+          "id": 1368,
+          "path": "src/App.tsx",
+        },
+        "/Users/ghlee/workspace/react-native-esbuild/example/node_modules/react-native/Libraries/Core/InitializeCore.js": {
+          "id": 254,
+          "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+        },
+        "react-native": {
+          "id": 448,
+          "path": "node_modules/react-native/index.js",
+        },
+      },
+    },
     "path": "index.js",
   },
 ]
@@ -908,6 +2238,9 @@ exports[`DependencyGraph > updateModule > should match snapshots 1`] = `
       1374,
     ],
     "id": 1359,
+    "meta": {
+      "imports": {},
+    },
     "path": "src/screens/MainScreen.tsx",
   },
 ]
@@ -932,6 +2265,9 @@ exports[`DependencyGraph > updateModule > should match snapshots 2`] = `
       1374,
     ],
     "id": 1359,
+    "meta": {
+      "imports": {},
+    },
     "path": "src/screens/MainScreen.tsx",
   },
 ]
@@ -948,6 +2284,18 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1363,
     ],
     "id": 1362,
+    "meta": {
+      "imports": {
+        "./IntroScreen": {
+          "id": 1361,
+          "path": "src/screens/IntroScreen.tsx",
+        },
+        "./MainScreen": {
+          "id": 1359,
+          "path": "src/screens/MainScreen.tsx",
+        },
+      },
+    },
     "path": "src/screens/index.ts",
   },
   {
@@ -958,6 +2306,9 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1371,
     ],
     "id": 1372,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/screens.ts",
   },
   {
@@ -966,6 +2317,9 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "dependents": [],
     "id": 1374,
+    "meta": {
+      "imports": {},
+    },
     "path": "re-export.ts",
   },
   {
@@ -979,6 +2333,26 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1364,
     ],
     "id": 1363,
+    "meta": {
+      "imports": {
+        "../screens": {
+          "id": 1362,
+          "path": "src/screens/index.ts",
+        },
+        "@react-navigation/stack": {
+          "id": 1119,
+          "path": "node_modules/@react-navigation/stack/src/index.tsx",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/navigators/RootStack.tsx",
   },
   {
@@ -991,6 +2365,9 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1370,
     ],
     "id": 1371,
+    "meta": {
+      "imports": {},
+    },
     "path": "root/entry.ts",
   },
   {
@@ -1001,6 +2378,14 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1368,
     ],
     "id": 1364,
+    "meta": {
+      "imports": {
+        "./RootStack": {
+          "id": 1363,
+          "path": "src/navigators/RootStack.tsx",
+        },
+      },
+    },
     "path": "src/navigators/index.ts",
   },
   {
@@ -1013,6 +2398,26 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "dependents": [],
     "id": 1370,
+    "meta": {
+      "imports": {
+        "./app.json": {
+          "id": 1369,
+          "path": "app.json",
+        },
+        "./src/App": {
+          "id": 1368,
+          "path": "src/App.tsx",
+        },
+        "/Users/ghlee/workspace/react-native-esbuild/example/node_modules/react-native/Libraries/Core/InitializeCore.js": {
+          "id": 254,
+          "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+        },
+        "react-native": {
+          "id": 448,
+          "path": "node_modules/react-native/index.js",
+        },
+      },
+    },
     "path": "index.js",
   },
   {
@@ -1031,6 +2436,46 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
       1370,
     ],
     "id": 1368,
+    "meta": {
+      "imports": {
+        "./navigators": {
+          "id": 1364,
+          "path": "src/navigators/index.ts",
+        },
+        "./theme": {
+          "id": 1367,
+          "path": "src/theme/index.ts",
+        },
+        "@react-navigation/devtools": {
+          "id": 986,
+          "path": "node_modules/@react-navigation/devtools/src/index.tsx",
+        },
+        "@react-navigation/native": {
+          "id": 914,
+          "path": "node_modules/@react-navigation/native/src/index.tsx",
+        },
+        "dripsy": {
+          "id": 1043,
+          "path": "node_modules/dripsy/src/index.ts",
+        },
+        "react": {
+          "id": 73,
+          "path": "node_modules/react/index.js",
+        },
+        "react-native-gesture-handler": {
+          "id": 814,
+          "path": "node_modules/react-native-gesture-handler/src/index.ts",
+        },
+        "react-native-safe-area-context": {
+          "id": 518,
+          "path": "node_modules/react-native-safe-area-context/src/index.tsx",
+        },
+        "react/jsx-runtime": {
+          "id": 509,
+          "path": "node_modules/react/jsx-runtime.js",
+        },
+      },
+    },
     "path": "src/App.tsx",
   },
 ]

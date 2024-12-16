@@ -2,7 +2,12 @@ import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
 import { createModule, isExternal } from './helpers';
 import { assertValue } from './utils';
-import type { InternalModule, Module, RelativePath } from './types';
+import {
+  type InternalModule,
+  type Module,
+  type ModuleMeta,
+  type RelativePath,
+} from './types';
 import { toModule } from './helpers/to-module';
 
 type ModuleDependencyGraph = Record<number, InternalModule | undefined>;
@@ -37,18 +42,37 @@ export class DependencyGraph {
   private generateDependencyGraph(metafile: Metafile): void {
     for (const modulePath in metafile.inputs) {
       // esbuild's paths are relative path.
-      const currentModule = this.getOrCreateModule(modulePath as RelativePath);
+      const relativePath = modulePath as RelativePath;
+      const moduleId = this.getModuleId(relativePath);
       const imports = metafile.inputs[modulePath]?.imports ?? [];
+
+      const currentModule =
+        moduleId == null
+          ? this.INTERNAL__createModule(relativePath, { imports: {} })
+          : this.INTERNAL__getModule(relativePath);
 
       if (isExternal(currentModule)) {
         continue;
       }
 
+      // Link with dependencies
       for (const importMeta of imports) {
-        const dependencyModule = this.getOrCreateModule(
-          importMeta.path as RelativePath,
-          importMeta.external,
-        );
+        const dependencyRelativePath = importMeta.path as RelativePath;
+        const dependencyModuleId = this.getModuleId(dependencyRelativePath);
+        const dependencyModule =
+          dependencyModuleId == null
+            ? this.INTERNAL__createModule(dependencyRelativePath, {
+                imports: {},
+              })
+            : this.INTERNAL__getModule(dependencyRelativePath);
+
+        if (importMeta.original != null) {
+          currentModule.meta.imports[importMeta.original] = {
+            id: dependencyModule.id,
+            path: dependencyModule.path,
+          };
+        }
+
         this.linkModules(currentModule, dependencyModule);
       }
     }
@@ -93,23 +117,12 @@ export class DependencyGraph {
       : null;
   }
 
-  /**
-   * Get the module by its actual path in the metafile,
-   * or return the existing module if it's already in the graph.
-   */
-  private getOrCreateModule(
+  private INTERNAL__createModule(
     relativePath: RelativePath,
-    external = false,
+    meta: ModuleMeta,
   ): InternalModule {
-    const id = this.getModuleId(relativePath);
-
-    if (typeof id === 'number') {
-      // Returns exist module.
-      return this.dependencyGraph[id]!;
-    }
-
     const newModuleId = this.generateUniqueModuleId(relativePath);
-    const newModule = createModule(newModuleId, relativePath, external);
+    const newModule = createModule(newModuleId, relativePath, meta);
 
     this.graphSize++;
 
@@ -195,11 +208,12 @@ export class DependencyGraph {
         `module not found: '${request}'`,
       );
     }
-
-    return assertValue(
+    const module = assertValue(
       this.dependencyGraph[moduleId],
-      `module not found (id: ${moduleId})`,
+      `module not found (id: ${String(moduleId)})`,
     );
+
+    return module;
   }
 
   /**
@@ -249,14 +263,21 @@ export class DependencyGraph {
    * Register new module to dependency graph.
    */
   addModule(
-    modulePath: string,
-    dependencies: (string | number)[] = [],
-    dependents: (string | number)[] = [],
+    path: string,
+    {
+      dependencies = [],
+      dependents = [],
+      meta,
+    }: {
+      dependencies: (string | number)[];
+      dependents: (string | number)[];
+      meta: ModuleMeta;
+    },
   ): Module {
-    const relativePath = this.toRelativePath(modulePath);
+    const relativePath = this.toRelativePath(path);
 
     if (typeof this.getModuleId(relativePath) === 'number') {
-      throw new Error(`already registered: '${modulePath}'`);
+      throw new Error(`already registered: '${path}'`);
     }
 
     // Validate that the IDs of modules are registered.
@@ -266,8 +287,7 @@ export class DependencyGraph {
     const dependentModules = dependents.map((dependentPath) =>
       this.INTERNAL__getModule(dependentPath),
     );
-
-    const newModule = this.getOrCreateModule(relativePath);
+    const newModule = this.INTERNAL__createModule(relativePath, meta);
 
     dependencyModules.forEach((module) => {
       newModule.dependencies.add(module.id);
@@ -287,8 +307,15 @@ export class DependencyGraph {
    */
   updateModule(
     request: string | number,
-    dependencies: (string | number)[] = [],
-    dependents: (string | number)[] = [],
+    {
+      dependencies = [],
+      dependents = [],
+      meta,
+    }: {
+      dependencies: (string | number)[];
+      dependents: (string | number)[];
+      meta: ModuleMeta;
+    },
   ): Module {
     const targetModule = this.INTERNAL__getModule(request);
 
@@ -311,6 +338,8 @@ export class DependencyGraph {
       targetModule.dependents.add(module.id);
       this.linkModules(module, targetModule);
     });
+
+    targetModule.meta = meta;
 
     return toModule(targetModule);
   }
