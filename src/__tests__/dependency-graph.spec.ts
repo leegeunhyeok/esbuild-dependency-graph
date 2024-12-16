@@ -287,4 +287,68 @@ describe('DependencyGraph', () => {
       ).not.toThrowError();
     });
   });
+
+  describe('strict mode', () => {
+    let graph: DependencyGraph;
+
+    beforeAll(() => {
+      graph = new DependencyGraph({ strict: true });
+      graph.addModule('index.js', {
+        dependencies: [],
+        dependents: [],
+        meta: { imports: {} },
+      });
+      graph.addModule('a.js', {
+        dependencies: [],
+        dependents: [],
+        meta: { imports: {} },
+      });
+      graph.addModule('b.js', {
+        dependencies: [],
+        dependents: [],
+        meta: { imports: {} },
+      });
+      graph.addModule('c.js', {
+        dependencies: [],
+        dependents: [],
+        meta: { imports: {} },
+      });
+    });
+
+    it('should throw an error if there is a mismatch between the dependency information and metadata', () => {
+      const moduleIds = [
+        graph.getModule('a.js'),
+        graph.getModule('b.js'),
+        graph.getModule('c.js'),
+      ].map(({ id }) => id);
+
+      expect(() =>
+        graph.updateModule('index.js', {
+          dependencies: ['a.js', 'b.js', 'c.js'],
+          dependents: [],
+          meta: {
+            imports: {
+              // 'a.js' is not included in meta
+              './b': 'b.js',
+              './c': 'c.js',
+            },
+          },
+        }),
+      ).toThrow();
+      expect(() =>
+        graph.updateModule('index.js', {
+          dependencies: ['a.js', 'b.js', 'c.js'],
+          dependents: [],
+          meta: {
+            imports: {
+              // 'a.js', 'b.js', 'c.js' modules are included
+              './a': 'a.js',
+              './b': 'b.js',
+              './c': 'c.js',
+            },
+          },
+        }),
+      ).not.toThrow();
+    });
+  });
 });

@@ -1,3 +1,5 @@
+export const EXTERNAL = Symbol();
+
 export interface ModuleBase {
   id: number;
   path: string;
@@ -5,6 +7,7 @@ export interface ModuleBase {
 }
 
 export interface ModuleMeta {
+  external?: boolean;
   imports: Record<
     string,
     {

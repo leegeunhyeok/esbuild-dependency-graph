@@ -12,6 +12,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "id": 1362,
     "meta": {
+      "external": false,
       "imports": {
         "./IntroScreen": {
           "id": 1361,
@@ -50,6 +51,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "id": 1363,
     "meta": {
+      "external": false,
       "imports": {
         "../screens": {
           "id": 1362,
@@ -95,6 +97,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "id": 1364,
     "meta": {
+      "external": false,
       "imports": {
         "./RootStack": {
           "id": 1363,
@@ -115,6 +118,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     "dependents": [],
     "id": 1370,
     "meta": {
+      "external": false,
       "imports": {
         "./app.json": {
           "id": 1369,
@@ -153,6 +157,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "id": 1368,
     "meta": {
+      "external": false,
       "imports": {
         "./navigators": {
           "id": 1364,
@@ -302,6 +307,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 509,
     "meta": {
+      "external": false,
       "imports": {
         "./cjs/react-jsx-runtime.development.js": {
           "id": 508,
@@ -609,6 +615,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 73,
     "meta": {
+      "external": false,
       "imports": {
         "./cjs/react.development.js": {
           "id": 72,
@@ -815,6 +822,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 448,
     "meta": {
+      "external": false,
       "imports": {
         "./Libraries/ActionSheetIOS/ActionSheetIOS": {
           "id": 422,
@@ -1154,6 +1162,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 518,
     "meta": {
+      "external": false,
       "imports": {
         "./InitialWindow": {
           "id": 516,
@@ -1189,6 +1198,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1043,
     "meta": {
+      "external": false,
       "imports": {
         "./core": {
           "id": 1042,
@@ -1210,6 +1220,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1123,
     "meta": {
+      "external": false,
       "imports": {
         "./Button": {
           "id": 1120,
@@ -1238,6 +1249,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1358,
     "meta": {
+      "external": false,
       "imports": {
         "react": {
           "id": 73,
@@ -1266,6 +1278,7 @@ exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
     ],
     "id": 1362,
     "meta": {
+      "external": false,
       "imports": {
         "./IntroScreen": {
           "id": 1361,
@@ -1294,6 +1307,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1362,
     "meta": {
+      "external": false,
       "imports": {
         "./IntroScreen": {
           "id": 1361,
@@ -1319,6 +1333,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1363,
     "meta": {
+      "external": false,
       "imports": {
         "../screens": {
           "id": 1362,
@@ -1349,6 +1364,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1364,
     "meta": {
+      "external": false,
       "imports": {
         "./RootStack": {
           "id": 1363,
@@ -1375,6 +1391,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "id": 1368,
     "meta": {
+      "external": false,
       "imports": {
         "./navigators": {
           "id": 1364,
@@ -1426,6 +1443,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     "dependents": [],
     "id": 1370,
     "meta": {
+      "external": false,
       "imports": {
         "./app.json": {
           "id": 1369,
@@ -1478,6 +1496,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
     ],
     "id": 257,
     "meta": {
+      "external": undefined,
       "imports": {
         "../LogBox/LogBox": {
           "id": 79,
@@ -1748,6 +1767,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
     ],
     "id": 451,
     "meta": {
+      "external": false,
       "imports": {
         "./Libraries/ActionSheetIOS/ActionSheetIOS": {
           "id": 425,
@@ -2134,6 +2154,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
     ],
     "id": 1370,
     "meta": {
+      "external": false,
       "imports": {},
     },
     "path": "app.json",
@@ -2193,6 +2214,7 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
     "dependents": [],
     "id": 1370,
     "meta": {
+      "external": false,
       "imports": {
         "./app.json": {
           "id": 1369,
@@ -2285,6 +2307,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "id": 1362,
     "meta": {
+      "external": false,
       "imports": {
         "./IntroScreen": {
           "id": 1361,
@@ -2334,6 +2357,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "id": 1363,
     "meta": {
+      "external": false,
       "imports": {
         "../screens": {
           "id": 1362,
@@ -2379,6 +2403,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "id": 1364,
     "meta": {
+      "external": false,
       "imports": {
         "./RootStack": {
           "id": 1363,
@@ -2399,6 +2424,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     "dependents": [],
     "id": 1370,
     "meta": {
+      "external": false,
       "imports": {
         "./app.json": {
           "id": 1369,
@@ -2437,6 +2463,7 @@ exports[`DependencyGraph > updateModule > should match snapshots 3`] = `
     ],
     "id": 1368,
     "meta": {
+      "external": false,
       "imports": {
         "./navigators": {
           "id": 1364,
