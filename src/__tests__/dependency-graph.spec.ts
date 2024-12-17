@@ -86,12 +86,10 @@ describe('DependencyGraph', () => {
           'node_modules/react-native/index.js',
         ],
         dependents: ['index.js'],
-        meta: { imports: {} },
       });
       graph.addModule('root/screens.ts', {
         dependencies: ['src/screens/MainScreen.tsx'],
         dependents: ['root/entry.ts'],
-        meta: { imports: {} },
       });
     });
 
@@ -142,12 +140,10 @@ describe('DependencyGraph', () => {
       graph.addModule('global.ts', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('re-export.ts', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
 
       graph.updateModule('src/screens/MainScreen.tsx', {
@@ -163,7 +159,6 @@ describe('DependencyGraph', () => {
             .map(({ id }) => id),
           're-export.ts',
         ],
-        meta: { imports: {} },
       });
 
       expect(graph.dependenciesOf('re-export.ts')).toMatchSnapshot();
@@ -197,17 +192,14 @@ describe('DependencyGraph', () => {
       graph.addModule('/root/workspace/index.js', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('/root/workspace/src/App.tsx', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('/root/workspace/src/screens/MainScreen.tsx', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
     });
 
@@ -296,22 +288,18 @@ describe('DependencyGraph', () => {
       graph.addModule('index.js', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('a.js', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('b.js', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
       graph.addModule('c.js', {
         dependencies: [],
         dependents: [],
-        meta: { imports: {} },
       });
     });
 

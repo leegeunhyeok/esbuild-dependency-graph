@@ -241,18 +241,18 @@ export class DependencyGraph {
   }
 
   private toCompleteMeta(
-    meta: Omit<ModuleMeta, 'imports'> & {
+    meta?: Omit<ModuleMeta, 'imports'> & {
       imports: Record<string, string | number>;
     },
   ): ModuleMeta {
     const completeMeta: ModuleMeta = {
-      ...(typeof meta.external === 'boolean'
+      ...(typeof meta?.external === 'boolean'
         ? { external: meta.external }
         : null),
       imports: {},
     };
 
-    Object.entries(meta.imports).forEach(([source, request]) => {
+    Object.entries(meta?.imports ?? {}).forEach(([source, request]) => {
       const { id, path } = this.INTERNAL__getModule(request);
       completeMeta.imports[source] = { id, path };
     });
@@ -315,7 +315,7 @@ export class DependencyGraph {
     }: {
       dependencies: (string | number)[];
       dependents: (string | number)[];
-      meta: Omit<ModuleMeta, 'imports'> & {
+      meta?: Omit<ModuleMeta, 'imports'> & {
         imports: Record<string, string | number>;
       };
     },
@@ -363,7 +363,7 @@ export class DependencyGraph {
     }: {
       dependencies: (string | number)[];
       dependents: (string | number)[];
-      meta: Omit<ModuleMeta, 'imports'> & {
+      meta?: Omit<ModuleMeta, 'imports'> & {
         imports: Record<string, string | number>;
       };
     },
