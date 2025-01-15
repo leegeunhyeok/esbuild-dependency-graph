@@ -6,6 +6,10 @@ import type { Module } from '../types';
 
 const TEST_MODULE = 'src/screens/MainScreen.tsx';
 
+function parsePath(module: Module): string {
+  return module.path;
+}
+
 describe('DependencyGraph', () => {
   let graph: DependencyGraph;
 
@@ -72,32 +76,31 @@ describe('DependencyGraph', () => {
        *
        * **Expected**
        *
-       * - index.js
-       *   - root/entry.ts
-       *     - node_modules/react/index.js
-       *     - node_modules/react-native/index.js
-       *     - root/screens.ts
+       * - root/screens.ts (new 1)
+       *   - src/screens/MainScreen.tsx
+       * - root/entry.ts (new 2)
+       *   - node_modules/react/index.js
+       *   - node_modules/react-native/index.js
        *   - root/screens.ts
-       *     - src/screens/MainScreen.tsx
        */
+      graph.addModule('root/screens.ts', {
+        dependencies: [
+          { key: 'src/screens/MainScreen.tsx', source: '@MainScreen' },
+        ],
+      });
       graph.addModule('root/entry.ts', {
         dependencies: [
-          'node_modules/react/index.js',
-          'node_modules/react-native/index.js',
+          { key: 'node_modules/react/index.js', source: 'react' },
+          {
+            key: 'node_modules/react-native/index.js',
+            source: 'react-native',
+          },
+          { key: 'root/screens.ts', source: '@root-screens' },
         ],
-        dependents: ['index.js'],
-      });
-      graph.addModule('root/screens.ts', {
-        dependencies: ['src/screens/MainScreen.tsx'],
-        dependents: ['root/entry.ts'],
       });
     });
 
     describe('when add new modules', () => {
-      function parsePath(module: Module): string {
-        return module.path;
-      }
-
       it('should match snapshots', () => {
         const inverseDependencies = graph.inverseDependenciesOf(
           'src/screens/MainScreen.tsx',
@@ -106,6 +109,7 @@ describe('DependencyGraph', () => {
       });
 
       it('should be able to retrieve the added dependencies', () => {
+        // root/entry.ts
         expect(graph.dependenciesOf('root/entry.ts').map(parsePath)).toEqual(
           expect.arrayContaining([
             'node_modules/react/index.js',
@@ -113,16 +117,13 @@ describe('DependencyGraph', () => {
             'root/screens.ts',
           ]),
         );
-        expect(graph.dependentsOf('root/entry.ts').map(parsePath)).toEqual(
-          expect.arrayContaining(['index.js']),
-        );
 
         // root/screens.ts
         expect(graph.dependenciesOf('root/screens.ts').map(parsePath)).toEqual(
           expect.arrayContaining(['src/screens/MainScreen.tsx']),
         );
-        expect(graph.dependentsOf('root/entry.ts').map(parsePath)).toEqual(
-          expect.arrayContaining(['index.js']),
+        expect(graph.dependentsOf('root/screens.ts').map(parsePath)).toEqual(
+          expect.arrayContaining(['root/entry.ts']),
         );
 
         // src/screens/MainScreen.tsx
@@ -137,35 +138,47 @@ describe('DependencyGraph', () => {
 
   describe('updateModule', () => {
     it('should match snapshots', () => {
-      graph.addModule('global.ts', {
-        dependencies: [],
-        dependents: [],
-      });
+      graph.addModule('global.ts', { dependencies: [] });
       graph.addModule('re-export.ts', {
-        dependencies: [],
-        dependents: [],
+        dependencies: [
+          { key: 'src/screens/MainScreen.tsx', source: '@MainScreen' },
+        ],
       });
+
+      const prevModule = graph.getModule('src/screens/MainScreen.tsx');
+      const prevDependencies = prevModule.dependencies.map(
+        ({ id, source }) => ({
+          key: id,
+          source,
+        }),
+      );
 
       graph.updateModule('src/screens/MainScreen.tsx', {
         dependencies: [
-          ...graph
-            .dependenciesOf('src/screens/MainScreen.tsx')
-            .map(({ id }) => id),
-          'global.ts',
-        ],
-        dependents: [
-          ...graph
-            .dependentsOf('src/screens/MainScreen.tsx')
-            .map(({ id }) => id),
-          're-export.ts',
+          ...prevDependencies,
+          // Add new dependency
+          { key: 'global.ts', source: '@global' },
         ],
       });
 
-      expect(graph.dependenciesOf('re-export.ts')).toMatchSnapshot();
-      expect(graph.dependentsOf('global.ts')).toMatchSnapshot();
+      // src/screens/index.ts << should keep the same dependencies after update.
+      //   src/screens/MainScreen.tsx (updated)
+      //   src/screens/IntroScreen.tsx
       expect(
-        graph.inverseDependenciesOf('src/screens/MainScreen.tsx'),
-      ).toMatchSnapshot();
+        graph.dependenciesOf('src/screens/index.ts').map(parsePath),
+      ).toEqual(
+        expect.arrayContaining([
+          'src/screens/MainScreen.tsx',
+          'src/screens/IntroScreen.tsx',
+        ]),
+      );
+
+      expect(graph.dependenciesOf('re-export.ts').map(parsePath)).toEqual(
+        expect.arrayContaining(['src/screens/MainScreen.tsx']),
+      );
+      expect(graph.dependentsOf('global.ts').map(parsePath)).toEqual(
+        expect.arrayContaining(['src/screens/MainScreen.tsx']),
+      );
     });
   });
 
@@ -175,6 +188,10 @@ describe('DependencyGraph', () => {
 
       graph.removeModule('src/screens/index.ts');
       const inverseDependencies = graph.inverseDependenciesOf(
+        'src/screens/MainScreen.tsx',
+      );
+
+      expect(inverseDependencies.map(parsePath)).not.contains(
         'src/screens/MainScreen.tsx',
       );
       expect(inverseDependencies).toMatchSnapshot();
@@ -189,17 +206,10 @@ describe('DependencyGraph', () => {
     beforeAll(() => {
       graph = new DependencyGraph({ root: ROOT });
 
-      graph.addModule('/root/workspace/index.js', {
-        dependencies: [],
-        dependents: [],
-      });
-      graph.addModule('/root/workspace/src/App.tsx', {
-        dependencies: [],
-        dependents: [],
-      });
+      graph.addModule('/root/workspace/index.js', { dependencies: [] });
+      graph.addModule('/root/workspace/src/App.tsx', { dependencies: [] });
       graph.addModule('/root/workspace/src/screens/MainScreen.tsx', {
         dependencies: [],
-        dependents: [],
       });
     });
 
@@ -224,8 +234,9 @@ describe('DependencyGraph', () => {
       graph.load(rawMetafile);
 
       // After update
-      expect(graph.dependenciesOf(indexModule.path)).toMatchSnapshot();
-      console.log(indexModule.meta);
+      const dependencies = graph.dependenciesOf(indexModule.path);
+      expect(dependencies.length).toBeGreaterThan(0);
+      expect(dependencies).toMatchSnapshot();
     });
   });
 
@@ -277,60 +288,6 @@ describe('DependencyGraph', () => {
       expect(() =>
         graph.getModule('/root/node_modules/@swc/helpers/esm/_instanceof.js'),
       ).not.toThrowError();
-    });
-  });
-
-  describe('strict mode', () => {
-    let graph: DependencyGraph;
-
-    beforeAll(() => {
-      graph = new DependencyGraph({ strict: true });
-      graph.addModule('index.js', {
-        dependencies: [],
-        dependents: [],
-      });
-      graph.addModule('a.js', {
-        dependencies: [],
-        dependents: [],
-      });
-      graph.addModule('b.js', {
-        dependencies: [],
-        dependents: [],
-      });
-      graph.addModule('c.js', {
-        dependencies: [],
-        dependents: [],
-      });
-    });
-
-    it('should throw an error if there is a mismatch between the dependency information and metadata', () => {
-      expect(() =>
-        graph.updateModule('index.js', {
-          dependencies: ['a.js', 'b.js', 'c.js'],
-          dependents: [],
-          meta: {
-            imports: {
-              // 'a.js' is not included in meta
-              './b': 'b.js',
-              './c': 'c.js',
-            },
-          },
-        }),
-      ).toThrow();
-      expect(() =>
-        graph.updateModule('index.js', {
-          dependencies: ['a.js', 'b.js', 'c.js'],
-          dependents: [],
-          meta: {
-            imports: {
-              // 'a.js', 'b.js', 'c.js' modules are included
-              './a': 'a.js',
-              './b': 'b.js',
-              './c': 'c.js',
-            },
-          },
-        }),
-      ).not.toThrow();
     });
   });
 });

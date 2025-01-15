@@ -1,3 +1,2 @@
 export { DependencyGraph } from './dependency-graph';
-export * from './helpers';
-export type { Module } from './types';
+export type { Module, Dependency, ModuleQueryKey } from './types';

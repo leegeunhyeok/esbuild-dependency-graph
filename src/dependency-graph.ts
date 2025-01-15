@@ -1,15 +1,15 @@
 import * as path from 'node:path';
 import type { Metafile } from 'esbuild';
-import { createModule, isExternal } from './helpers';
+import { createModule } from './helpers';
 import { assertValue } from './utils';
-import {
-  type InternalModule,
-  type Module,
-  type ModuleMeta,
-  type RelativePath,
+import type {
+  ModuleMeta,
+  ModuleQueryKey,
+  InternalModule,
+  Module,
+  RelativePath,
 } from './types';
 import { toModule } from './helpers/to-module';
-import assert from 'node:assert';
 
 type ModuleDependencyGraph = Record<number, InternalModule | undefined>;
 
@@ -20,13 +20,6 @@ interface DependencyGraphOptions {
    * Defaults to `process.cwd()`.
    */
   root?: string;
-  /**
-   * When enabled, an error is thrown
-   * if the module information and metadata do not match exactly.
-   *
-   * Defaults to `false`.
-   */
-  strict?: boolean;
 }
 
 export class DependencyGraph {
@@ -41,7 +34,7 @@ export class DependencyGraph {
   }
 
   constructor(options?: DependencyGraphOptions) {
-    this.options = { root: process.cwd(), strict: false, ...options };
+    this.options = { root: process.cwd(), ...options };
   }
 
   /**
@@ -56,36 +49,29 @@ export class DependencyGraph {
 
       const currentModule =
         moduleId == null
-          ? this.INTERNAL__createModule(relativePath, {
-            external: false,
-            imports: {},
-          })
+          ? this.INTERNAL__createModule(relativePath)
           : this.INTERNAL__getModule(relativePath);
 
       // Link with dependencies
       for (const importMeta of imports) {
+        if (importMeta.external) {
+          continue;
+        }
+
         const dependencyRelativePath = importMeta.path as RelativePath;
+        const dependencySource = assertValue(
+          importMeta.original,
+          `internal module must have 'original' value`,
+        );
         const dependencyModuleId = this.getModuleId(dependencyRelativePath);
         const dependencyModule =
           dependencyModuleId == null
-            ? this.INTERNAL__createModule(dependencyRelativePath, {
-              external: importMeta.external,
-              imports: {},
-            })
+            ? this.INTERNAL__createModule(dependencyRelativePath)
             : this.INTERNAL__getModule(dependencyRelativePath);
 
-        if (importMeta.original != null) {
-          currentModule.meta.imports[importMeta.original] = {
-            id: dependencyModule.id,
-            path: dependencyModule.path,
-          };
-        } else if (this.options.strict && !isExternal(dependencyModule)) {
-          throw new Error(
-            `metadata mismatch (Module: ${currentModule.path}, Dependency: ${dependencyModule.path})`,
-          );
-        }
-
-        this.linkModules(currentModule, dependencyModule);
+        this.linkModules(currentModule, dependencyModule, {
+          source: dependencySource,
+        });
       }
     }
   }
@@ -129,12 +115,9 @@ export class DependencyGraph {
       : null;
   }
 
-  private INTERNAL__createModule(
-    relativePath: RelativePath,
-    meta: ModuleMeta,
-  ): InternalModule {
+  private INTERNAL__createModule(relativePath: RelativePath): InternalModule {
     const newModuleId = this.generateUniqueModuleId(relativePath);
-    const newModule = createModule(newModuleId, relativePath, meta);
+    const newModule = createModule(newModuleId, relativePath);
 
     this.graphSize++;
 
@@ -147,8 +130,9 @@ export class DependencyGraph {
   private linkModules(
     sourceModule: InternalModule,
     targetModule: InternalModule,
+    meta: ModuleMeta,
   ): void {
-    sourceModule.dependencies.add(targetModule.id);
+    sourceModule.dependencies[targetModule.id] = meta.source;
     targetModule.dependents.add(sourceModule.id);
   }
 
@@ -158,8 +142,10 @@ export class DependencyGraph {
   private unlinkModule(sourceModule: InternalModule, unlinkOnly = false): void {
     const moduleId = sourceModule.id;
 
-    sourceModule.dependencies.forEach((dependencyId) => {
-      const dependencyModule = this.INTERNAL__getModule(dependencyId);
+    Object.keys(sourceModule.dependencies).forEach((dependencyId) => {
+      const dependencyModule = this.INTERNAL__getModule(
+        parseInt(dependencyId, 10),
+      );
 
       dependencyModule.dependents.delete(moduleId);
     });
@@ -167,16 +153,16 @@ export class DependencyGraph {
     sourceModule.dependents.forEach((dependentId) => {
       const dependentModule = this.INTERNAL__getModule(dependentId);
 
-      dependentModule.dependencies.delete(moduleId);
+      delete dependentModule.dependencies[moduleId];
     });
 
-    sourceModule.dependencies.clear();
+    sourceModule.dependencies = {};
     sourceModule.dependents.clear();
 
-    if (!unlinkOnly) {
-      this.dependencyGraph[moduleId] = undefined;
-      this.INTERNAL__moduleIds[sourceModule.path] = undefined;
-    }
+    if (unlinkOnly) return;
+
+    delete this.dependencyGraph[moduleId];
+    delete this.INTERNAL__moduleIds[sourceModule.path];
   }
 
   /**
@@ -208,56 +194,23 @@ export class DependencyGraph {
     return inverseModuleIds;
   }
 
-  private INTERNAL__getModule(request: string | number): InternalModule {
+  private INTERNAL__getModule(key: ModuleQueryKey): InternalModule {
     let moduleId: number;
 
-    if (typeof request === 'number') {
-      moduleId = request;
+    if (typeof key === 'number') {
+      moduleId = key;
     } else {
-      const relativePath = this.toRelativePath(request);
+      const relativePath = this.toRelativePath(key);
       moduleId = assertValue(
         this.getModuleId(relativePath),
-        `module not found: '${request}'`,
+        `module not found (key: ${key})`,
       );
     }
-    const module = assertValue(
+
+    return assertValue(
       this.dependencyGraph[moduleId],
       `module not found (id: ${String(moduleId)})`,
     );
-
-    return module;
-  }
-
-  private strictCheck(dependencies: InternalModule[], meta: ModuleMeta) {
-    if (this.options.strict === false) {
-      return;
-    }
-
-    const importsMap = new Set(Object.values(meta.imports).map(({ id }) => id));
-    assert(
-      dependencies.every(({ id }) => importsMap.has(id)),
-      'invalid metadata (strict mode enabled)',
-    );
-  }
-
-  private toCompleteMeta(
-    meta?: Omit<ModuleMeta, 'imports'> & {
-      imports: Record<string, string | number>;
-    },
-  ): ModuleMeta {
-    const completeMeta: ModuleMeta = {
-      ...(typeof meta?.external === 'boolean'
-        ? { external: meta.external }
-        : null),
-      imports: {},
-    };
-
-    Object.entries(meta?.imports ?? {}).forEach(([source, request]) => {
-      const { id, path } = this.INTERNAL__getModule(request);
-      completeMeta.imports[source] = { id, path };
-    });
-
-    return completeMeta;
   }
 
   /**
@@ -285,9 +238,9 @@ export class DependencyGraph {
   /**
    * Check if the module exists.
    */
-  hasModule(request: string | number): boolean {
+  hasModule(key: ModuleQueryKey): boolean {
     try {
-      this.INTERNAL__getModule(request);
+      this.INTERNAL__getModule(key);
       return true;
     } catch {
       return false;
@@ -297,8 +250,8 @@ export class DependencyGraph {
   /**
    * Get module data by module path.
    */
-  getModule(request: string | number): Module {
-    const module = this.INTERNAL__getModule(request);
+  getModule(key: ModuleQueryKey): Module {
+    const module = this.INTERNAL__getModule(key);
 
     return toModule(module);
   }
@@ -309,43 +262,33 @@ export class DependencyGraph {
   addModule(
     path: string,
     {
-      dependencies = [],
-      dependents = [],
-      meta,
+      dependencies,
     }: {
-      dependencies: (string | number)[];
-      dependents: (string | number)[];
-      meta?: Omit<ModuleMeta, 'imports'> & {
-        imports: Record<string, string | number>;
-      };
+      dependencies: {
+        key: ModuleQueryKey;
+        source: string;
+      }[];
     },
   ): Module {
     const relativePath = this.toRelativePath(path);
+    const moduleId = this.getModuleId(relativePath);
 
-    if (typeof this.getModuleId(relativePath) === 'number') {
-      throw new Error(`already registered: '${path}'`);
+    if (typeof moduleId === 'number') {
+      throw new Error(`already registered (id: ${moduleId})`);
     }
 
-    // Validate that the IDs of modules are registered.
-    const dependencyModules = dependencies.map((dependencyPath) =>
-      this.INTERNAL__getModule(dependencyPath),
-    );
-    const dependentModules = dependents.map((dependentPath) =>
-      this.INTERNAL__getModule(dependentPath),
-    );
-    const completeMeta = this.toCompleteMeta(meta);
-
-    this.strictCheck(dependencyModules, completeMeta);
-    const newModule = this.INTERNAL__createModule(relativePath, completeMeta);
-
-    dependencyModules.forEach((module) => {
-      newModule.dependencies.add(module.id);
-      this.linkModules(newModule, module);
+    // Validate that the IDs of modules are registered in the graph.
+    const dependencyModules = dependencies.map((dependency) => {
+      return {
+        module: this.INTERNAL__getModule(dependency.key),
+        meta: { source: dependency.source },
+      };
     });
 
-    dependentModules.forEach((module) => {
-      newModule.dependents.add(module.id);
-      this.linkModules(module, newModule);
+    const newModule = this.INTERNAL__createModule(relativePath);
+
+    dependencyModules.forEach(({ module, meta }) => {
+      this.linkModules(newModule, module, meta);
     });
 
     return toModule(newModule);
@@ -355,44 +298,50 @@ export class DependencyGraph {
    * Update registered module.
    */
   updateModule(
-    request: string | number,
+    key: ModuleQueryKey,
     {
-      dependencies = [],
-      dependents = [],
-      meta,
+      dependencies,
     }: {
-      dependencies: (string | number)[];
-      dependents: (string | number)[];
-      meta?: Omit<ModuleMeta, 'imports'> & {
-        imports: Record<string, string | number>;
-      };
+      dependencies: {
+        key: ModuleQueryKey;
+        source: string;
+      }[];
     },
   ): Module {
-    const targetModule = this.INTERNAL__getModule(request);
+    const targetModule = this.INTERNAL__getModule(key);
+    const prevDependents = Array.from(targetModule.dependents);
 
     // Validate that the IDs of modules are registered.
-    const dependencyModules = dependencies.map((dependencyPath) =>
-      this.INTERNAL__getModule(dependencyPath),
-    );
-    const dependentModules = dependents.map((dependentPath) =>
-      this.INTERNAL__getModule(dependentPath),
-    );
-    const completeMeta = this.toCompleteMeta(meta);
+    const dependencyModules = dependencies.map((dependency) => ({
+      module: this.INTERNAL__getModule(dependency.key),
+      meta: { source: dependency.source },
+    }));
+    const dependentModules = prevDependents.map((dependentId) => {
+      const dependentModule = this.INTERNAL__getModule(dependentId);
+      const dependentSource = dependentModule.dependencies[targetModule.id];
 
-    this.strictCheck(dependencyModules, completeMeta);
+      return {
+        module: dependentModule,
+        meta: {
+          source: assertValue(
+            dependentSource,
+            `'${dependentModule.toString()}' module is not dependent on '${targetModule.toString()}'`,
+          ),
+        },
+      };
+    });
+
     this.unlinkModule(targetModule, true);
 
-    dependencyModules.forEach((module) => {
-      targetModule.dependencies.add(module.id);
-      this.linkModules(targetModule, module);
+    dependencyModules.forEach(({ module, meta }) => {
+      targetModule.dependencies[module.id] = meta.source;
+      this.linkModules(targetModule, module, meta);
     });
 
-    dependentModules.forEach((module) => {
+    dependentModules.forEach(({ module, meta }) => {
       targetModule.dependents.add(module.id);
-      this.linkModules(module, targetModule);
+      this.linkModules(module, targetModule, meta);
     });
-
-    targetModule.meta = completeMeta;
 
     return toModule(targetModule);
   }
@@ -400,8 +349,8 @@ export class DependencyGraph {
   /**
    * Remove module from graph.
    */
-  removeModule(request: string | number): void {
-    const module = this.INTERNAL__getModule(request);
+  removeModule(key: ModuleQueryKey): void {
+    const module = this.INTERNAL__getModule(key);
 
     this.unlinkModule(module);
     this.graphSize--;
@@ -410,17 +359,19 @@ export class DependencyGraph {
   /**
    * Get dependencies of specified module.
    */
-  dependenciesOf(request: string | number): Module[] {
-    const module = this.INTERNAL__getModule(request);
+  dependenciesOf(key: ModuleQueryKey): Module[] {
+    const module = this.INTERNAL__getModule(key);
 
-    return Array.from(module.dependencies).map((id) => this.getModule(id));
+    return Object.keys(module.dependencies).map((id) =>
+      this.getModule(parseInt(id, 10)),
+    );
   }
 
   /**
    * Get dependents of specified module.
    */
-  dependentsOf(request: string | number): Module[] {
-    const module = this.INTERNAL__getModule(request);
+  dependentsOf(key: ModuleQueryKey): Module[] {
+    const module = this.INTERNAL__getModule(key);
 
     return Array.from(module.dependents).map((id) => this.getModule(id));
   }
@@ -428,8 +379,8 @@ export class DependencyGraph {
   /**
    * Get inverse dependencies of specified module.
    */
-  inverseDependenciesOf(request: string | number): Module[] {
-    const module = this.INTERNAL__getModule(request);
+  inverseDependenciesOf(key: ModuleQueryKey): Module[] {
+    const module = this.INTERNAL__getModule(key);
 
     return this.traverseInverseModules(module.id).map((id) =>
       this.getModule(id),
