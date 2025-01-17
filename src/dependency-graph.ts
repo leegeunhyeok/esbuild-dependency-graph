@@ -7,7 +7,7 @@ import type {
   ModuleQueryKey,
   InternalModule,
   Module,
-  RelativePath,
+  AbsolutePath,
 } from './types';
 import { toModule } from './helpers/to-module';
 
@@ -42,15 +42,15 @@ export class DependencyGraph {
    */
   private generateDependencyGraph(metafile: Metafile): void {
     for (const modulePath in metafile.inputs) {
-      // esbuild's paths are relative path.
-      const relativePath = modulePath as RelativePath;
-      const moduleId = this.getModuleId(relativePath);
+      // Paths in esbuild metafile are relative path.
+      const absolutePath = this.toAbsolutePath(modulePath);
+      const moduleId = this.getModuleId(absolutePath);
       const imports = metafile.inputs[modulePath]?.imports ?? [];
 
       const currentModule =
         moduleId == null
-          ? this.INTERNAL__createModule(relativePath)
-          : this.INTERNAL__getModule(relativePath);
+          ? this.INTERNAL__createModule(absolutePath)
+          : this.INTERNAL__getModule(absolutePath);
 
       // Link with dependencies
       for (const importMeta of imports) {
@@ -58,16 +58,16 @@ export class DependencyGraph {
           continue;
         }
 
-        const dependencyRelativePath = importMeta.path as RelativePath;
+        const dependencyAbsolutePath = this.toAbsolutePath(importMeta.path);
         const dependencySource = assertValue(
           importMeta.original,
           `internal module must have 'original' value`,
         );
-        const dependencyModuleId = this.getModuleId(dependencyRelativePath);
+        const dependencyModuleId = this.getModuleId(dependencyAbsolutePath);
         const dependencyModule =
           dependencyModuleId == null
-            ? this.INTERNAL__createModule(dependencyRelativePath)
-            : this.INTERNAL__getModule(dependencyRelativePath);
+            ? this.INTERNAL__createModule(dependencyAbsolutePath)
+            : this.INTERNAL__getModule(dependencyAbsolutePath);
 
         this.linkModules(currentModule, dependencyModule, {
           source: dependencySource,
@@ -93,31 +93,31 @@ export class DependencyGraph {
   }
 
   /**
-   * Convert to relative path based on root.
+   * Convert to absolute path based on root.
    */
-  private toRelativePath(targetPath: string): RelativePath {
+  private toAbsolutePath(targetPath: string): AbsolutePath {
     return (
       path.isAbsolute(targetPath)
-        ? path.relative(this.options.root, targetPath)
-        : targetPath
-    ) as RelativePath;
+        ? targetPath
+        : path.resolve(this.options.root, targetPath)
+    ) as AbsolutePath;
   }
 
   /**
    * Get module id
    */
-  private getModuleId(relativePath: RelativePath): number | null {
+  private getModuleId(absolutePath: AbsolutePath): number | null {
     let id: number | undefined;
 
-    return typeof (id = this.INTERNAL__moduleIds[relativePath]) === 'number' &&
+    return typeof (id = this.INTERNAL__moduleIds[absolutePath]) === 'number' &&
       id in this.dependencyGraph
       ? id
       : null;
   }
 
-  private INTERNAL__createModule(relativePath: RelativePath): InternalModule {
-    const newModuleId = this.generateUniqueModuleId(relativePath);
-    const newModule = createModule(newModuleId, relativePath);
+  private INTERNAL__createModule(absolutePath: AbsolutePath): InternalModule {
+    const newModuleId = this.generateUniqueModuleId(absolutePath);
+    const newModule = createModule(newModuleId, absolutePath);
 
     this.graphSize++;
 
@@ -200,9 +200,9 @@ export class DependencyGraph {
     if (typeof key === 'number') {
       moduleId = key;
     } else {
-      const relativePath = this.toRelativePath(key);
+      const absolutePath = this.toAbsolutePath(key);
       moduleId = assertValue(
-        this.getModuleId(relativePath),
+        this.getModuleId(absolutePath),
         `module not found (key: ${key})`,
       );
     }
@@ -224,6 +224,13 @@ export class DependencyGraph {
     );
 
     return this;
+  }
+
+  /**
+   * Set options for dependency graph.
+   */
+  setOptions(options: DependencyGraphOptions): void {
+    this.options = { ...this.options, ...options };
   }
 
   /**
@@ -270,8 +277,8 @@ export class DependencyGraph {
       }[];
     },
   ): Module {
-    const relativePath = this.toRelativePath(path);
-    const moduleId = this.getModuleId(relativePath);
+    const absolutePath = this.toAbsolutePath(path);
+    const moduleId = this.getModuleId(absolutePath);
 
     if (typeof moduleId === 'number') {
       throw new Error(`already registered (id: ${moduleId})`);
@@ -285,7 +292,7 @@ export class DependencyGraph {
       };
     });
 
-    const newModule = this.INTERNAL__createModule(relativePath);
+    const newModule = this.INTERNAL__createModule(absolutePath);
 
     dependencyModules.forEach(({ module, meta }) => {
       this.linkModules(newModule, module, meta);

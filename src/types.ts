@@ -33,7 +33,7 @@ export interface Module extends ModuleBase {
   dependents: number[];
 }
 
-export type RelativePath = string & { __relative: true };
+export type AbsolutePath = string & { __absolute: true };
 
 export interface Dependency {
   /**

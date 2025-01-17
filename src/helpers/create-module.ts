@@ -1,4 +1,4 @@
-import type { RelativePath, InternalModule } from '../types';
+import type { AbsolutePath, InternalModule } from '../types';
 
 const modulePrototype = Object.create({});
 
@@ -6,7 +6,7 @@ modulePrototype.toString = function () {
   return `${this.path}#${this.id}`;
 };
 
-export function createModule(id: number, path: RelativePath): InternalModule {
+export function createModule(id: number, path: AbsolutePath): InternalModule {
   const module = Object.create(modulePrototype);
 
   return Object.defineProperties(module, {

@@ -17,7 +17,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1361,
     ],
     "id": 1360,
-    "path": "src/screens/index.ts",
+    "path": "/workspace/src/screens/index.ts",
   },
   {
     "dependencies": [
@@ -30,7 +30,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1370,
     ],
     "id": 1369,
-    "path": "root/screens.ts",
+    "path": "/workspace/root/screens.ts",
   },
   {
     "dependencies": [
@@ -55,7 +55,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1362,
     ],
     "id": 1361,
-    "path": "src/navigators/RootStack.tsx",
+    "path": "/workspace/src/navigators/RootStack.tsx",
   },
   {
     "dependencies": [
@@ -74,7 +74,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "dependents": [],
     "id": 1370,
-    "path": "root/entry.ts",
+    "path": "/workspace/root/entry.ts",
   },
   {
     "dependencies": [
@@ -87,7 +87,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1366,
     ],
     "id": 1362,
-    "path": "src/navigators/index.ts",
+    "path": "/workspace/src/navigators/index.ts",
   },
   {
     "dependencies": [
@@ -132,7 +132,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
       1368,
     ],
     "id": 1366,
-    "path": "src/App.tsx",
+    "path": "/workspace/src/App.tsx",
   },
   {
     "dependencies": [
@@ -155,7 +155,7 @@ exports[`DependencyGraph > addModule > when add new modules > should match snaps
     ],
     "dependents": [],
     "id": 1368,
-    "path": "index.js",
+    "path": "/workspace/index.js",
   },
 ]
 `;
@@ -462,7 +462,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1366,
     ],
     "id": 73,
-    "path": "node_modules/react/index.js",
+    "path": "/workspace/node_modules/react/index.js",
   },
   {
     "dependencies": [
@@ -897,7 +897,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 448,
-    "path": "node_modules/react-native/index.js",
+    "path": "/workspace/node_modules/react-native/index.js",
   },
   {
     "dependencies": [
@@ -1004,7 +1004,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1366,
     ],
     "id": 509,
-    "path": "node_modules/react/jsx-runtime.js",
+    "path": "/workspace/node_modules/react/jsx-runtime.js",
   },
   {
     "dependencies": [
@@ -1035,7 +1035,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1366,
     ],
     "id": 518,
-    "path": "node_modules/react-native-safe-area-context/src/index.tsx",
+    "path": "/workspace/node_modules/react-native-safe-area-context/src/index.tsx",
   },
   {
     "dependencies": [
@@ -1053,7 +1053,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1366,
     ],
     "id": 1042,
-    "path": "node_modules/dripsy/src/index.ts",
+    "path": "/workspace/node_modules/dripsy/src/index.ts",
   },
   {
     "dependencies": [
@@ -1075,7 +1075,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1359,
     ],
     "id": 1121,
-    "path": "src/components/index.ts",
+    "path": "/workspace/src/components/index.ts",
   },
   {
     "dependencies": [
@@ -1092,7 +1092,7 @@ exports[`DependencyGraph > dependenciesOf > should match snapshot 1`] = `
       1357,
     ],
     "id": 1356,
-    "path": "src/assets/logo.svg",
+    "path": "/workspace/src/assets/logo.svg",
   },
 ]
 `;
@@ -1114,7 +1114,7 @@ exports[`DependencyGraph > dependentsOf > should match snapshot 1`] = `
       1361,
     ],
     "id": 1360,
-    "path": "src/screens/index.ts",
+    "path": "/workspace/src/screens/index.ts",
   },
 ]
 `;
@@ -1136,7 +1136,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1361,
     ],
     "id": 1360,
-    "path": "src/screens/index.ts",
+    "path": "/workspace/src/screens/index.ts",
   },
   {
     "dependencies": [
@@ -1161,7 +1161,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1362,
     ],
     "id": 1361,
-    "path": "src/navigators/RootStack.tsx",
+    "path": "/workspace/src/navigators/RootStack.tsx",
   },
   {
     "dependencies": [
@@ -1174,7 +1174,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1366,
     ],
     "id": 1362,
-    "path": "src/navigators/index.ts",
+    "path": "/workspace/src/navigators/index.ts",
   },
   {
     "dependencies": [
@@ -1219,7 +1219,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
       1368,
     ],
     "id": 1366,
-    "path": "src/App.tsx",
+    "path": "/workspace/src/App.tsx",
   },
   {
     "dependencies": [
@@ -1242,7 +1242,7 @@ exports[`DependencyGraph > inverseDependenciesOf > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1368,
-    "path": "index.js",
+    "path": "/workspace/index.js",
   },
 ]
 `;
@@ -1292,7 +1292,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
       0,
     ],
     "id": 1,
-    "path": "src/App.tsx",
+    "path": "/root/workspace/src/App.tsx",
   },
   {
     "dependencies": [
@@ -1370,7 +1370,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
       0,
     ],
     "id": 257,
-    "path": "node_modules/react-native/Libraries/Core/InitializeCore.js",
+    "path": "/root/workspace/node_modules/react-native/Libraries/Core/InitializeCore.js",
   },
   {
     "dependencies": [
@@ -1805,7 +1805,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
       0,
     ],
     "id": 451,
-    "path": "node_modules/react-native/index.js",
+    "path": "/root/workspace/node_modules/react-native/index.js",
   },
   {
     "dependencies": [],
@@ -1813,7 +1813,7 @@ exports[`DependencyGraph > lazy load > should update module data 1`] = `
       0,
     ],
     "id": 1368,
-    "path": "app.json",
+    "path": "/root/workspace/app.json",
   },
 ]
 `;
@@ -1831,7 +1831,7 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
       1370,
     ],
     "id": 1369,
-    "path": "root/screens.ts",
+    "path": "/workspace/root/screens.ts",
   },
   {
     "dependencies": [
@@ -1842,7 +1842,7 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1372,
-    "path": "re-export.ts",
+    "path": "/workspace/re-export.ts",
   },
   {
     "dependencies": [
@@ -1861,7 +1861,7 @@ exports[`DependencyGraph > removeModule > should match snapshot 1`] = `
     ],
     "dependents": [],
     "id": 1370,
-    "path": "root/entry.ts",
+    "path": "/workspace/root/entry.ts",
   },
 ]
 `;

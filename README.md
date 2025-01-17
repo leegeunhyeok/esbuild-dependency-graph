@@ -23,11 +23,11 @@ const result = await esbuild.build({
 
 const graph = new DependencyGraph({
   /**
-   * Root path for lookup modules.
+   * Workspace root path for lookup modules.
    *
    * Defaults to `process.cwd()`.
    */
-  root: '/path/to/root-dir',
+  root: '/path/to/project-root',
 });
 
 // Generate or update the dependency graph using the esbuild metafile.

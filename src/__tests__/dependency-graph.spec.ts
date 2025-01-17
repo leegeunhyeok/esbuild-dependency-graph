@@ -18,7 +18,7 @@ describe('DependencyGraph', () => {
       join(__dirname, './fixtures/metafile.json'),
       'utf-8',
     );
-    graph = new DependencyGraph().load(rawMetafile);
+    graph = new DependencyGraph({ root: '/workspace' }).load(rawMetafile);
   });
 
   describe('size', () => {
@@ -112,26 +112,30 @@ describe('DependencyGraph', () => {
         // root/entry.ts
         expect(graph.dependenciesOf('root/entry.ts').map(parsePath)).toEqual(
           expect.arrayContaining([
-            'node_modules/react/index.js',
-            'node_modules/react-native/index.js',
-            'root/screens.ts',
+            '/workspace/node_modules/react/index.js',
+            '/workspace/node_modules/react-native/index.js',
+            '/workspace/root/screens.ts',
           ]),
         );
 
         // root/screens.ts
         expect(graph.dependenciesOf('root/screens.ts').map(parsePath)).toEqual(
-          expect.arrayContaining(['src/screens/MainScreen.tsx']),
+          expect.arrayContaining(['/workspace/src/screens/MainScreen.tsx']),
         );
         expect(graph.dependentsOf('root/screens.ts').map(parsePath)).toEqual(
-          expect.arrayContaining(['root/entry.ts']),
+          expect.arrayContaining(['/workspace/root/entry.ts']),
         );
 
         // src/screens/MainScreen.tsx
         const inverseDependencies = graph.inverseDependenciesOf(
           'src/screens/MainScreen.tsx',
         );
-        expect(inverseDependencies.map(parsePath)).toContain('root/screens.ts');
-        expect(inverseDependencies.map(parsePath)).toContain('root/entry.ts');
+        expect(inverseDependencies.map(parsePath)).toContain(
+          '/workspace/root/screens.ts',
+        );
+        expect(inverseDependencies.map(parsePath)).toContain(
+          '/workspace/root/entry.ts',
+        );
       });
     });
   });
@@ -168,16 +172,16 @@ describe('DependencyGraph', () => {
         graph.dependenciesOf('src/screens/index.ts').map(parsePath),
       ).toEqual(
         expect.arrayContaining([
-          'src/screens/MainScreen.tsx',
-          'src/screens/IntroScreen.tsx',
+          '/workspace/src/screens/MainScreen.tsx',
+          '/workspace/src/screens/IntroScreen.tsx',
         ]),
       );
 
       expect(graph.dependenciesOf('re-export.ts').map(parsePath)).toEqual(
-        expect.arrayContaining(['src/screens/MainScreen.tsx']),
+        expect.arrayContaining(['/workspace/src/screens/MainScreen.tsx']),
       );
       expect(graph.dependentsOf('global.ts').map(parsePath)).toEqual(
-        expect.arrayContaining(['src/screens/MainScreen.tsx']),
+        expect.arrayContaining(['/workspace/src/screens/MainScreen.tsx']),
       );
     });
   });
