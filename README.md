@@ -165,7 +165,7 @@ Demo code [here](./demo/index.ts).
 // Module: src/components/Section.tsx
 {
   id: 1122,
-  path: 'src/components/Section.tsx',
+  path: '/workspace/src/components/Section.tsx',
   dependencies: [
     {
       id: 73,
@@ -189,7 +189,7 @@ Demo code [here](./demo/index.ts).
 [
   {
     id: 509,
-    path: 'node_modules/react/jsx-runtime.js',
+    path: '/workspace/node_modules/react/jsx-runtime.js',
     dependents: [
        512,
        514,
@@ -202,7 +202,7 @@ Demo code [here](./demo/index.ts).
   },
   {
     id: 73,
-    path: 'node_modules/react/index.js',
+    path: '/workspace/node_modules/react/index.js',
     dependencies: [
       {
         id: 72,
@@ -218,7 +218,7 @@ Demo code [here](./demo/index.ts).
   },
   {
     id: 1043,
-    path: 'node_modules/dripsy/src/index.ts',
+    path: '/workspace/node_modules/dripsy/src/index.ts',
     dependencies: [
       {
         id: 1041,
@@ -240,7 +240,7 @@ Demo code [here](./demo/index.ts).
 [
   {
     id: 1121,
-    path: 'src/components/index.ts',
+    path: '/workspace/src/components/index.ts',
     dependencies: [
       {
         id: 1118,
@@ -266,7 +266,7 @@ Demo code [here](./demo/index.ts).
 [
   {
     id: 1121,
-    path: 'src/components/index.ts',
+    path: '/workspace/src/components/index.ts',
     dependencies: [
       {
         id: 1118,
@@ -288,7 +288,7 @@ Demo code [here](./demo/index.ts).
   },
   {
     id: 1357,
-    path: 'src/screens/MainScreen.tsx',
+    path: '/workspace/src/screens/MainScreen.tsx',
     dependencies: [
       {
         id: 73,
@@ -304,7 +304,7 @@ Demo code [here](./demo/index.ts).
   // Entry point of bundle
   {
     id: 1368,
-    path: 'index.js',
+    path: '/workspace/index.js',
     dependencies: [
       {
         id: 254,
