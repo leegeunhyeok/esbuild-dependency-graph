@@ -22,17 +22,6 @@ export interface InternalModule extends ModuleBase {
   dependents: Set<number>;
 }
 
-export interface Module extends ModuleBase {
-  /**
-   * Dependencies of the module.
-   */
-  dependencies: Dependency[];
-  /**
-   * Dependents of the module.
-   */
-  dependents: number[];
-}
-
 export type AbsolutePath = string & { __absolute: true };
 
 export interface Dependency {

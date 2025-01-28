@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { describe, it, expect, beforeAll } from 'vitest';
 import { DependencyGraph } from '../dependency-graph';
-import type { Module } from '../types';
+import type { Module } from '../module';
 
 const TEST_MODULE = 'src/screens/MainScreen.tsx';
 
@@ -24,6 +24,19 @@ describe('DependencyGraph', () => {
   describe('size', () => {
     it('should match snapshot', () => {
       expect(graph.size).toMatchSnapshot();
+    });
+  });
+
+  describe('module', () => {
+    it('should match snapshot', () => {
+      const module = graph.getModule(TEST_MODULE);
+
+      expect(String(module)).toMatchInlineSnapshot(
+        `"Module({"id":1357,"path":"/workspace/src/screens/MainScreen.tsx"})"`,
+      );
+      expect(Object.prototype.toString.call(module)).toMatchInlineSnapshot(
+        `"[object Module]"`,
+      );
     });
   });
 
