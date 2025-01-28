@@ -6,9 +6,9 @@ import type {
   ModuleMeta,
   ModuleQueryKey,
   InternalModule,
-  Module,
   AbsolutePath,
 } from './types';
+import type { Module } from './module';
 import { toModule } from './helpers/to-module';
 
 type ModuleDependencyGraph = Record<number, InternalModule | undefined>;
